@@ -1,0 +1,6 @@
+.venv
+.vscode
+__pycache__
+test.py
+ui/__pycache__
+ui/themes/__pycache__

@@ -1,0 +1,14 @@
+
+
+__all__ = 'FPS', 'DT', 'SCREEN_W', 'SCREEN_H', 'SCREEN_SIZE'
+
+
+
+FPS = 60
+DT = 1 / FPS
+
+
+SCREEN_W = 750
+SCREEN_H = 500
+SCREEN_SIZE = (SCREEN_W, SCREEN_H)
+
