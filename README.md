@@ -2,7 +2,7 @@
 
 ### Requirements/Dependencies
 
-- `python 3`
+- `python 3.12+`
 - `cryptography`: Encryption of user data
 - `pygame-ce`: UI and visuals ([docs](https://pyga.me/docs/))
 - `pyinstaller`: Compiling

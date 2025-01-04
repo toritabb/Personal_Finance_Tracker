@@ -3,16 +3,17 @@ from typing import Sequence
 
 # 3rd party
 import pygame
+from pygame import Color
 
 # local
 from .collision import Circle, Rect, get_rounded_collision_shapes, CollisionShape
-from .typing import ColorValue, RectValue
+from .typing import RectValue
 
 
 
 def collision_shape(
         surface: pygame.Surface,
-        color: ColorValue,
+        color: Color,
         shape: CollisionShape
     ) -> None:
 
@@ -30,7 +31,7 @@ def collision_shape(
 
 def collision_shapes(
         surface: pygame.Surface,
-        color: ColorValue,
+        color: Color,
         shapes: Sequence[CollisionShape]
     ) -> None:
 
@@ -45,7 +46,7 @@ def collision_shapes(
 
 def rounded_rect(
         surface: pygame.Surface,
-        color: ColorValue,
+        color: Color,
         rect: RectValue,
         radius: int
     ) -> None:

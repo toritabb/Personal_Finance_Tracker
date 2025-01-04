@@ -4,7 +4,7 @@ __all__ = 'FPS', 'DT', 'SCREEN_W', 'SCREEN_H', 'SCREEN_SIZE'
 
 
 
-FPS = 60
+FPS = 30
 DT = 1 / FPS
 
 

@@ -10,8 +10,9 @@ from . import collision, draw
 from .base import Canvas, Interactable
 from .event import event_manager
 from .text import Text, FontDescriptor
-from .theme import theme
+from .themes import theme
 from .typing import Coordinate
+from .vector import vec2
 
 
 
@@ -33,6 +34,9 @@ class Button(Interactable):
             corner_radius: int = 0
         ) -> None:
 
+        if corner_radius == -1:
+            corner_radius = int(min(*size) // 2 + 1)
+
         super().__init__(parent, collision.get_rounded_collision_shapes((pos, size), corner_radius))
 
         self.command = command
@@ -48,11 +52,10 @@ class Button(Interactable):
             self.command()
 
     def render(self, screen: pygame.Surface) -> None:
-        base_color = theme.button_base_pressed if self.pressed else theme.button_base_hovered if self.hovered else theme.button_base_normal
+        base_color = theme.button_pressed if self.pressed else theme.button_hovered if self.hovered else theme.button
+        border_color = theme.button_border_pressed if self.pressed else theme.button_border_hovered if self.hovered else theme.button_border
 
         if self._inner_shapes:
-            border_color = theme.button_border_pressed if self.pressed else theme.button_border_hovered if self.hovered else theme.button_border_normal
-            
             draw.collision_shapes(screen, border_color, self.collision_shapes)
             draw.collision_shapes(screen, base_color, self._inner_shapes)
 
@@ -73,19 +76,20 @@ class TextButton(Button):
             size: Optional[Coordinate],
             command: Callable[..., Any],
             *,
-            padding: int = 0,
+            padding: float | Coordinate = 0,
             border_thickness: int = 0, 
             corner_radius: int = 0
         ) -> None:
 
-        offset = padding + border_thickness + min(corner_radius // 5, 5)
-        
-        text_object = Text(parent, (int(pos[0] + offset), int(pos[1] + offset)), text, font)
+        offset = vec2(padding) + vec2(border_thickness) + vec2(max(0, min(corner_radius // 5, 5)))
+        print(text, offset)
+
+        text_object = Text(parent, (pos + offset) // 1, text, font)
 
         if size is None:
             text_size = text_object.text_surface.size
-            offset2 = offset + offset - 1
-            size = (text_size[0] + offset2, text_size[1] + offset2)
+            offset2 = offset + offset - vec2(1)
+            size = text_size + offset2
 
         super().__init__(parent, pos, size, command, border_thickness=border_thickness, corner_radius=corner_radius)
 
@@ -100,5 +104,4 @@ class TextButton(Button):
         self.text_object.close()
 
         super().close()
-
 

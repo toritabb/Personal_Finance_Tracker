@@ -9,7 +9,7 @@ from pygame import Rect
 from .collision import CollisionShape
 from .event import Event, event_manager
 from .misc import SequentialDict
-from .theme import theme
+from .themes import theme
 from .typing import Coordinate, RectValue
 from .vector import vec2
 
@@ -36,7 +36,7 @@ class UIElement(Rect):
         self._index = parent.add_child(self) if parent is not None else -1
 
     def __str__(self) -> str:
-        return f'UI Object {self.__class__}'
+        return f'UI Element {self.__class__}'
 
     def render(self, screen: pygame.Surface) -> None: ...
 
@@ -55,7 +55,7 @@ class UIElement(Rect):
 
 
 class Canvas(UIElement):
-    __slots__ = 'surface', '_children'
+    __slots__ = 'surface', '_children', 'transform'
 
     def __init__(
             self,

@@ -7,7 +7,7 @@ import pygame
 # local
 from .base import Canvas, UIElement
 from .fonts import FontDescriptor, get_font
-from .theme import theme
+from .themes import theme
 from .typing import Coordinate
 
 

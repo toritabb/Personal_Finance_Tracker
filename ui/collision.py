@@ -1,10 +1,14 @@
 from typing import Union
 
 import pygame
-from pygame import Rect, Surface
+from pygame import Color, Rect, Surface
 
 from .vector import vec2
-from .typing import ColorValue, Coordinate, RectValue
+from .typing import Coordinate, RectValue
+
+
+
+CollisionShape = Union[Rect, 'Circle']
 
 
 
@@ -22,12 +26,8 @@ class Circle:
     def get_bounding_box(self) -> Rect:
         return Rect(self.pos - (self.rad, self.rad), (self.rad + self.rad, self.rad + self.rad))
     
-    def render(self, surface: Surface, color: ColorValue) -> None:
+    def render(self, surface: Surface, color: Color) -> None:
         pygame.draw.aacircle(surface, color, self.pos, self.rad)
-
-
-
-CollisionShape = Union[Rect, 'Circle']
 
 
 
