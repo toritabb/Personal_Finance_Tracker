@@ -5,11 +5,11 @@ from typing import Literal, Optional, Any
 import pygame
 
 # local
-from . import draw
+from . import collision
 from .base import Canvas
 from .button import Button
 from .misc import Pointer
-from .themes import theme
+from .theme import TOGGLE
 from .typing import Coordinate
 
 
@@ -20,6 +20,8 @@ __all__ = 'Toggle',
 
 class Toggle(Button):
     __slots__ = 'state'
+
+    colors = TOGGLE
 
     def __init__(
             self,
@@ -37,14 +39,17 @@ class Toggle(Button):
         self.state = state
 
     def render(self, screen: pygame.Surface) -> None:
-        base_color = theme.toggle_pressed if self.pressed else theme.toggle_hovered if self.hovered else theme.toggle
+        base_color = self.colors['pressed'] if self.pressed else self.colors['hovered'] if self.hovered else self.colors['normal']
+        fill_color = self.colors['fill_pressed'] if self.pressed else self.colors['fill_hovered'] if self.hovered else self.colors['fill_normal']
 
-        draw.collision_shapes(screen, base_color, self.collision_shapes)
+        if self._inner_shapes:
+            collision.draw_shapes(screen, base_color, self.collision_shapes)
 
-        if self._inner_shapes and self.state.get():
-            fill_color = theme.toggle_fill_pressed if self.pressed else theme.toggle_fill_hovered if self.hovered else theme.toggle_fill
+            if self.state.get():
+                collision.draw_shapes(screen, fill_color, self._inner_shapes)
 
-            draw.collision_shapes(screen, fill_color, self._inner_shapes)
+        else:
+            collision.draw_shapes(screen, fill_color if self.state.get() else base_color, self.collision_shapes)
 
     def _render_checkbox(self, surface: pygame.Surface) -> None: ...
     def _render_circle(self, surface: pygame.Surface) -> None: ...

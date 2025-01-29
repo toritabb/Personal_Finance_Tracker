@@ -1,16 +1,18 @@
 # standard library
-from typing import Literal, Optional, Any
+from typing import Callable, Literal, Optional, Any
 
 # 3rd party
 import pygame
 
+pygame.key.set_repeat(500, 35)
+
 # local
-from . import draw
-from .base import Canvas, Interactable
-from .button import Button
+from .base import Canvas
+from .button import TextButton
+from .event import event_manager
 from .misc import Pointer
 from .text import Text, FontDescriptor
-from .themes import theme
+from .theme import TEXTBOX
 from .typing import Coordinate
 
 
@@ -19,8 +21,10 @@ __all__ = 'Textbox',
 
 
 
-class Textbox(Interactable):
-    __slots__ = 'text_pointer', 'font'
+class Textbox(TextButton):
+    __slots__ = 'text', '_validation_function'
+
+    colors = TEXTBOX
 
     def __init__(
             self,
@@ -30,30 +34,60 @@ class Textbox(Interactable):
             pos: Coordinate,
             size: Coordinate,
             *,
-            padding: int = 0,
+            validation_function: Callable[[str], bool] = lambda _: True,
+            padding: float | Coordinate = 0,
             border_thickness: int = 0, 
             corner_radius: int = 0
         ) -> None:
 
-        super().__init__(parent, (self,), self)
+        super().__init__(parent, text.get(), font, pos, size, self._take_attention, padding=padding, border_thickness=border_thickness, corner_radius=corner_radius)
+
+        self.text = text
+
+        self._validation_function = validation_function
+
+        event_manager.add_listener(pygame.TEXTINPUT, self._textinput, self._listener_group_id)
+        event_manager.add_listener(pygame.KEYDOWN, self._keydown, self._listener_group_id)
+
+    def _get_hovered(self, _) -> None:
+        super()._get_hovered(None)
+
+        if self.hovered:
+            pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_IBEAM)
         
-        offset = padding + border_thickness + min(corner_radius // 5, 5)
-        self.text_pos = (self.top + offset, self.left + offset)
+        else:
+            pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
 
-        self.text_pointer = text
-        self.font = font
+    def _take_attention(self) -> None:
+        self.pressed = True
+        event_manager.mouse_attention = True
 
-        self.update_text()
+    def _revoke_attention(self) -> None:
+        self.pressed = False
+        event_manager.mouse_attention = False
 
-    def render(self, screen: pygame.Surface) -> None:
-        base_color = theme.toggle_pressed if self.pressed else theme.toggle_hovered if self.hovered else theme.toggle
+    def _update_text(self, text: str) -> None:
+        if self._validation_function(text):
+            self.text.set(text)
+                
+            self.text_object.update(text)
 
-        draw.collision_shapes(screen, base_color, self.collision_shapes)
+    def _textinput(self, event: pygame.Event) -> None:
+        self._update_text(self.text.get() + event.text)
 
-    def update_text(self) -> None:
-        self.text_object = Text(self.parent, self.text_pos, self.text_pointer.get(), self.font) # type: ignore
+    def _keydown(self, event: pygame.Event) -> None:
+        match event.key:
+            case pygame.K_BACKSPACE:
+                if self.text.get():
+                    self._update_text(self.text.get()[:-1])
+            
+            case pygame.K_ESCAPE:
+                self._revoke_attention()
+            
+            case pygame.K_RETURN:
+                self._revoke_attention()
 
-    def _render_checkbox(self, surface: pygame.Surface) -> None: ...
-    def _render_circle(self, surface: pygame.Surface) -> None: ...
-    def _render_switch(self, surface: pygame.Surface) -> None: ...
+            case pygame.K_v:
+                if event.mod & pygame.KMOD_CTRL:
+                    self._update_text(self.text.get() + pygame.scrap.get_text())
 

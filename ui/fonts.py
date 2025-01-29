@@ -15,6 +15,8 @@ freetype.init()
 # (name, size) or (name, size, bold, italic)
 FontDescriptor = tuple[str, int] | tuple[str, int, bool, bool]
 
+
+
 _SYSFONTS = set(freetype.get_fonts())
 _CUSTOM_FONTS = {
     'nunito': get_global_path('ui/fonts/Nunito.ttf'),

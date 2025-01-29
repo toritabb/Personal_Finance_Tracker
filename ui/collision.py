@@ -1,8 +1,11 @@
-from typing import Union
+# standard library
+from typing import Sequence, Union
 
+# 3rd party
 import pygame
 from pygame import Color, Rect, Surface
 
+# local
 from .vector import vec2
 from .typing import Coordinate, RectValue
 
@@ -24,20 +27,21 @@ class Circle:
         return self.pos.distance_squared_to(point) <= self._rad_squared
 
     def get_bounding_box(self) -> Rect:
-        return Rect(self.pos - (self.rad, self.rad), (self.rad + self.rad, self.rad + self.rad))
-    
-    def render(self, surface: Surface, color: Color) -> None:
-        pygame.draw.aacircle(surface, color, self.pos, self.rad)
+        return Rect(self.pos - vec2(self.rad), vec2(self.rad + self.rad))
 
 
 
 def get_rounded_collision_shapes(rect: RectValue, radius: int) -> tuple[CollisionShape, ...]:
+    '''
+    Gets the collision shapes for a rect with rounded corners.
+    '''
+
     rect = Rect(rect)
     radius = min(radius, rect.w // 2, rect.h // 2)
 
-    # circle
+    # rect
     if not radius:
-        return rect,
+        return rect.inflate(1, 1),
 
     # circle
     if radius * 2 == rect.w == rect.h:
@@ -69,4 +73,23 @@ def get_rounded_collision_shapes(rect: RectValue, radius: int) -> tuple[Collisio
             Circle((rect.left + radius, rect.bottom - radius), radius),
             Circle((rect.right - radius, rect.bottom - radius), radius)
         )
+
+
+
+def draw_shapes(
+        surface: Surface,
+        color: Color,
+        shapes: Sequence[CollisionShape]
+    ) -> None:
+
+    '''
+    Draws collision shapes.
+    '''
+
+    for shape in shapes:
+        match shape:
+            case Circle():
+                pygame.draw.aacircle(surface, color, shape.pos, shape.rad)
+            case Rect():
+                pygame.draw.rect(surface, color, shape)
 

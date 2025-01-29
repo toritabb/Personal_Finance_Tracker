@@ -5,6 +5,8 @@ from pygame import Rect
 from .vector import vec2
 
 
-Coordinate = vec2 | tuple[int, int]
-RectValue = Rect | tuple[int, int, int, int] | tuple[Coordinate, Coordinate]
+
+Number = int | float
+Coordinate = vec2 | tuple[Number, Number]
+RectValue = Rect | tuple[Number, Number, Number, Number] | tuple[Coordinate, Coordinate]
 

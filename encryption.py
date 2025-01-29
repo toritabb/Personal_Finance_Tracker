@@ -18,7 +18,7 @@ def _get_nonce() -> bytes:
     '''
     Returns a 12 byte (96 bit) nonce used in encryption.
 
-    Should only be used once.
+    The nonce generated should only be used once.
     '''
 
     return os.urandom(NONCE_LENGTH)

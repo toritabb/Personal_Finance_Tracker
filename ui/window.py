@@ -3,6 +3,7 @@ import pygame
 
 # local
 from .base import Canvas
+from constants import FPS
 
 
 
@@ -36,6 +37,8 @@ class Window(Canvas):
 
         pygame.display.flip()
 
-        self.clock.tick(30)
+        self.clock.tick(FPS)
+
+        pygame.display.set_caption(f'FPS: {self.clock.get_fps():.0f}')
 
 

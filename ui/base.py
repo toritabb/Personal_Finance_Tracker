@@ -9,7 +9,7 @@ from pygame import Rect
 from .collision import CollisionShape
 from .event import Event, event_manager
 from .misc import SequentialDict
-from .themes import theme
+from .theme import BACKGROUND
 from .typing import Coordinate, RectValue
 from .vector import vec2
 
@@ -70,7 +70,7 @@ class Canvas(UIElement):
         self._children: SequentialDict[UIElement] = SequentialDict()
 
         if parent is not None:
-            self.transform = parent.transform + self.topright
+            self.transform = parent.transform - self.topright
 
         else:
             self.transform = vec2(0)
@@ -82,7 +82,7 @@ class Canvas(UIElement):
         del self._children[child_index]
 
     def render(self) -> None:
-        self.surface.fill(theme.background)
+        self.surface.fill(BACKGROUND)
 
         for child in self._children:
             child.render(self.surface)
@@ -125,28 +125,39 @@ class Interactable(UIElement):
 
         self._listener_group_id = event_manager.get_new_group()
 
-    def _add_listeners(self) -> None:
         event_manager.add_listener(pygame.MOUSEMOTION, self._get_hovered, self._listener_group_id)
         event_manager.add_listener(pygame.MOUSEBUTTONDOWN, self._get_pressed, self._listener_group_id)
         event_manager.add_listener(pygame.MOUSEBUTTONUP, self._get_unpressed, self._listener_group_id)
-        event_manager.add_listener(_REVOKE_MOUSE_ATTENTION, self._get_hovered)
+        event_manager.add_listener(_REVOKE_MOUSE_ATTENTION, self._get_hovered, self._listener_group_id)
 
-    def _get_hovered(self, _) -> None:
+    def _get_hovered(self, _) -> bool:
         if (not event_manager.mouse_attention) or self.pressed:
             self.hovered = self.bounding_rect.collidepoint(event_manager.mouse_pos) and any(shape.collidepoint(event_manager.mouse_pos) for shape in self.collision_shapes)
 
-    def _get_pressed(self, event: Event) -> None:
+            return True
+        
+        return False
+
+    def _get_pressed(self, event: Event) -> bool:
         if not event_manager.mouse_attention and self.hovered and event.button == pygame.BUTTON_LEFT:
             self.pressed = True
             event_manager.mouse_attention = True
 
-    def _get_unpressed(self, event: Event) -> None:
+            return True
+        
+        return False
+
+    def _get_unpressed(self, event: Event) -> bool:
         if self.pressed and event.button == pygame.BUTTON_LEFT:
             self.pressed = False
             event_manager.mouse_attention = False
 
             # update other objects in case they are hovered
             event_manager.post(Event(_REVOKE_MOUSE_ATTENTION))
+
+            return True
+        
+        return False
 
     def close(self) -> None:
         super().close()
