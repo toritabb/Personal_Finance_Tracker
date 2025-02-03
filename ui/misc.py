@@ -3,6 +3,9 @@ from typing import Callable, Generic, TypeVar, Any
 
 
 
+__all__ = 'Pointer',
+
+
 SequentialDictType = TypeVar('SequentialDictType')
 PointerType = TypeVar('PointerType')
 

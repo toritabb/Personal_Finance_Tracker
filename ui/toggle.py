@@ -40,18 +40,14 @@ class Toggle(Button):
 
     def render(self, screen: pygame.Surface) -> None:
         base_color = self.colors['pressed'] if self.pressed else self.colors['hovered'] if self.hovered else self.colors['normal']
+        border_color = self.colors['border_pressed'] if self.pressed else self.colors['border_hovered'] if self.hovered else self.colors['border_normal']
         fill_color = self.colors['fill_pressed'] if self.pressed else self.colors['fill_hovered'] if self.hovered else self.colors['fill_normal']
 
         if self._inner_shapes:
-            collision.draw_shapes(screen, base_color, self.collision_shapes)
+            collision.draw_shapes(screen, border_color, self.collision_shapes)
 
-            if self.state.get():
-                collision.draw_shapes(screen, fill_color, self._inner_shapes)
+            collision.draw_shapes(screen, fill_color if self.state.get() else base_color, self._inner_shapes)
 
         else:
             collision.draw_shapes(screen, fill_color if self.state.get() else base_color, self.collision_shapes)
-
-    def _render_checkbox(self, surface: pygame.Surface) -> None: ...
-    def _render_circle(self, surface: pygame.Surface) -> None: ...
-    def _render_switch(self, surface: pygame.Surface) -> None: ...
 

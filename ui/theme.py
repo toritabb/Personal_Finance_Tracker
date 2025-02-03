@@ -7,45 +7,62 @@ from ._color_funcs import *
 
 
 # base colors
-LIGHT_GREEN = Color(96, 108, 56)
-MEDIUM_GREEN = Color(68, 81, 40)
-DARK_GREEN = Color(40, 54, 24)
-CREAM = Color(254, 250, 224)
-TAN = Color(221, 161, 94)
-BROWN = Color(188, 108, 37)
+# FERN = Color(96, 108, 56)
+# FERN = Color(68, 81, 40)
+# BAMBOO = Color(40, 54, 24)
+MOSS = Color(131, 148, 76)
+FERN = Color(117, 136, 68)
+BAMBOO = Color(103, 123, 61)
+DARK_MOSS = Color(54, 68, 32)
+
+CREAM = Color(244, 228, 192)
+OLD_PAPER = Color(240, 212, 168)
+DESERT_TAN = Color(234, 195, 143)
+
 CHARCOAL = Color(14, 18, 23)
+
 
 
 # element colors
 BACKGROUND = CREAM
 
 TEXT = CHARCOAL
-TEXT_COLORKEY = invert(TEXT)
 
 BUTTON = {
-    'normal': LIGHT_GREEN,
-    'hovered': lighten(LIGHT_GREEN, 0.2),
-    'pressed': darken(LIGHT_GREEN, 0.2),
-    'border_normal': MEDIUM_GREEN,
-    'border_hovered': lighten(MEDIUM_GREEN, 0.2),
-    'border_pressed': darken(MEDIUM_GREEN, 0.2),
+    'normal': CREAM,
+    'hovered': OLD_PAPER,
+    'pressed': DESERT_TAN,
+    'border_normal': blend(OLD_PAPER, DESERT_TAN, 0.5),
+    'border_hovered': DESERT_TAN,
+    'border_pressed': DESERT_TAN,
+
+    # accent used for things that should stand out
+    'accent_normal': MOSS,
+    'accent_hovered': FERN,
+    'accent_pressed': BAMBOO,
+    'accent_border_normal': blend(FERN, BAMBOO, 0.5),
+    'accent_border_hovered': BAMBOO,
+    'accent_border_pressed': BAMBOO,
 }
 
 TEXTBOX = {
-    'normal': LIGHT_GREEN,
-    'hovered': LIGHT_GREEN,
-    'pressed': LIGHT_GREEN,
-    'border_normal': darken(LIGHT_GREEN, 0.2),
-    'border_hovered': darken(LIGHT_GREEN, 0.2),
-    'border_pressed': darken(LIGHT_GREEN, 0.4),
+    'normal': CREAM,
+    'hovered': CREAM,
+    'pressed': OLD_PAPER,
+    'border_normal': blend(OLD_PAPER, DESERT_TAN, 0.5),
+    'border_hovered': blend(OLD_PAPER, DESERT_TAN, 0.5),
+    'border_pressed': DESERT_TAN,
 }
 
 TOGGLE = {
-    'normal': LIGHT_GREEN,
-    'hovered': lighten(LIGHT_GREEN, 0.2),
-    'pressed': darken(LIGHT_GREEN, 0.2),
-    'fill_normal': DARK_GREEN,
-    'fill_hovered': lighten(DARK_GREEN, 0.15),
-    'fill_pressed': darken(DARK_GREEN, 0.15),
+    'normal': CREAM,
+    'hovered': OLD_PAPER,
+    'pressed': DESERT_TAN,
+    'border_normal': blend(OLD_PAPER, DESERT_TAN, 0.5),
+    'border_hovered': DESERT_TAN,
+    'border_pressed': DESERT_TAN,
+    'fill_normal':  blend(BAMBOO, DARK_MOSS, 0.75),
+    'fill_hovered': blend(BAMBOO, DARK_MOSS, 0.75),
+    'fill_pressed': DARK_MOSS,
 }
 

@@ -8,7 +8,7 @@ from pygame import Rect, Surface
 # local
 from .base import Canvas, UIElement
 from .fonts import FontDescriptor, get_font
-from .theme import TEXT, TEXT_COLORKEY
+from .theme import TEXT
 from .typing import Coordinate
 
 

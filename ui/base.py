@@ -3,9 +3,10 @@ from typing import Optional, Sequence
 
 # 3rd party
 import pygame
-from pygame import Rect
+from pygame import Rect, Surface
 
 # local
+from constants import SCREEN_SIZE
 from .collision import CollisionShape
 from .event import Event, event_manager
 from .misc import SequentialDict
@@ -35,14 +36,17 @@ class UIElement(Rect):
         self.parent = parent
         self._index = parent.add_child(self) if parent is not None else -1
 
+    def __repr__(self) -> str:
+        return f'UI Element {self.__class__}'
+
     def __str__(self) -> str:
         return f'UI Element {self.__class__}'
 
-    def render(self, screen: pygame.Surface) -> None: ...
+    def render(self, screen: Surface) -> None: ...
 
-    def get_global_pos(self, position: Coordinate) -> vec2:
+    def get_local_pos(self, position: Coordinate) -> vec2:
         if self.parent:
-            return self.parent.transform + position
+            return position + self.parent.transform
 
         else:
             return vec2(position)
@@ -65,15 +69,15 @@ class Canvas(UIElement):
 
         super().__init__(parent, rect)
 
-        self.surface = pygame.Surface(self.size)
+        self.surface = Surface(self.size)
 
         self._children: SequentialDict[UIElement] = SequentialDict()
 
         if parent is not None:
-            self.transform = parent.transform - self.topright
+            self.transform = parent.transform - self.topleft
 
         else:
-            self.transform = vec2(0)
+            self.transform = vec2(0, 0)
 
     def add_child(self, child: 'UIElement') -> int:
         return self._children.append(child)
@@ -81,11 +85,14 @@ class Canvas(UIElement):
     def remove_child(self, child_index: int) -> None:
         del self._children[child_index]
 
-    def render(self) -> None:
+    def render(self, surface: Optional[Surface] = None) -> None:
         self.surface.fill(BACKGROUND)
 
         for child in self._children:
             child.render(self.surface)
+
+        if surface is not None:
+            surface.blit(self.surface, self)
 
     def close(self) -> None:
         super().close()
@@ -132,7 +139,9 @@ class Interactable(UIElement):
 
     def _get_hovered(self, _) -> bool:
         if (not event_manager.mouse_attention) or self.pressed:
-            self.hovered = self.bounding_rect.collidepoint(event_manager.mouse_pos) and any(shape.collidepoint(event_manager.mouse_pos) for shape in self.collision_shapes)
+            mouse_pos = self.get_local_pos(event_manager.mouse_pos)
+
+            self.hovered = self.bounding_rect.collidepoint(mouse_pos) and any(shape.collidepoint(mouse_pos) for shape in self.collision_shapes)
 
             return True
         

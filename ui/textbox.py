@@ -40,7 +40,7 @@ class Textbox(TextButton):
             corner_radius: int = 0
         ) -> None:
 
-        super().__init__(parent, text.get(), font, pos, size, self._take_attention, padding=padding, border_thickness=border_thickness, corner_radius=corner_radius)
+        super().__init__(parent, text.get(), font, pos, self._take_attention, size=size, padding=padding, border_thickness=border_thickness, corner_radius=corner_radius)
 
         self.text = text
 
