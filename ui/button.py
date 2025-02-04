@@ -1,15 +1,15 @@
 # standard library
-from typing import Callable, Optional, Any
+from typing import Callable, Literal, Optional, Any
 
 # 3rd party
 import pygame
-from pygame import Event
+from pygame import Event, Surface
 
 # local
 from . import collision
 from .base import Canvas, Interactable
 from .text import Text, FontDescriptor
-from .theme import BUTTON
+from .theme import BACKGROUND, COLOR_MAP
 from .vector import vec2
 from ._typing import Coordinate
 
@@ -20,9 +20,7 @@ __all__ = 'Button', 'TextButton'
 
 
 class Button(Interactable):
-    __slots__ = 'command', '_accent', '_inner_shapes'
-
-    colors = BUTTON
+    __slots__ = 'command', 'colors', '_inner_shapes'
 
     def __init__(
             self,
@@ -33,7 +31,7 @@ class Button(Interactable):
             *,
             border_thickness: int = 0,
             corner_radius: int = 0,
-            use_accent_colors: bool = False
+            colors: Literal['button', 'button_accent', 'toggle', 'toggle_accent'] = 'button'
         ) -> None:
 
         if corner_radius == -1:
@@ -43,7 +41,7 @@ class Button(Interactable):
 
         self.command = command
 
-        self._accent = use_accent_colors
+        self.colors = COLOR_MAP[colors]
 
         self._inner_shapes = collision.get_rounded_collision_shapes(self.inflate(vec2(border_thickness * -2 - (corner_radius > border_thickness) - (corner_radius == 0))), max(0, corner_radius - border_thickness)) if border_thickness else None
 
@@ -51,14 +49,12 @@ class Button(Interactable):
         if super()._get_unpressed(event) and self.hovered:
             self.command()
 
-    def render(self, screen: pygame.Surface) -> None:
-        if self._accent:
-            base_color = self.colors['accent_pressed'] if self.pressed else self.colors['accent_hovered'] if self.hovered else self.colors['accent_normal']
-            border_color = self.colors['accent_border_pressed'] if self.pressed else self.colors['accent_border_hovered'] if self.hovered else self.colors['accent_border_normal']
+    def set_command(self, new_command: Callable[..., Any]) -> None:
+        self.command = new_command
 
-        else:
-            base_color = self.colors['pressed'] if self.pressed else self.colors['hovered'] if self.hovered else self.colors['normal']
-            border_color = self.colors['border_pressed'] if self.pressed else self.colors['border_hovered'] if self.hovered else self.colors['border_normal']
+    def render(self, screen: Surface) -> None:
+        base_color = self.colors['pressed'] if self.pressed else self.colors['hovered'] if self.hovered else self.colors['normal']
+        border_color = self.colors['border_pressed'] if self.pressed else self.colors['border_hovered'] if self.hovered else self.colors['border_normal']
 
         if self._inner_shapes and base_color != border_color:
             collision.draw_shapes(screen, border_color, self.collision_shapes)
@@ -69,8 +65,8 @@ class Button(Interactable):
 
 
 
-class TextButton(Button):
-    __slots__ = 'text_object', '_topleft', '_font'
+class TextButton(Canvas):
+    __slots__ = 'text_object', 'button'
 
     def __init__(
             self,
@@ -84,43 +80,48 @@ class TextButton(Button):
             padding: float | Coordinate = 4,
             border_thickness: int = 0, 
             corner_radius: int = -1,
-            use_accent_colors: bool = False
+            align: Literal['left', 'center', 'right'] = 'center',
+            colors: Literal['button', 'button_accent'] = 'button',
         ) -> None:
 
+        super().__init__(parent, (pos, (100, 100)))
+
         offset = vec2(padding) + vec2(border_thickness) + vec2(max(0, min(corner_radius // 5, 5)))
-
-        topleft = (pos + offset) // 1
-
-        text_object = Text(parent, topleft, text, font)
-
-        text_size = text_object.text_surface.size
-        offset2 = offset + offset - vec2(1)
-        new_size = (text_size[0] + offset2[0] if (size is None or size[0] == -1) else size[0], text_size[1] + offset2[1] - 2 if (size is None or size[1] == -1) else size[1])
-
-        super().__init__(parent, pos, new_size, command, border_thickness=border_thickness, corner_radius=corner_radius, use_accent_colors=use_accent_colors)
-
-        self.text_object = text_object
-
-        self._topleft = topleft
-        self._font = font
-
-    def update_text(self, text: str) -> None:
-        self.text_object.close()
+        padding = offset * 2
 
         self.text_object = Text(
-            self.parent,  # type: ignore
-            self._topleft,
+            self,
+            offset,
             text,
-            self._font
+            font,
+            size=None if size is None else (-1 if size[0] == -1 else size[0] - padding[0], -1 if size[1] == -1 else size[1] - padding[1]),
+            align=align
         )
 
-    def render(self, screen: pygame.Surface) -> None:
-        super().render(screen)
+        text_size = self.text_object.size
+        button_size = (text_size[0] + padding[0] - 1 if (size is None or size[0] == -1) else size[0], text_size[1] + padding[1] - 3 if (size is None or size[1] == -1) else size[1])
 
-        self.text_object.render(screen)
+        self.button = Button(
+            self,
+            (0, 0),
+            button_size,
+            command,
+            border_thickness=border_thickness,
+            corner_radius=corner_radius,
+            colors=colors
+        )
 
-    def close(self) -> None:
-        self.text_object.close()
+        self.size = button_size + vec2(1)
+        self.surface = Surface(button_size + vec2(1))
 
-        super().close()
+    def set_command(self, new_command: Callable[..., Any]) -> None:
+        self.button.set_command(new_command)
+
+    def render(self, surface: Surface) -> None:
+        self.surface.fill(BACKGROUND)
+
+        self.button.render(self.surface)
+        self.text_object.render(self.surface)
+
+        surface.blit(self.surface, self)
 

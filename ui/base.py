@@ -6,7 +6,6 @@ import pygame
 from pygame import Rect, Surface
 
 # local
-from constants import SCREEN_SIZE
 from .collision import CollisionShape
 from .event import Event, event_manager
 from .misc import SequentialDict

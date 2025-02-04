@@ -2,6 +2,8 @@
 import ui
 from .page import Page, PageManagerBase
 
+from random import randint
+
 
 
 class ExamplePage(Page):
@@ -20,31 +22,32 @@ class ExamplePage(Page):
             (25, 25),
             'The quick brown fox\njumps over the lazy dog.',
             ('Nunito', 20),
-            align = 'left'
+            align='left'
         )
 
         # bold
         text2 = ui.Text(
             self,
-            (25, text1.bottom + 15),
+            (text1.right + 15, text1.top),
             'The five boxing\nwizards jump quickly.',
             ('Nunito', 20, True, False),
-            align = 'center'
+            align='center'
         )
 
         # italic
         text3 = ui.Text(
             self,
-            (25, text2.bottom + 15),
+            (text1.left, text1.bottom + 15),
             'Jaded zombies acted\nquaintly but kept driving\ntheir oxen forward.',
             ('Nunito', 20, False, True),
-            align = 'right'
+            align='right',
+            line_spacing=10
         )
 
         # bold and italic
         text4 = ui.Text(
             self,
-            (25, text3.bottom + 15),
+            (text3.right + 10, text2.bottom + 15),
             'Pack my box with five dozen liquor jugs.',
             ('Nunito', 20, True, True),
         )
@@ -56,7 +59,7 @@ class ExamplePage(Page):
         # plain button
         button1 = ui.Button(
             self,
-            (25, text4.bottom + 25),
+            (25, text3.bottom + 25),
             (150, 40),
             lambda: print('button1'),
             border_thickness=3,
@@ -74,7 +77,7 @@ class ExamplePage(Page):
             padding=10,
             border_thickness=0,
             corner_radius=-1, # corners automatically fully rounded
-            use_accent_colors=True # uses the green colors to stand out more
+            colors='button_accent' # uses the green colors to stand out more
         )
 
         # button with text and padding (the text IS centered)
@@ -99,7 +102,7 @@ class ExamplePage(Page):
             border_thickness=3,
             corner_radius=7
         )
-        button4.command = lambda: button4.close()
+        button4.set_command(lambda: button4.close())
 
         ###########
         # TOGGLES #
@@ -150,14 +153,15 @@ class ExamplePage(Page):
 
         textbox2 = ui.Textbox(
             self,
-            ui.Pointer('No numbers'),
+            ui.Pointer('No numbers, centered, tall'),
             ('Nunito', 20),
             (25, textbox1.bottom + 15),
-            (350, -1),
+            (350, 50),
             validation_function=lambda string: all(i not in string for i in '0123456789'), # numbers not allowed
             padding=(7, 5),
             border_thickness=3,
-            corner_radius=-1
+            corner_radius=-1,
+            align='center'
         )
 
         ##########

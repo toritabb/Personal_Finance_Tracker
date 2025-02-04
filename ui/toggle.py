@@ -21,8 +21,6 @@ __all__ = 'Toggle',
 class Toggle(Button):
     __slots__ = 'state'
 
-    colors = TOGGLE
-
     def __init__(
             self,
             parent: Canvas,
@@ -31,10 +29,11 @@ class Toggle(Button):
             state: Pointer[bool],
             *,
             border_thickness: int = 0,
-            corner_radius: int = 0
+            corner_radius: int = 0,
+            colors: Literal['toggle', 'toggle_accent'] = 'toggle'
         ) -> None:
 
-        super().__init__(parent, pos, (size, size), lambda: state.set(not state.get()), border_thickness=border_thickness, corner_radius=corner_radius)
+        super().__init__(parent, pos, (size, size), lambda: state.set(not state.get()), border_thickness=border_thickness, corner_radius=corner_radius, colors=colors)
 
         self.state = state
 

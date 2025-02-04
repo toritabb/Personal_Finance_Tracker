@@ -35,23 +35,15 @@ BUTTON = {
     'border_normal': blend(OLD_PAPER, DESERT_TAN, 0.5),
     'border_hovered': DESERT_TAN,
     'border_pressed': DESERT_TAN,
-
-    # accent used for things that should stand out
-    'accent_normal': MOSS,
-    'accent_hovered': FERN,
-    'accent_pressed': BAMBOO,
-    'accent_border_normal': blend(FERN, BAMBOO, 0.5),
-    'accent_border_hovered': BAMBOO,
-    'accent_border_pressed': BAMBOO,
 }
 
-TEXTBOX = {
-    'normal': CREAM,
-    'hovered': CREAM,
-    'pressed': OLD_PAPER,
-    'border_normal': blend(OLD_PAPER, DESERT_TAN, 0.5),
-    'border_hovered': blend(OLD_PAPER, DESERT_TAN, 0.5),
-    'border_pressed': DESERT_TAN,
+BUTTON_ACCENT = {
+    'normal': MOSS,
+    'hovered': FERN,
+    'pressed': BAMBOO,
+    'border_normal': blend(FERN, BAMBOO, 0.5),
+    'border_hovered': BAMBOO,
+    'border_pressed': BAMBOO,
 }
 
 TOGGLE = {
@@ -64,5 +56,34 @@ TOGGLE = {
     'fill_normal':  blend(FERN, BAMBOO, 0.5),
     'fill_hovered': blend(FERN, BAMBOO, 0.5),
     'fill_pressed': BAMBOO,
+}
+
+TOGGLE_ACCENT = {
+    'normal': CREAM,
+    'hovered': OLD_PAPER,
+    'pressed': DESERT_TAN,
+    'border_normal': blend(OLD_PAPER, DESERT_TAN, 0.5),
+    'border_hovered': DESERT_TAN,
+    'border_pressed': DESERT_TAN,
+    'fill_normal':  blend(FERN, BAMBOO, 0.5),
+    'fill_hovered': blend(FERN, BAMBOO, 0.5),
+    'fill_pressed': BAMBOO,
+}
+
+# TEXTBOX = {
+#     'normal': CREAM,
+#     'hovered': CREAM,
+#     'pressed': OLD_PAPER,
+#     'border_normal': blend(OLD_PAPER, DESERT_TAN, 0.5),
+#     'border_hovered': blend(OLD_PAPER, DESERT_TAN, 0.5),
+#     'border_pressed': DESERT_TAN,
+# }
+
+COLOR_MAP = {
+    'button': BUTTON,
+    'button_accent': BUTTON_ACCENT,
+    'toggle': TOGGLE,
+    'toggle_accent': TOGGLE_ACCENT,
+    # 'textbox': TEXTBOX,
 }
 
