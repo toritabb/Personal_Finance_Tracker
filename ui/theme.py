@@ -7,7 +7,7 @@ from ._color_funcs import *
 
 
 # base colors
-# FERN = Color(96, 108, 56)
+# MOSS = Color(96, 108, 56)
 # FERN = Color(68, 81, 40)
 # BAMBOO = Color(40, 54, 24)
 MOSS = Color(131, 148, 76)
@@ -61,8 +61,8 @@ TOGGLE = {
     'border_normal': blend(OLD_PAPER, DESERT_TAN, 0.5),
     'border_hovered': DESERT_TAN,
     'border_pressed': DESERT_TAN,
-    'fill_normal':  blend(BAMBOO, DARK_MOSS, 0.75),
-    'fill_hovered': blend(BAMBOO, DARK_MOSS, 0.75),
-    'fill_pressed': DARK_MOSS,
+    'fill_normal':  blend(FERN, BAMBOO, 0.5),
+    'fill_hovered': blend(FERN, BAMBOO, 0.5),
+    'fill_pressed': BAMBOO,
 }
 

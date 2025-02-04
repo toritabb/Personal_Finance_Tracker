@@ -8,7 +8,7 @@
 - `pyinstaller`: Compiling
 - `requests`: Web services
 
-Run the command "pip install cryptography pygame-ce pyinstaller requests"
+Run the command `pip install cryptography pygame-ce pyinstaller requests`
 
 ### Credits
 

@@ -41,6 +41,9 @@ def get_font(font: FontDescriptor) -> freetype.Font:
         f = freetype.Font(_CUSTOM_FONTS[name], font[1])
 
         f.kerning = True
+        # f.pad = True
+
+        ascender = f.get_rect('`Ýa')
 
         return f
     

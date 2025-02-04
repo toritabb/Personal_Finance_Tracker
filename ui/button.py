@@ -70,7 +70,7 @@ class Button(Interactable):
 
 
 class TextButton(Button):
-    __slots__ = 'text_object'
+    __slots__ = 'text_object', 'font', 'offset'
 
     def __init__(
             self,
@@ -98,6 +98,17 @@ class TextButton(Button):
         super().__init__(parent, pos, new_size, command, border_thickness=border_thickness, corner_radius=corner_radius, use_accent_colors=use_accent_colors)
 
         self.text_object = text_object
+
+        self.font = font
+        self.offset = offset
+
+    def update_text(self, text: str) -> None:
+        self.text_object = Text(
+            self.parent,  # type: ignore
+            (pos + offset) // 1,
+            text,
+            font
+        )
 
     def render(self, screen: pygame.Surface) -> None:
         super().render(screen)

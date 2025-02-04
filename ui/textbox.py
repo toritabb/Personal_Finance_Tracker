@@ -1,5 +1,5 @@
 # standard library
-from typing import Callable, Literal, Optional, Any
+from typing import Callable
 
 # 3rd party
 import pygame
@@ -66,28 +66,30 @@ class Textbox(TextButton):
         self.pressed = False
         event_manager.mouse_attention = False
 
-    def _update_text(self, text: str) -> None:
+    def _validate_and_update_text(self, text: str) -> None:
         if self._validation_function(text):
             self.text.set(text)
-                
-            self.text_object.update(text)
+
+            self.update_text(text)
 
     def _textinput(self, event: pygame.Event) -> None:
-        self._update_text(self.text.get() + event.text)
+        if self.pressed and event_manager.mouse_attention:
+            self._validate_and_update_text(self.text.get() + event.text)
 
     def _keydown(self, event: pygame.Event) -> None:
-        match event.key:
-            case pygame.K_BACKSPACE:
-                if self.text.get():
-                    self._update_text(self.text.get()[:-1])
-            
-            case pygame.K_ESCAPE:
-                self._revoke_attention()
-            
-            case pygame.K_RETURN:
-                self._revoke_attention()
+        if self.pressed and event_manager.mouse_attention:
+            match event.key:
+                case pygame.K_BACKSPACE:
+                    if self.text.get():
+                        self._validate_and_update_text(self.text.get()[:-1])
+                
+                case pygame.K_ESCAPE:
+                    self._revoke_attention()
+                
+                case pygame.K_RETURN:
+                    self._revoke_attention()
 
-            case pygame.K_v:
-                if event.mod & pygame.KMOD_CTRL:
-                    self._update_text(self.text.get() + pygame.scrap.get_text())
+                case pygame.K_v:
+                    if event.mod & pygame.KMOD_CTRL:
+                        self._validate_and_update_text(self.text.get() + pygame.scrap.get_text())
 

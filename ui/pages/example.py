@@ -27,7 +27,7 @@ class ExamplePage(Page):
         text2 = ui.Text(
             self,
             (25, text1.bottom + 15),
-            'The five boxing\nwizards jump quickly',
+            'The five boxing\nwizards jump quickly.',
             ('Nunito', 20, True, False),
             align = 'center'
         )
@@ -36,7 +36,7 @@ class ExamplePage(Page):
         text3 = ui.Text(
             self,
             (25, text2.bottom + 15),
-            'Jaded zombies acted\nquaintly but kept driving\ntheir oxen forward',
+            'Jaded zombies acted\nquaintly but kept driving\ntheir oxen forward.',
             ('Nunito', 20, False, True),
             align = 'right'
         )
@@ -133,46 +133,28 @@ class ExamplePage(Page):
             corner_radius=-1
         )
 
-        toggle4 = ui.Toggle(
-            self,
-            (toggle1.left, toggle1.bottom + 10),
-            25,
-            ui.Pointer(False),
-            border_thickness=0,
-            corner_radius=0
-        )
-
-        toggle5 = ui.Toggle(
-            self,
-            (toggle2.left, toggle4.top),
-            25,
-            ui.Pointer(True),
-            border_thickness=0,
-            corner_radius=7
-        )
-
-        toggle6 = ui.Toggle(
-            self,
-            (toggle3.left, toggle4.top),
-            25,
-            ui.Pointer(False),
-            border_thickness=0,
-            corner_radius=-1
-        )
-
         ##############
         # TEXT BOXES #
         ##############
 
-        # basic text box
-        text_ptr = ui.Pointer('Yap here')
-
-        textbox = ui.Textbox(
+        textbox1 = ui.Textbox(
             self,
-            text_ptr,
+            ui.Pointer('Yap here'),
             ('Nunito', 20),
-            (25, toggle6.bottom + 25),
+            (25, toggle1.bottom + 20),
             (250, -1),
+            padding=(7, 5),
+            border_thickness=3,
+            corner_radius=-1
+        )
+
+        textbox2 = ui.Textbox(
+            self,
+            ui.Pointer('No numbers'),
+            ('Nunito', 20),
+            (25, textbox1.bottom + 15),
+            (350, -1),
+            validation_function=lambda string: all(i not in string for i in '0123456789'), # numbers not allowed
             padding=(7, 5),
             border_thickness=3,
             corner_radius=-1
@@ -184,7 +166,7 @@ class ExamplePage(Page):
 
         image = ui.Image(
             self,
-            (25, textbox.bottom + 20),
+            (25, textbox2.bottom + 20),
             'HRHS_logo.png',
             size=(400, 200)
         )

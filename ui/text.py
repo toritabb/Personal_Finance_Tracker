@@ -28,11 +28,13 @@ class Text(UIElement):
             font: FontDescriptor,
             *,
             size: Optional[Coordinate] = None,
-            align: Literal['left', 'center', 'right'] = 'center' # only matters for multi-line text
+            align: Literal['left', 'center', 'right'] = 'center', # only matters for multi-line text
+            line_spacing: int = 0                                 # only matters for multi-line text
         ) -> None:
 
         font_object = get_font(font)
-        
+        font_height = font_object.get_sized_height(font[1])
+
         # all this shit to deal with multi-line text
         lines = text.split('\n')
 
@@ -46,21 +48,17 @@ class Text(UIElement):
             rects.append(text_rect)
 
         w = max(r.w for r in rects)
-        h = sum(r.h for r in rects) + 2 * (len(rects) - 1)
+        h = (font_height) * len(rects) - 2
 
         surface = Surface((w, h)).convert_alpha()
         surface.fill((0, 0, 0, 0))
 
         divisor = 1 if align == 'right' else 2 if align == 'center' else inf
 
-        y = 0
-
-        for surf, rect in zip(surfs, rects):
+        for i, (surf, rect) in enumerate(zip(surfs, rects)):
             x = (w - rect.w) // divisor
 
-            surface.blit(surf, (x, y))
-
-            y += rect.h + 2
+            surface.blit(surf, (x, i * (font[1] + line_spacing)))
 
         new_size = (
             surface.width if (size is None or size[0] == -1) else size[0],
@@ -75,9 +73,4 @@ class Text(UIElement):
 
     def render(self, screen: Surface) -> None:
         screen.blit(self.text_surface, self)
-
-    def update(self, text: str) -> None:
-        text_surface, _ = self.font.render(text, TEXT)
-
-        self.text_surface = text_surface.convert_alpha()
 

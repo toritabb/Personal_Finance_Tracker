@@ -16,24 +16,17 @@ __all__ = 'Window',
 class Window(Canvas):
     __slots__ = 'surface', 'clock', 'page_manager'
 
-    def __init__(
-            self,
-            center: bool = True
-        ) -> None:
-
+    def __init__(self) -> None:
         super().__init__(None, ((0, 0), SCREEN_SIZE))
 
         self.surface = pygame.display.set_mode(SCREEN_SIZE)
         self.clock = pygame.Clock()
-
-        pygame.display.set_caption('Finance Manager', 'Finance Manager aaaaaaa')
-        
-        if center:
-            screen_size = pygame.display.get_desktop_sizes()[0]
-
-            pygame.display.set_window_position(((screen_size[0] - SCREEN_W) // 2, (screen_size[1] - SCREEN_H) // 2))
-
         self.page_manager = PageManager(self)
+
+        pygame.display.set_caption('Finance Manager', 'Finance Manager')
+
+        monitor_resolution = pygame.display.get_desktop_sizes()[0]
+        pygame.display.set_window_position(((monitor_resolution[0] - SCREEN_W) // 2, (monitor_resolution[1] - SCREEN_H) // 2))
 
     def render(self) -> None:
         super().render(None)
