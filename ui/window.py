@@ -3,6 +3,7 @@ import pygame
 
 # local
 from constants import FPS, SCREEN_SIZE, SCREEN_W, SCREEN_H
+from data import data_manager
 from .base import Canvas
 from .event import event_manager
 from .pages import PageManager
@@ -44,5 +45,10 @@ class Window(Canvas):
             pygame.display.set_caption(f'FPS: {self.clock.get_fps():.0f}')
 
         self.close()
+
+    def close(self) -> None:
+        super().close()
+
+        data_manager.save()
 
 
