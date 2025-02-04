@@ -10,6 +10,10 @@ from . import collision
 from .base import Canvas, Interactable
 from .text import Text, FontDescriptor
 from .theme import BUTTON
+<<<<<<< HEAD
+=======
+from ._typing import Coordinate
+>>>>>>> 293e10240456ca6547c46b9e4c2b81fd2a924461
 from .vector import vec2
 from ._typing import Coordinate
 
