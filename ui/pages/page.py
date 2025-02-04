@@ -43,3 +43,7 @@ class PageManagerBase:
 
         self.current_page = self.get_page(self.stack.pop())
 
+    def close(self) -> None:
+        self.current_page.close()
+
+
