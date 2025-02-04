@@ -17,6 +17,7 @@ from .more import MorePage
 from .settings import SettingsPage
 from .snapshot import SnapshotPage
 from .welcome import WelcomePage
+from .legal import LegalPage
 
 
 
@@ -26,5 +27,5 @@ __all__ = 'Page', 'PageManager'
 
 class PageManager(PageManagerBase):
     def __init__(self, parent: Canvas) -> None:
-        super().__init__(parent, 'example', AccountsPage, AddBankPage, AddExpensePage, AddIncomePage, ContactPage, CreateAccountPage, ExamplePage, FAQPage, IncomeExpensesPage, LoginPage, MorePage, SettingsPage, SnapshotPage, WelcomePage)
+        super().__init__(parent, 'example', AccountsPage, AddBankPage, AddExpensePage, AddIncomePage, ContactPage, CreateAccountPage, ExamplePage, FAQPage, IncomeExpensesPage, LoginPage, MorePage, SettingsPage, SnapshotPage, WelcomePage, LegalPage)
 
