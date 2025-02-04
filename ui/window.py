@@ -17,7 +17,7 @@ class Window(Canvas):
     __slots__ = 'surface', 'clock', 'page_manager'
 
     def __init__(self) -> None:
-        super().__init__(None, ((0, 0), SCREEN_SIZE))
+        super().__init__(self, ((0, 0), SCREEN_SIZE))
 
         self.surface = pygame.display.set_mode(SCREEN_SIZE)
         self.clock = pygame.Clock()

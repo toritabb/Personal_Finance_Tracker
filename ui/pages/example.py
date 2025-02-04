@@ -2,8 +2,6 @@
 import ui
 from .page import Page, PageManagerBase
 
-from random import randint
-
 
 
 class ExamplePage(Page):
@@ -21,8 +19,7 @@ class ExamplePage(Page):
             self,
             (25, 25),
             'The quick brown fox\njumps over the lazy dog.',
-            ('Nunito', 20),
-            align='left'
+            ('Nunito', 20)
         )
 
         # bold
@@ -52,6 +49,37 @@ class ExamplePage(Page):
             ('Nunito', 20, True, True),
         )
 
+        ###################
+        # CENTER ELEMENTS #
+        ###################
+
+        text_center = ui.Text(
+            self,
+            (0, 0),
+            'Elements can be centered\nusing ui.center(element, axis=\'axis\')',
+            ('Nunito', 20),
+            align='center'
+        )
+        ui.center(text_center) # center the explanation on the x
+
+        text_toggle_center = ui.Text(
+            self,
+            (0, text_center.bottom + 20),
+            'Centered toggle:',
+            ('Nunito', 20),
+        )
+
+        toggle_center = ui.Toggle(
+            self,
+            (text_toggle_center.right + 8, text_toggle_center.centery - 12),
+            25,
+            ui.Pointer(True),
+            border_thickness=4,
+            corner_radius=-1
+        )
+        ui.center(text_toggle_center, toggle_center, axis='x') # center the toggle and text on the x
+        ui.center(text_center, text_toggle_center, toggle_center, axis='y') # center all on the y
+
         ###########
         # BUTTONS #
         ###########
@@ -61,22 +89,23 @@ class ExamplePage(Page):
             self,
             (25, text3.bottom + 25),
             (150, 40),
-            lambda: print('button1'),
+            lambda: print('empty button'),
             border_thickness=3,
             corner_radius=10
         )
 
-        # button with text and a fixed width but not height (the text ISN'T centered)
+        # button with text and a fixed width but not height
         button2 = ui.TextButton(
             self,
             'Accent',
             ('Nunito', 20),
             (button1.right + 10, button1.top),
-            lambda: print('button2'),
+            lambda: print('accent color button'),
             size=(200, -1), # fixed width of 200, and height that adjusts to text size
             padding=10,
             border_thickness=0,
             corner_radius=-1, # corners automatically fully rounded
+            align='right',
             colors='button_accent' # uses the green colors to stand out more
         )
 
@@ -86,7 +115,7 @@ class ExamplePage(Page):
             'Press Me!',
             ('Nunito', 20),
             (25, button1.bottom + 10),
-            lambda: print('button3'),
+            lambda: print('text button with no border'),
             padding=(35, 7),
             border_thickness=0,
             corner_radius=-1
@@ -102,7 +131,7 @@ class ExamplePage(Page):
             border_thickness=3,
             corner_radius=7
         )
-        button4.set_command(lambda: button4.close())
+        button4.set_command(lambda: [print('button that deletes itself'), button4.close()])
 
         ###########
         # TOGGLES #

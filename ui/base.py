@@ -1,5 +1,5 @@
 # standard library
-from typing import Optional, Sequence
+from typing import Literal, Optional, Sequence
 
 # 3rd party
 import pygame
@@ -15,9 +15,45 @@ from ._typing import Coordinate, RectValue
 
 
 
-__all__ = 'UIElement', 'Interactable', 'Canvas'
+__all__ = 'center', 'UIElement', 'Interactable', 'Canvas'
 
 _REVOKE_MOUSE_ATTENTION = event_manager.get_custom_event_type()
+
+
+
+def center(*elements: 'UIElement', axis: Literal['x', 'y', 'xy'] = 'x') -> None:
+    '''
+    Centers elements inside their parent (the screen for most things).
+
+    Elements will stay in the same place relative to each other
+    '''
+
+    parent = elements[0].parent
+    bounding_box = pygame.Rect.unionall(elements[0], [e for e in elements])
+
+    match axis:
+        case 'x':
+            dx = parent.centerx - bounding_box.centerx
+
+            print(dx)
+
+            for element in elements:
+                element.move_ip(dx, 0)
+
+        case 'y':
+            dy = parent.centery - bounding_box.centery
+
+            print(dy)
+
+            for element in elements:
+                element.move_ip(0, dy)
+
+        case 'xy':
+            dx = parent.centerx - bounding_box.centerx
+            dy = parent.centery - bounding_box.centery
+
+            for element in elements:
+                element.move_ip(dx, dy)
 
 
 
@@ -26,14 +62,16 @@ class UIElement(Rect):
 
     def __init__(
             self,
-            parent: Optional['Canvas'],
+            parent: 'Canvas',
             rect: RectValue
         ) -> None:
 
         super().__init__(rect)
 
         self.parent = parent
-        self._index = parent.add_child(self) if parent is not None else -1
+
+        if parent is not self:
+            self._index = parent.add_child(self) if parent is not None else -1
 
     def __repr__(self) -> str:
         return f'UI Element {self.__class__}'
@@ -51,7 +89,7 @@ class UIElement(Rect):
             return vec2(position)
 
     def close(self) -> None:
-        if self.parent is not None and self._index >= 0:
+        if self.parent is not self and self._index >= 0:
             self.parent.remove_child(self._index)
             self._index = -1
 
@@ -62,7 +100,7 @@ class Canvas(UIElement):
 
     def __init__(
             self,
-            parent: Optional['Canvas'],
+            parent: 'Canvas',
             rect: RectValue
         ) -> None:
 
@@ -72,7 +110,7 @@ class Canvas(UIElement):
 
         self._children: SequentialDict[UIElement] = SequentialDict()
 
-        if parent is not None:
+        if parent is not self:
             self.transform = parent.transform - self.topleft
 
         else:

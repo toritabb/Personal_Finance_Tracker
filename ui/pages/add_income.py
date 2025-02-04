@@ -10,12 +10,30 @@ class AddIncomePage(Page):
     def __init__(self, parent: ui.Canvas, manager: PageManagerBase) -> None:
         super().__init__(parent, manager)
 
-        # you can remove these, they are just placeholders so you know what page it is and can return
         page_title = ui.Text(
             self,
-            (25, 25),
-            'Add Income Page',
-            ('Nunito', 40, True, False)
+            (0, 50),
+            'Add Income Source',
+            ('Nunito', 50, True, False)
+        )
+        ui.center(page_title, axis='x')
+
+        # recurring toggle
+        recurring = ui.Canvas(self, (0, 250, 300, 100))
+        
+        recurring_title = ui.Text(
+            recurring,
+            (10, 10),
+            'Recurring',
+            ('Nunito', 20)
+        )
+        ui.center(recurring_title, axis='x')
+        
+        recurring_toggle = ui.Text(
+            recurring,
+            (0, 50),
+            'Add Income Source',
+            ('Nunito', 50, True, False)
         )
 
         back_button = ui.TextButton(
@@ -27,5 +45,4 @@ class AddIncomePage(Page):
             padding=(15, 7),
             border_thickness=4
         )
-        # you can remove these, they are just placeholders so you know what page it is and can return
 
