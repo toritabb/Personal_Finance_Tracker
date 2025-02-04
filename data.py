@@ -17,7 +17,7 @@ class DataManager(dict):
         self._load_data()
 
     def _load_data(self) -> None:
-        """Load data from storage file if it exists."""
+        '''Load data from storage file if it exists.'''
         if os.path.exists(self._storage_file):
             try:
                 with open(self._storage_file, 'r') as f:
@@ -29,17 +29,11 @@ class DataManager(dict):
                 self._data = {}
 
     def _save_data(self) -> None:
-        """Save current data to storage file."""
+        '''Save current data to storage file.'''
         with open(self._storage_file, 'w') as f:
             json_data = json.dumps(self._data)
 
             file.save(json_data, self._storage_file)
-
-    def set(self, key: str, value: Any) -> None:
-        self._data[key] = value
-
-    def get(self, key: str) -> Any:
-        return self._data.get(key)
     
 
 
