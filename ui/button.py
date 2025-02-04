@@ -10,10 +10,6 @@ from . import collision
 from .base import Canvas, Interactable
 from .text import Text, FontDescriptor
 from .theme import BUTTON
-<<<<<<< HEAD
-=======
-from ._typing import Coordinate
->>>>>>> 293e10240456ca6547c46b9e4c2b81fd2a924461
 from .vector import vec2
 from ._typing import Coordinate
 
@@ -99,7 +95,7 @@ class TextButton(Button):
 
         text_size = text_object.text_surface.size
         offset2 = offset + offset - vec2(1)
-        new_size = (text_size[0] + offset2[0] if (size is None or size[0] == -1) else size[0], text_size[1] + offset2[1] - 3 if (size is None or size[1] == -1) else size[1])
+        new_size = (text_size[0] + offset2[0] if (size is None or size[0] == -1) else size[0], text_size[1] + offset2[1] - 2 if (size is None or size[1] == -1) else size[1])
 
         super().__init__(parent, pos, new_size, command, border_thickness=border_thickness, corner_radius=corner_radius, use_accent_colors=use_accent_colors)
 

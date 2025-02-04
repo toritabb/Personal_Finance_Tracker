@@ -42,6 +42,7 @@ def get_font(font: FontDescriptor) -> tuple[freetype.Font, int, int]:
         f = freetype.Font(_CUSTOM_FONTS[name], font_size)
 
         f.kerning = True
+        f.antialiased = True
 
         ascender = f.get_sized_ascender(font_size)
 

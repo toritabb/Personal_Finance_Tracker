@@ -11,10 +11,6 @@ from .collision import CollisionShape
 from .event import Event, event_manager
 from .misc import SequentialDict
 from .theme import BACKGROUND
-<<<<<<< HEAD
-=======
-from ._typing import Coordinate, RectValue
->>>>>>> 293e10240456ca6547c46b9e4c2b81fd2a924461
 from .vector import vec2
 from ._typing import Coordinate, RectValue
 

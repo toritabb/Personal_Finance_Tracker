@@ -43,7 +43,7 @@ class Text(UIElement):
         for line in lines:
             text_surface, text_rect = font_object.render(line, TEXT)
 
-            surfs.append(text_surface)
+            surfs.append(text_surface.convert_alpha())
             rects.append(text_rect)
 
         w = max(r.w for r in rects)
