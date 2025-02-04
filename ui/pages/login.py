@@ -1,7 +1,8 @@
 # local
 import ui
-from .page import Page, PageManagerBase
 from constants import SCREEN_W, SCREEN_H
+from data import data_manager
+from .page import Page, PageManagerBase
 
 
 
