@@ -13,7 +13,7 @@ from .event import event_manager
 from .misc import Pointer
 from .text import Text, FontDescriptor
 from .theme import TEXTBOX
-from .typing import Coordinate
+from ._typing import Coordinate
 
 
 

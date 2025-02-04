@@ -8,7 +8,7 @@ from pygame import Surface
 # local
 from path import get_global_path
 from .base import Canvas, UIElement
-from .typing import Coordinate
+from ._typing import Coordinate
 
 
 

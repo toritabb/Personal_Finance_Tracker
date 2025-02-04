@@ -10,7 +10,7 @@ from . import collision
 from .base import Canvas, Interactable
 from .text import Text, FontDescriptor
 from .theme import BUTTON
-from .typing import Coordinate
+from ._typing import Coordinate
 from .vector import vec2
 
 

@@ -10,7 +10,7 @@ from .base import Canvas
 from .button import Button
 from .misc import Pointer
 from .theme import TOGGLE
-from .typing import Coordinate
+from ._typing import Coordinate
 
 
 

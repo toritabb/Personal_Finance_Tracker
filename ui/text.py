@@ -9,7 +9,7 @@ from pygame import Rect, Surface
 from .base import Canvas, UIElement
 from .fonts import FontDescriptor, get_font
 from .theme import TEXT
-from .typing import Coordinate
+from ._typing import Coordinate
 
 
 
