@@ -10,8 +10,8 @@ from . import collision
 from .base import Canvas, Interactable
 from .text import Text, FontDescriptor
 from .theme import BUTTON
-from .typing import Coordinate
 from .vector import vec2
+from ._typing import Coordinate
 
 
 
@@ -70,7 +70,7 @@ class Button(Interactable):
 
 
 class TextButton(Button):
-    __slots__ = 'text_object', 'font', 'offset'
+    __slots__ = 'text_object', '_topleft', '_font'
 
     def __init__(
             self,
@@ -89,25 +89,29 @@ class TextButton(Button):
 
         offset = vec2(padding) + vec2(border_thickness) + vec2(max(0, min(corner_radius // 5, 5)))
 
-        text_object = Text(parent, (pos + offset) // 1, text, font)
+        topleft = (pos + offset) // 1
+
+        text_object = Text(parent, topleft, text, font)
 
         text_size = text_object.text_surface.size
         offset2 = offset + offset - vec2(1)
-        new_size = (text_size[0] + offset2[0] if (size is None or size[0] == -1) else size[0], text_size[1] + offset2[1] if (size is None or size[1] == -1) else size[1])
+        new_size = (text_size[0] + offset2[0] if (size is None or size[0] == -1) else size[0], text_size[1] + offset2[1] - 3 if (size is None or size[1] == -1) else size[1])
 
         super().__init__(parent, pos, new_size, command, border_thickness=border_thickness, corner_radius=corner_radius, use_accent_colors=use_accent_colors)
 
         self.text_object = text_object
 
-        self.font = font
-        self.offset = offset
+        self._topleft = topleft
+        self._font = font
 
     def update_text(self, text: str) -> None:
+        self.text_object.close()
+
         self.text_object = Text(
             self.parent,  # type: ignore
-            (pos + offset) // 1,
+            self._topleft,
             text,
-            font
+            self._font
         )
 
     def render(self, screen: pygame.Surface) -> None:

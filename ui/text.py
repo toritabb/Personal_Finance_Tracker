@@ -9,7 +9,7 @@ from pygame import Rect, Surface
 from .base import Canvas, UIElement
 from .fonts import FontDescriptor, get_font
 from .theme import TEXT
-from .typing import Coordinate
+from ._typing import Coordinate
 
 
 
@@ -32,8 +32,7 @@ class Text(UIElement):
             line_spacing: int = 0                                 # only matters for multi-line text
         ) -> None:
 
-        font_object = get_font(font)
-        font_height = font_object.get_sized_height(font[1])
+        font_object, base_height, top_pad = get_font(font)
 
         # all this shit to deal with multi-line text
         lines = text.split('\n')
@@ -48,7 +47,7 @@ class Text(UIElement):
             rects.append(text_rect)
 
         w = max(r.w for r in rects)
-        h = (font_height) * len(rects) - 2
+        h = (base_height + line_spacing) * len(rects) - line_spacing + 1
 
         surface = Surface((w, h)).convert_alpha()
         surface.fill((0, 0, 0, 0))
@@ -58,7 +57,7 @@ class Text(UIElement):
         for i, (surf, rect) in enumerate(zip(surfs, rects)):
             x = (w - rect.w) // divisor
 
-            surface.blit(surf, (x, i * (font[1] + line_spacing)))
+            surface.blit(surf, (x, i * (base_height + line_spacing) - top_pad))
 
         new_size = (
             surface.width if (size is None or size[0] == -1) else size[0],
@@ -69,7 +68,7 @@ class Text(UIElement):
 
         self.font = font_object
 
-        self.text_surface = surface.convert_alpha()
+        self.text_surface = surface
 
     def render(self, screen: Surface) -> None:
         screen.blit(self.text_surface, self)

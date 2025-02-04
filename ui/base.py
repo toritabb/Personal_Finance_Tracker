@@ -11,8 +11,8 @@ from .collision import CollisionShape
 from .event import Event, event_manager
 from .misc import SequentialDict
 from .theme import BACKGROUND
-from .typing import Coordinate, RectValue
 from .vector import vec2
+from ._typing import Coordinate, RectValue
 
 
 

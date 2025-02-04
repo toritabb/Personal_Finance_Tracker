@@ -7,7 +7,7 @@ from pygame import Color, Rect, Surface
 
 # local
 from .vector import vec2
-from .typing import Coordinate, RectValue
+from ._typing import Coordinate, RectValue
 
 
 

@@ -28,8 +28,9 @@ _CUSTOM_FONTS = {
 
 
 @lru_cache()
-def get_font(font: FontDescriptor) -> freetype.Font:
+def get_font(font: FontDescriptor) -> tuple[freetype.Font, int, int]:
     name = font[0].lower()
+    font_size = font[1]
 
     if name in _SYSFONTS:
         return freetype.SysFont(*font) # type: ignore
@@ -38,14 +39,18 @@ def get_font(font: FontDescriptor) -> freetype.Font:
         if len(font) > 2:
             name += '-bold' * font[2] + '-italic' * font[3]
 
-        f = freetype.Font(_CUSTOM_FONTS[name], font[1])
+        f = freetype.Font(_CUSTOM_FONTS[name], font_size)
 
         f.kerning = True
-        # f.pad = True
 
-        ascender = f.get_rect('`Ýa')
+        ascender = f.get_sized_ascender(font_size)
 
-        return f
+        base_height = f.get_rect('Qjgypq').height
+        top_padding = ascender - f.get_rect('A').height
+
+        f.pad = True
+
+        return f, base_height, top_padding
     
     else:
         raise Exception(f'Invalid font "{font[0]}"')
