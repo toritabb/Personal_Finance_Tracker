@@ -11,13 +11,16 @@ class HeaderPage(Page):
     def __init__(self, parent: ui.Canvas, manager: PageManagerBase) -> None:
         super().__init__(parent, manager, height=125, fill_color=ui.HEADER)
 
+        padding = (30, 10)
+
         snapshot = ui.TextButton(
             self,
-            'Snapshot',
+            'Home',
             ('Nunito', 40, True, False),
             (0, 25),
             lambda: manager.go_to('snapshot'),
-            padding = (25, 10),
+            padding=padding,
+            corner_radius=15,
             colors='button_accent'
         )
         accounts = ui.TextButton(
@@ -26,7 +29,8 @@ class HeaderPage(Page):
             ('Nunito', 40, True, False),
             (snapshot.right + 50, 25),
             lambda: manager.go_to('accounts'),
-            padding = (25, 10),
+            padding=padding,
+            corner_radius=15,
             colors='button_accent'
         )
         income_expenses = ui.TextButton(
@@ -35,7 +39,8 @@ class HeaderPage(Page):
             ('Nunito', 40, True, False),
             (accounts.right + 50, 25),
             lambda: manager.go_to('income_expenses'),
-            padding = (25, 10),
+            padding=padding,
+            corner_radius=15,
             colors='button_accent'
         )
         more = ui.TextButton(
@@ -44,7 +49,8 @@ class HeaderPage(Page):
             ('Nunito', 40, True, False),
             (income_expenses.right + 50, 25),
             lambda: manager.go_to('more'),
-            padding = (25, 10),
+            padding=padding,
+            corner_radius=15,
             colors='button_accent'
         )
         ui.center(snapshot, accounts, income_expenses, more, axis='xy')

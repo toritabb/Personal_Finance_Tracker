@@ -5,6 +5,7 @@ from typing import Any
 # local
 from constants import SCREEN_W, SCREEN_H
 from ui import Canvas
+from ui.event import event_manager
 from ui.theme import Color, BACKGROUND
 
 
@@ -41,6 +42,8 @@ class PageManagerBase:
         self.stack.append(self.current_page.STR)
 
         self.current_page = self.get_page(page)
+
+        event_manager.mouse_attention = False
 
     def back(self) -> None:
         self.current_page.close()

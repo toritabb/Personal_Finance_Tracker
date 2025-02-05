@@ -9,7 +9,7 @@ from pygame import Event, Surface
 from . import collision
 from .base import Canvas, Interactable
 from .text import Text, FontDescriptor
-from .theme import BACKGROUND, COLOR_MAP
+from .theme import COLOR_MAP
 from .vector import vec2
 from ._typing import Coordinate
 

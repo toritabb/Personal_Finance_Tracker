@@ -44,6 +44,9 @@ class Pointer(Generic[PointerType]):
     def get(self) -> PointerType:
         return self._value
 
+    def set_no_listen(self, value: PointerType) -> None:
+        self._value = value
+
     def set(self, value: PointerType) -> None:
         self._value = value
 
