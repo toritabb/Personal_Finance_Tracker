@@ -33,20 +33,20 @@ def center(*elements: 'UIElement', axis: Literal['x', 'y', 'xy'] = 'x') -> None:
 
     match axis:
         case 'x':
-            dx = parent.centerx - bounding_box.centerx
+            dx = parent.centerx - bounding_box.centerx - parent.x
 
             for element in elements:
                 element.move_offset(dx, 0)
 
         case 'y':
-            dy = parent.centery - bounding_box.centery
+            dy = parent.centery - bounding_box.centery - parent.y
 
             for element in elements:
                 element.move_offset(0, dy)
 
         case 'xy':
-            dx = parent.centerx - bounding_box.centerx
-            dy = parent.centery - bounding_box.centery
+            dx = parent.centerx - bounding_box.centerx - parent.x
+            dy = parent.centery - bounding_box.centery - parent.y
 
             for element in elements:
                 element.move_offset(dx, dy)
@@ -118,6 +118,11 @@ class Canvas(UIElement):
 
         else:
             self.transform = vec2(0, 0)
+
+    def move_offset(self, dx: int, dy: int) -> None:
+        super().move_offset(dx, dy)
+
+        self.transform -= vec2(dx, dy)
 
     def add_child(self, child: 'UIElement') -> int:
         return self._children.append(child)
