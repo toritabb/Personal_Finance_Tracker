@@ -40,7 +40,7 @@ class SettingsPage(Page):
         # notifications on or off
         notifToggle = ui.Toggle(
             self,
-            (notifToggle.right + 15, page_title.bottom + 47),
+            (notifText.right + 15, page_title.bottom + 47),
             25,
             ui.Pointer(True),
             border_thickness=4,
@@ -50,7 +50,7 @@ class SettingsPage(Page):
         darkModeText = ui.Text(
             self,
             (25, page_title.bottom + 80),
-            'Notifications',
+            'Dark Mode',
             ('Nunito', 20),
             align = 'left'
         )
