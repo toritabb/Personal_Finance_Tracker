@@ -50,7 +50,7 @@ class SettingsPage(Page):
         darkModeText = ui.Text(
             self,
             (25, page_title.bottom + 80),
-            'Notifications',
+            'Dark Mode',
             ('Nunito', 20),
             align = 'left'
         )
