@@ -90,28 +90,17 @@
           "balance": 0,
           "incomes": [
             {
-              "name": "Sold bike",
-              "timing": {
-                "start_date": "2025-02-09",
-                "end_date": "None",
-                "recurrence": "never",
-                "days_of_month": []
-              },
-              "amount": 250
-            }
-          ],
-          "expenses": [
-            {
               "name": "Car payment",
               "timing": {
                 "start_date": "2025-01-01",
                 "end_date": "None",
-                "recurrence": "weekly",
+                "recurrence": "monthly",
                 "days_of_month": []
               },
-              "amount": 500
+              "amount": 50000
             }
-          ]
+          ],
+          "expenses": []
         },
         {
           "name": "Savings Account",
@@ -119,28 +108,17 @@
           "balance": 0,
           "incomes": [
             {
-              "name": "Paycheck",
+              "name": "3wrwrw",
               "timing": {
                 "start_date": "2022-01-23",
                 "end_date": "None",
                 "recurrence": "biweekly",
                 "days_of_month": []
               },
-              "amount": 1200
+              "amount": 35366
             }
           ],
-          "expenses": [
-            {
-              "name": "Netflix",
-              "timing": {
-                "start_date": "2025-02-17",
-                "end_date": "None",
-                "recurrence": "monthly",
-                "days_of_month": []
-              },
-              "amount": 15
-            }
-          ]
+          "expenses": []
         }
       ]
     }
