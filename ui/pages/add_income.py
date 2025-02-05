@@ -330,6 +330,10 @@ class AddIncomePage(Page):
 
                 print(account, name, amount, timing)
 
+                # for user in data_manager.users:
+
+                #     if account in user.accounts
+
             else:
                 print('You have no accounts')
 
