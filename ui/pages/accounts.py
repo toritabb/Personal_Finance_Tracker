@@ -35,12 +35,12 @@ class AccountsPage(Page):
 
         # Show user's accounts
         account_y = title.bottom + 50
-        for bank_account in current_user.accounts:
+        for account_name, bank_account in current_user.accounts.items():
             # Account container
             account_text = ui.Text(
                 self,
                 (50, account_y),
-                f"{bank_account.name} ({bank_account.type})",
+                f"{account_name} ({bank_account.type})",
                 ('Nunito', 24, True, False)
             )
             

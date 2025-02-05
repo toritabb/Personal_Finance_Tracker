@@ -118,7 +118,7 @@ class LoginPage(Page):
             # Store the current user
             data_manager.set_current_user(user)
             print("Login successful!")
-            self._manager.go_to('accounts')  # Navigate to accounts page after successful login
+            self._manager.go_to('snapshot')  # Navigate to snapshot page after successful login
         else:
             print("Invalid username or password")
 
