@@ -35,7 +35,7 @@ However, users should follow best security practices when using the Application.
 Q4: How do I contact support?
 A: You can reach our support team at falconfinancehelp@gmail.com or go to more then contact for any assistance
 ''',
-            ('Nunito', 25),
+            ('Nunito', 23, True, False),
             align= 'center'
         )
         ui.center(faq, axis='x')
