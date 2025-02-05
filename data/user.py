@@ -27,3 +27,4 @@ class User:
         account = Account(name=name, type=type, balance=balance)
         self.accounts[name] = account
         return account
+

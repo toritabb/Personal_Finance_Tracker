@@ -15,22 +15,22 @@ class MorePage(Page):
         header = HeaderPage(self, manager)
 
         spacing_pages = 10
-        padding_pages = (10, 5)
-        border_thickness_pages = 3
+        padding_pages = (30, 7)
+        border_thickness_pages = 5
         corner_radius_pages = -1
 
         title = ui.Text(
             self,
             (0, header.bottom + 20),
             'More Options',
-            ('Nunito', 75)
+            ('Nunito', 50, True, False)
         )
         ui.center(title, axis='x')
 
         faq_button = ui.TextButton(
             self,
             'FAQ',
-            ('Nunito', 50),
+            ('Nunito', 40),
             (title.left - 140, header.bottom + 150),
             lambda: manager.go_to('faq'),
             padding=padding_pages,
@@ -41,7 +41,7 @@ class MorePage(Page):
         settings = ui.TextButton(
             self,
             'Settings',
-            ('Nunito', 50),
+            ('Nunito', 40),
             (title.right + 50, header.bottom + 150),
             lambda: manager.go_to('settings'),
             padding=padding_pages,
@@ -52,7 +52,7 @@ class MorePage(Page):
         contact = ui.TextButton(
             self,
             'Contact',
-            ('Nunito', 50),
+            ('Nunito', 40),
             (title.right + 50, header.bottom + 350),
             lambda: manager.go_to('contact'),
             padding=padding_pages,
@@ -64,12 +64,12 @@ class MorePage(Page):
         logOut = ui.TextButton(
             self,
             'Log Out',
-            ('Nunito', 50),
+            ('Nunito', 40),
             (title.left - 150, header.bottom + 350),
             # needs account handling logic
-            lambda: manager.go_to('create_account'),
-            padding=(35, 7),
-            border_thickness=3,
+            lambda: manager.go_to('login'),
+            padding=padding_pages,
+            border_thickness=border_thickness_pages,
             corner_radius=-1
         )
 

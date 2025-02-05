@@ -9,7 +9,7 @@
 - `requests`: Web services
 
 Run the command `pip install cryptography pygame-ce pyinstaller requests`
-And 'pip3 install --upgrade google-api-python-client google-auth-httplib2 google-auth-oauthlib'
+And `pip3 install --upgrade google-api-python-client google-auth-httplib2 google-auth-oauthlib`
 
 ### Credits
 
