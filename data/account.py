@@ -9,19 +9,20 @@ __all__ = 'Account', 'Timing', 'Income', 'Expense'
 
 
 class Account:
-    __slots__ = 'name', 'type', 'balance', 'past_incomes', 'past_expenses', 'incomes', 'expenses'
+    __slots__ = 'username', 'password', 'name', 'type', 'balance', 'past_incomes', 'past_expenses', 'incomes', 'expenses'
 
-    def __init__(self, name: str, type: Literal['checking', 'savings'], balance: int, incomes: list[dict], expenses: list[dict]) -> None:
+    def __init__(self, username: str, password: str, name: str = '', type: Literal['checking', 'savings'] = 'checking', balance: int = 0, incomes: list[dict] | None = None, expenses: list[dict] | None = None) -> None:
+        self.username = username
+        self.password = password
         self.name = name
         self.type = type
-
         self.balance = balance
-
-        self.incomes = [Income(**income) for income in incomes]
-        self.expenses = [Expense(**expense) for expense in expenses]
-
+        self.incomes = [Income(**income) for income in (incomes or [])]
+        self.expenses = [Expense(**expense) for expense in (expenses or [])]
     def get_save_dict(self) -> dict:
         return {
+            'username': self.username,
+            'password': self.password,
             'name': self.name,
             'type': self.type,
             'balance': self.balance,
@@ -53,7 +54,7 @@ class Timing:
                     return []
 
             case 'weekly':
-                dates: list[date] = []
+                future_weekly_dates: list[date] = []
 
                 current_date = self.start_date
 
@@ -61,13 +62,13 @@ class Timing:
                     current_date += timedelta(weeks=1)
 
                 while current_date <= end_date:
-                    dates.append(current_date)
+                    future_weekly_dates.append(current_date)
                     current_date += timedelta(weeks=1)
 
-                return dates
+                return future_weekly_dates
 
             case 'biweekly':
-                dates: list[date] = []
+                future_biweekly_dates: list[date] = []
 
                 current_date = self.start_date
 
@@ -75,13 +76,13 @@ class Timing:
                     current_date += timedelta(weeks=2)
 
                 while current_date <= end_date:
-                    dates.append(current_date)
+                    future_biweekly_dates.append(current_date)
                     current_date += timedelta(weeks=2)
 
-                return dates
+                return future_biweekly_dates
 
             case 'monthly':
-                dates: list[date] = []
+                future_monthly_dates: list[date] = []
 
                 current_date = today
 
@@ -93,11 +94,11 @@ class Timing:
                             continue
 
                         if next_date >= today and next_date <= end_date:
-                            dates.append(next_date)
+                            future_monthly_dates.append(next_date)
 
                     current_date = (current_date.replace(day=1) + timedelta(days=32)).replace(day=1)
 
-                return dates
+                return future_monthly_dates
             
         return []
 
@@ -114,7 +115,7 @@ class Timing:
                     return []
 
             case 'weekly':
-                dates: list[date] = []
+                weekly_dates: list[date] = []
 
                 last_occurrence = self.start_date
 
@@ -122,13 +123,13 @@ class Timing:
                     last_occurrence += timedelta(weeks=1)
 
                 while last_occurrence >= self.start_date:
-                    dates.append(last_occurrence)
+                    weekly_dates.append(last_occurrence)
                     last_occurrence -= timedelta(weeks=1)
 
-                return dates
+                return weekly_dates
 
             case 'biweekly':
-                dates: list[date] = []
+                biweekly_dates: list[date] = []
 
                 last_occurrence = self.start_date
 
@@ -136,13 +137,13 @@ class Timing:
                     last_occurrence += timedelta(weeks=2)
 
                 while last_occurrence >= self.start_date:
-                    dates.append(last_occurrence)
+                    biweekly_dates.append(last_occurrence)
                     last_occurrence -= timedelta(weeks=2)
 
-                return dates
+                return biweekly_dates
 
             case 'monthly':
-                dates: list[date] = []
+                past_monthly_dates: list[date] = []
 
                 current_date = today
 
@@ -154,11 +155,11 @@ class Timing:
                             continue
 
                         if self.start_date <= prev_date < today:
-                            dates.append(prev_date)
+                            past_monthly_dates.append(prev_date)
 
                     current_date = (current_date.replace(day=1) - timedelta(days=1)).replace(day=1)
 
-                return sorted(dates, reverse=True)
+                return sorted(past_monthly_dates, reverse=True)
             
         return []
 

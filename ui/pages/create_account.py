@@ -11,6 +11,7 @@ class CreateAccountPage(Page):
 
     def __init__(self, parent: ui.Canvas, manager: PageManagerBase) -> None:
         super().__init__(parent, manager)
+        self._manager = manager  # Store the manager as instance variable
 
         # Title
         ui.Text(
@@ -94,44 +95,34 @@ class CreateAccountPage(Page):
         )
 
         # Create Account button
-        ui.TextButton(
+        create_btn = ui.TextButton(
             self,
             'Create Account',
             ('Nunito', 24),
-            (SCREEN_W // 2 - 100, 520),
+            (0, 520),  # Initial x position will be centered
             command=lambda: self._handle_create_account(
                 username.get(),
                 password.get(),
                 confirm_password.get()
             ),
-            padding=(30, 15),
+            padding=(20, 10),
             border_thickness=3,
             corner_radius=8
         )
+        ui.center(create_btn, axis='x')  # Center horizontally
 
         # Back to Login link
-        ui.TextButton(
+        back_btn = ui.TextButton(
             self,
             'Back to Login',
             ('Nunito', 20),
-            (SCREEN_W // 2 - 70, 600),
-            command=lambda: manager.go_to('login'),
+            (0, SCREEN_H - 60),
+            command=lambda: self._manager.go_to('login'),
             padding=(15, 7),
             border_thickness=2,
             corner_radius=5
         )
-
-        # Back button
-        ui.TextButton(
-            self,
-            'Back',
-            ('Nunito', 20),
-            (25, SCREEN_H - 60),
-            command=lambda: manager.back(),
-            padding=(15, 7),
-            border_thickness=2,
-            corner_radius=5
-        )
+        ui.center(back_btn, axis='x')  # Center horizontally
 
     def _handle_create_account(self, username: str, password: str, confirm_password: str) -> None:
         if not username or not password:
@@ -142,6 +133,11 @@ class CreateAccountPage(Page):
             print("Passwords do not match")
             return
 
-        # TODO: Implement actual account creation logic
-        print(f"Creating account - Username: {username}")
+        if data_manager.user_exists(username):
+            print("Username already exists")
+            return
+
+        data_manager.create_user(username, password)
+        print("Account created successfully!")
+        self._manager.go_to('login')  # Return to login page after successful account creation
 
