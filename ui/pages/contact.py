@@ -18,11 +18,12 @@ from email.mime.image import MIMEImage
 from email.mime.audio import MIMEAudio
 from email.mime.base import MIMEBase
 from mimetypes import guess_type as guess_mime_type
+from file import get_global_path
 
 # Request all access (permission to read/send/receive emails, manage the inbox, and more)
 SCOPES = ['https://mail.google.com/']
 our_email = 'falconfinancehelp@gmail.com'
-CLIENT_SECRET_FILE = r'C:\Users\talan\OneDrive\Documents\Code\code\HRHS_FBLA_25\credentials.json'
+CLIENT_SECRET_FILE = get_global_path('credentials.json')
 
 def gmail_authenticate():
     creds = None
@@ -160,3 +161,4 @@ class ContactPage(Page):
             border_thickness=4
         )
             # you can remove these, they are just placeholders so you know what page it is and can return
+
