@@ -37,6 +37,28 @@ class MorePage(Page):
             corner_radius=corner_radius_pages
         )
 
+        settings = ui.TextButton(
+            self,
+            'settings',
+            ('Nunito', 25),
+            (500, 400),
+            lambda: manager.go_to('settings'),
+            padding=padding_pages,
+            border_thickness=border_thickness_pages,
+            corner_radius=corner_radius_pages
+        )
+
+        contact = ui.TextButton(
+            self,
+            'contact',
+            ('Nunito', 25),
+            (500, 300),
+            lambda: manager.go_to('contact'),
+            padding=padding_pages,
+            border_thickness=border_thickness_pages,
+            corner_radius=corner_radius_pages
+        )
+
         # log out button
         logOut = ui.TextButton(
             self,
