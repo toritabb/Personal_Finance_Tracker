@@ -19,23 +19,20 @@ class MorePage(Page):
         border_thickness_pages = 3
         corner_radius_pages = -1
 
+        title = ui.Text(
+            self,
+            (0, header.bottom + 20),
+            'More Options',
+            ('Nunito', 75)
+        )
+        ui.center(title, axis='x')
+
         faq_button = ui.TextButton(
             self,
             'FAQ',
-            ('Nunito', 25),
-            (500, header.bottom + 600),
+            ('Nunito', 50),
+            (title.left - 140, header.bottom + 150),
             lambda: manager.go_to('faq'),
-            padding=padding_pages,
-            border_thickness=border_thickness_pages,
-            corner_radius=corner_radius_pages
-        )
-
-        legal_button = ui.TextButton(
-            self,
-            'Legal',
-            ('Nunito', 25),
-            (500, header.bottom + 500),
-            lambda: manager.go_to('legal'),
             padding=padding_pages,
             border_thickness=border_thickness_pages,
             corner_radius=corner_radius_pages
@@ -43,9 +40,9 @@ class MorePage(Page):
 
         settings = ui.TextButton(
             self,
-            'settings',
-            ('Nunito', 25),
-            (500, header.bottom + 400),
+            'Settings',
+            ('Nunito', 50),
+            (title.right + 50, header.bottom + 150),
             lambda: manager.go_to('settings'),
             padding=padding_pages,
             border_thickness=border_thickness_pages,
@@ -54,9 +51,9 @@ class MorePage(Page):
 
         contact = ui.TextButton(
             self,
-            'contact',
-            ('Nunito', 25),
-            (500, header.bottom + 300),
+            'Contact',
+            ('Nunito', 50),
+            (title.right + 50, header.bottom + 350),
             lambda: manager.go_to('contact'),
             padding=padding_pages,
             border_thickness=border_thickness_pages,
@@ -67,8 +64,8 @@ class MorePage(Page):
         logOut = ui.TextButton(
             self,
             'Log Out',
-            ('Nunito', 20),
-            (25, header.bottom + 300),
+            ('Nunito', 50),
+            (title.left - 150, header.bottom + 350),
             # needs account handling logic
             lambda: manager.go_to('create_account'),
             padding=(35, 7),
@@ -76,12 +73,15 @@ class MorePage(Page):
             corner_radius=-1
         )
 
-        # you can remove these, they are just placeholders so you know what page it is and can return
-        page_title = ui.Text(
+        legal_button = ui.TextButton(
             self,
-            (25, header.bottom + 25),
-            'More Page',
-            ('Nunito', 40, True, False)
+            'Legal',
+            ('Nunito', 20),
+            (1165, 660),
+            lambda: manager.go_to('legal'),
+            padding=(15, 7),
+            border_thickness=4,
+            corner_radius=corner_radius_pages
         )
 
         back_button = ui.TextButton(
