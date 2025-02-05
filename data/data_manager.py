@@ -23,7 +23,6 @@ class DataManager:
             json_data = json.loads(file.load(self._storage_file))
             
             for account_data in json_data.get('accounts', []):
-                # Handle old format accounts by adding default username/password
                 if 'username' not in account_data or 'password' not in account_data:
                     account_data['username'] = account_data.get('name', 'default_user')
                     account_data['password'] = 'default_password'
