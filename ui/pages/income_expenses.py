@@ -18,9 +18,11 @@ class IncomeExpensesPage(Page):
         page_title = ui.Text(
             self,
             (25, header.bottom + 25),
-            'Income & Expenses Page',
-            ('Nunito', 40, True, False)
+            'Income & Expenses',
+            ('Nunito', 50, True, False)
         )
+
+        ui.center(page_title, axis='x')
 
         back_button = ui.TextButton(
             self,
@@ -31,5 +33,4 @@ class IncomeExpensesPage(Page):
             padding=(15, 7),
             border_thickness=4
         )
-        # you can remove these, they are just placeholders so you know what page it is and can return
 
