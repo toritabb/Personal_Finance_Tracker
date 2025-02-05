@@ -11,6 +11,7 @@ class LoginPage(Page):
 
     def __init__(self, parent: ui.Canvas, manager: PageManagerBase) -> None:
         super().__init__(parent, manager)
+        self._manager = manager  # Store the manager as instance variable
 
         # Title
         ui.Text(
@@ -67,28 +68,30 @@ class LoginPage(Page):
         )
 
         # Login button
-        ui.TextButton(
+        login_btn = ui.TextButton(
             self,
             'Login',
             ('Nunito', 24),
-            (SCREEN_W // 2 - 60, 480),
+            (0, 480),  # Initial x position will be centered
             command=lambda: self._handle_login(username.get(), password.get()),
             padding=(30, 15),
             border_thickness=3,
             corner_radius=8
         )
+        ui.center(login_btn, axis='x')  # Center horizontally
 
-        # Create Account link
-        ui.TextButton(
+        # Create Account button
+        create_account_btn = ui.TextButton(
             self,
             'Create Account',
             ('Nunito', 20),
-            (SCREEN_W // 2 - 70, 560),
-            command=lambda: manager.go_to('create_account'),
+            (0, 560),
+            command=lambda: self._manager.go_to('create_account'),
             padding=(15, 7),
             border_thickness=2,
             corner_radius=5
         )
+        ui.center(create_account_btn, axis='x')
 
         # Back button
         ui.TextButton(
@@ -96,14 +99,20 @@ class LoginPage(Page):
             'Back',
             ('Nunito', 20),
             (25, SCREEN_H - 60),
-            command=lambda: manager.back(),
+            command=lambda: self._manager.back(),
             padding=(15, 7),
             border_thickness=2,
             corner_radius=5
         )
 
     def _handle_login(self, username: str, password: str) -> None:
-        # TODO: Implement actual login logic
-        print(f"Login attempt - Username: {username}")
+        if not username or not password:
+            print("Username and password are required")
+            return
 
+        if data_manager.authenticate_user(username, password):
+            print("Login successful!")
+            self._manager.go_to('accounts')  # Navigate to accounts page
+        else:
+            print("Invalid username or password")
 
