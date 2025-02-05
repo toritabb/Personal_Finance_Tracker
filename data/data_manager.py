@@ -15,32 +15,21 @@ __all__ = 'DataManager', 'data_manager'
 class DataManager:
     __slots__ = 'users', '_storage_file', '_current_user'
 
-    def __init__(self, storage_file: str = 'user_data.bin') -> None:
-        self._storage_file = file.get_global_path(f'data/data/{storage_file}')
-        self._current_user: User | None = None
-        self.users: list[User] = []
+    def __init__(self) -> None:
+        self.username = ''
+        self.password = ''
+        self.accounts = []
+
+    def load(self, username: str, password: str) -> None:
+        if not os.path.exists(file.get_global_path(f'data/data/{username}.bin')):
+            self.username = username
+            self.password = password
+            self.accounts: list[Account] = []
+
+            self.save()
+
         try:
-            json_data = json.loads(file.load(self._storage_file))
-            
-            # Handle old format data migration
-            if 'accounts' in json_data:
-                # Migrate old accounts to new user structure
-                for account_data in json_data['accounts']:
-                    username = account_data.get('username', account_data.get('name', 'default_user'))
-                    password = account_data.get('password', 'default_password')
-                    
-                    # Create new user
-                    user = User(username=username, password=password)
-                    # Create bank account for user
-                    user.add_account(
-                        name=account_data.get('name', f"{username}'s Account"),
-                        type=account_data.get('type', 'checking'),
-                        balance=account_data.get('balance', 0)
-                    )
-                    self.users.append(user)
-            else:
-                # Load new format
-                self.users = [User(**user_data) for user_data in json_data.get('users', [])]
+            json_data = json.loads(file.load(f'data/data/{username}.bin', password))
 
         except (json.JSONDecodeError, FileNotFoundError):
             pass  # Start with empty accounts list
