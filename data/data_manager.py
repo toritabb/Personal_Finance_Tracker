@@ -39,10 +39,6 @@ class DataManager:
             print('Invalid Password')
 
     def save(self) -> None:
-        '''Save current data to storage file.'''
-        with open(self._storage_file, 'w') as f:
-            json_data = json.dumps(self.get_save_dict())
-            file.save(json_data, self._storage_file)
         json_data = json.dumps(self.get_save_dict(), indent=4)
 
         file.save(json_data, f'data/data/{self.username}.bin', self.password)
