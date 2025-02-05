@@ -81,21 +81,56 @@
       ]
     },
     {
+<<<<<<< HEAD
       "username": "hi",
       "password": "pass",
+=======
+      "username": "a",
+      "password": "a",
+>>>>>>> e326c75fcaa7e8aee6c22998bc6940a63369f2ec
       "accounts": [
         {
           "name": "My Checking",
           "type": "checking",
           "balance": 0,
+<<<<<<< HEAD
           "incomes": [],
+=======
+          "incomes": [
+            {
+              "name": "Car payment",
+              "timing": {
+                "start_date": "2025-01-01",
+                "end_date": "None",
+                "recurrence": "monthly",
+                "days_of_month": []
+              },
+              "amount": 50000
+            }
+          ],
+>>>>>>> e326c75fcaa7e8aee6c22998bc6940a63369f2ec
           "expenses": []
         },
         {
           "name": "Savings Account",
           "type": "savings",
           "balance": 0,
+<<<<<<< HEAD
           "incomes": [],
+=======
+          "incomes": [
+            {
+              "name": "3wrwrw",
+              "timing": {
+                "start_date": "2022-01-23",
+                "end_date": "None",
+                "recurrence": "biweekly",
+                "days_of_month": []
+              },
+              "amount": 35366
+            }
+          ],
+>>>>>>> e326c75fcaa7e8aee6c22998bc6940a63369f2ec
           "expenses": []
         }
       ]
