@@ -1,7 +1,5 @@
 # standard library
-from typing import Any, Optional
 import json
-import os
 
 # local
 import file
@@ -38,8 +36,6 @@ class DataManager:
         return {
             'accounts': [account.get_save_dict() for account in self.accounts]
         }
-
-
 
 
 

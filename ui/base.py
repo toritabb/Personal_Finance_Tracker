@@ -36,20 +36,20 @@ def center(*elements: 'UIElement', axis: Literal['x', 'y', 'xy'] = 'x') -> None:
             dx = parent.centerx - bounding_box.centerx
 
             for element in elements:
-                element.move_ip(dx, 0)
+                element.move_offset(dx, 0)
 
         case 'y':
             dy = parent.centery - bounding_box.centery
 
             for element in elements:
-                element.move_ip(0, dy)
+                element.move_offset(0, dy)
 
         case 'xy':
             dx = parent.centerx - bounding_box.centerx
             dy = parent.centery - bounding_box.centery
 
             for element in elements:
-                element.move_ip(dx, dy)
+                element.move_offset(dx, dy)
 
 
 
@@ -74,6 +74,9 @@ class UIElement(Rect):
 
     def __str__(self) -> str:
         return f'UI Element {self.__class__}'
+    
+    def move_offset(self, dx: int, dy: int) -> None:
+        self.move_ip(dx, dy)
 
     def render(self, screen: Surface) -> None: ...
 
@@ -200,6 +203,14 @@ class Interactable(UIElement):
             return True
         
         return False
+
+    def move_offset(self, dx: int, dy: int) -> None:
+        super().move_offset(dx, dy)
+
+        for collision_shape in self.collision_shapes:
+            collision_shape.move_ip(dx, dy)
+
+        self.bounding_rect.move_ip(dx, dy)
 
     def close(self) -> None:
         super().close()
