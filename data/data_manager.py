@@ -1,5 +1,6 @@
 # standard library
 import json
+import os
 
 # local
 import file
@@ -72,7 +73,25 @@ class DataManager:
             'users': [user.get_save_dict() for user in self.users.values()]
         }
 
-
+    def export_current_user_data(self, filepath: str) -> bool:
+        '''Export current user's data to a readable JSON file.
+        Returns True if successful, False otherwise.'''
+        if not self._current_user:
+            return False
+            
+        try:
+            # Ensure the directory exists
+            export_dir = file.get_global_path('data/exports')
+            os.makedirs(export_dir, exist_ok=True)
+            
+            # Export the data
+            user_data = self._current_user.get_save_dict()
+            with open(filepath, 'w') as f:
+                json.dump(user_data, f, indent=4)
+            return True
+        except Exception as e:
+            print(f"Error exporting data: {e}")
+            return False
 
 data_manager = DataManager()
 
