@@ -1,15 +1,32 @@
 # standard library
+import os
+import sys
 import zlib
 from typing import Optional
 
 # local
 from encryption import encrypt, decrypt
-from path import get_global_path
 
 
 
 # the level of compression to use. Should be 0-9. Higher numbers compress more, but are slower.
 COMPRESSION = 6
+
+# root path depending on if the program is run as an exe or as a script respectively
+if getattr(sys, 'frozen', False): 
+    ROOT_DIR = os.path.dirname(sys.executable)
+
+else: 
+    ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
+
+
+
+def get_global_path(local_path: str) -> str:
+    '''
+    Gets the global path of a file from a local path.
+    '''
+
+    return os.path.join(ROOT_DIR, local_path)
 
 
 

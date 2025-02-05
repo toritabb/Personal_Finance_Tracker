@@ -5,7 +5,7 @@ from functools import lru_cache
 from pygame import freetype
 
 # local
-from path import get_global_path
+from file import get_global_path
 
 
 freetype.init()

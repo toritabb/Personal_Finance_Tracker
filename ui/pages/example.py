@@ -7,6 +7,7 @@ from .page import Page, PageManagerBase
 
 class ExamplePage(Page):
     STR = 'example'
+    HEADER = False
 
     def __init__(self, parent: ui.Canvas, manager: PageManagerBase) -> None:
         super().__init__(parent, manager)

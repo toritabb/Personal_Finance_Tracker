@@ -23,6 +23,9 @@ class Circle:
         self.rad = rad
         self._rad_squared = rad * rad
 
+    def move_ip(self, dx: int, dy: int) -> None:
+        self.pos += vec2(dx, dy)
+
     def collidepoint(self, point: Coordinate) -> bool:
         return self.pos.distance_squared_to(point) <= self._rad_squared
 

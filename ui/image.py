@@ -6,7 +6,7 @@ import pygame
 from pygame import Surface
 
 # local
-from path import get_global_path
+from file import get_global_path
 from .base import Canvas, UIElement
 from ._typing import Coordinate
 
