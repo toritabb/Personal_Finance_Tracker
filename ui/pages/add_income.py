@@ -34,37 +34,51 @@ class AddIncomePage(Page):
 
         ui.center(account_title, axis='x')
 
-        account_ptrs: dict[str, ui.Pointer[bool]] = {}
-        account_y = account_title.bottom + 10
-
-        for account in data_manager.accounts:
-            account_label = ui.Text(
+        if not data_manager.accounts:
+            create_account_button = ui.TextButton(
                 account_tab,
-                (0, account_y),
-                f'{account.name}',
-                ('Nunito', 20)
-            )
-
-            account_ptr = ui.Pointer(False)
-            account_ptrs[account.name] = account_ptr
-
-            account_toggle = ui.Toggle(
-                account_tab,
-                (account_label.right + 10, account_label.centery - 10),
-                21,
-                account_ptr,
+                'Create Account',
+                ('Nunito', 20),
+                (0, account_title.bottom + 10),
+                lambda: manager.go_to('accounts'),
+                size=(100, -1),
+                padding=6,
                 border_thickness=4,
-                corner_radius=-1
+                corner_radius=10
             )
 
-            ui.center(account_label, account_toggle, axis='x')
+        else:
+            account_ptrs: dict[str, ui.Pointer[bool]] = {}
+            account_y = account_title.bottom + 10
 
-            account_y = account_label.bottom + 7
+            for account in data_manager.accounts:
+                account_label = ui.Text(
+                    account_tab,
+                    (0, account_y),
+                    f'{account.name}',
+                    ('Nunito', 20)
+                )
 
-        list(account_ptrs.values())[0].set_no_listen(True)
+                account_ptr = ui.Pointer(False)
+                account_ptrs[account.name] = account_ptr
 
-        for ptr in account_ptrs.values():
-            ptr.listen(lambda pp: [p.set_no_listen(False) and print(p, p.get()) for p in account_ptrs.values() if p is not pp] if pp.get() else pp.set_no_listen(True))
+                account_toggle = ui.Toggle(
+                    account_tab,
+                    (account_label.right + 10, account_label.centery - 10),
+                    21,
+                    account_ptr,
+                    border_thickness=4,
+                    corner_radius=-1
+                )
+
+                ui.center(account_label, account_toggle, axis='x')
+
+                account_y = account_label.bottom + 7
+
+            list(account_ptrs.values())[0].set_no_listen(True)
+
+            for ptr in account_ptrs.values():
+                ptr.listen(lambda pp: [p.set_no_listen(False) and print(p, p.get()) for p in account_ptrs.values() if p is not pp] if pp.get() else pp.set_no_listen(True))
 
         ################
         # NAME OPTIONS #

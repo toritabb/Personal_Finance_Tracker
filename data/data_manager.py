@@ -17,6 +17,7 @@ class DataManager:
 
     def __init__(self) -> None:
         self.username = ''
+        self.password = ''
         self.accounts = []
 
     def load(self, username: str, password: str) -> None:
@@ -27,7 +28,6 @@ class DataManager:
 
             self.save()
 
-        self.accounts: list[Account] = []
         try:
             json_data = json.loads(file.load(f'data/data/{username}.bin', password))
 
