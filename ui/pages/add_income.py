@@ -155,82 +155,109 @@ class AddIncomePage(Page):
 
         start_day_ptr = ui.Pointer('01')
         start_month_ptr = ui.Pointer('01')
-        start_year_ptr = ui.Pointer('01')
+        start_year_ptr = ui.Pointer('2025')
 
         def day_validation(text: str) -> bool:
             try:
-                return 0 <= int(text) <= 31
+                return 0 <= int('0' + text) <= 31
 
             except:
                 return False
 
         def month_validation(text: str) -> bool:
             try:
-                return 0 <= int(text) <= 12
+                return 0 <= int('0' + text) <= 12
 
             except:
                 return False
 
         def year_validation(text: str) -> bool:
             try:
-                return 0 <= int(text) <= 9999
+                return 0 <= int('0' + text) <= 9999
 
             except:
                 return False
 
-        amount_textbox = ui.Textbox(
-            amount_tab,
-            amount_text_ptr,
+        start_month_textbox = ui.Textbox(
+            time_period_tab,
+            start_month_ptr,
             ('Nunito', 20),
-            (0, amount_title.bottom + 10),
-            (150, -1),
-            validation_function=lambda x: 0 <= int(x) <= 12,
+            (0, time_period_title.bottom + 10),
+            (48, -1),
+            validation_function=month_validation,
             padding=6,
             border_thickness=4,
-            corner_radius=10
+            corner_radius=10,
+            align='center'
         )
 
-        ui.center(recurring_title, recurring_toggle, axis='x')
+        start_day_textbox = ui.Textbox(
+            time_period_tab,
+            start_day_ptr,
+            ('Nunito', 20),
+            (start_month_textbox.right, start_month_textbox.top),
+            (48, -1),
+            validation_function=day_validation,
+            padding=6,
+            border_thickness=4,
+            corner_radius=10,
+            align='center'
+        )
 
-        recurring_option_ptrs = {'weekly': ui.Pointer(True), 'biweekly': ui.Pointer(False), 'monthly': ui.Pointer(False)}
+        start_year_textbox = ui.Textbox(
+            time_period_tab,
+            start_year_ptr,
+            ('Nunito', 20),
+            (start_day_textbox.right, start_month_textbox.top),
+            (74, -1),
+            validation_function=year_validation,
+            padding=6,
+            border_thickness=4,
+            corner_radius=10,
+            align='center'
+        )
 
-        def open_recurring_options() -> ui.Canvas:
-            recurring_options_tab = ui.Canvas(recurring_tab, (0, recurring_title.bottom + 10, 175, 80))
+        # ui.center(recurring_title, recurring_toggle, axis='x')
 
-            recurring_y = 0
+        # recurring_option_ptrs = {'weekly': ui.Pointer(True), 'biweekly': ui.Pointer(False), 'monthly': ui.Pointer(False)}
 
-            for option, option_ptr in recurring_option_ptrs.items():
-                recurring_label = ui.Text(
-                    recurring_options_tab,
-                    (0, recurring_y),
-                    f'{option.capitalize()}',
-                    ('Nunito', 20)
-                )
+        # def open_recurring_options() -> ui.Canvas:
+        #     recurring_options_tab = ui.Canvas(recurring_tab, (0, recurring_title.bottom + 10, 175, 80))
 
-                recurring_toggle = ui.Toggle(
-                    recurring_options_tab,
-                    (recurring_label.right + 10, recurring_label.centery - 10),
-                    21,
-                    option_ptr,
-                    border_thickness=4,
-                    corner_radius=-1
-                )
+        #     recurring_y = 0
 
-                ui.center(recurring_label, recurring_toggle, axis='x')
+        #     for option, option_ptr in recurring_option_ptrs.items():
+        #         recurring_label = ui.Text(
+        #             recurring_options_tab,
+        #             (0, recurring_y),
+        #             f'{option.capitalize()}',
+        #             ('Nunito', 20)
+        #         )
 
-                recurring_y = recurring_label.bottom + 7
+        #         recurring_toggle = ui.Toggle(
+        #             recurring_options_tab,
+        #             (recurring_label.right + 10, recurring_label.centery - 10),
+        #             21,
+        #             option_ptr,
+        #             border_thickness=4,
+        #             corner_radius=-1
+        #         )
 
-            return recurring_options_tab
+        #         ui.center(recurring_label, recurring_toggle, axis='x')
 
-        recurring_options_tab = ui.Pointer(None)
+        #         recurring_y = recurring_label.bottom + 7
 
-        show_recurring_options_ptr.listen(lambda pointer: recurring_options_tab.set(open_recurring_options()) if pointer.get() else recurring_options_tab.get().close()) # type: ignore
+        #     return recurring_options_tab
 
-        for ptr in recurring_option_ptrs.values():
-            ptr.listen(lambda pp: [p.set_no_listen(False) and print(p, p.get()) for p in recurring_option_ptrs.values() if p is not pp] if pp.get() else pp.set_no_listen(True))
+        # recurring_options_tab = ui.Pointer(None)
 
-        for option, ptr in recurring_option_ptrs.items():
-            ptr.listen(lambda _: recurring_ptr.set(option))
+        # show_recurring_options_ptr.listen(lambda pointer: recurring_options_tab.set(open_recurring_options()) if pointer.get() else recurring_options_tab.get().close()) # type: ignore
+
+        # for ptr in recurring_option_ptrs.values():
+        #     ptr.listen(lambda pp: [p.set_no_listen(False) and print(p, p.get()) for p in recurring_option_ptrs.values() if p is not pp] if pp.get() else pp.set_no_listen(True))
+
+        # for option, ptr in recurring_option_ptrs.items():
+        #     ptr.listen(lambda _: recurring_ptr.set(option))
 
         #####################
         # RECURRING OPTIONS #
