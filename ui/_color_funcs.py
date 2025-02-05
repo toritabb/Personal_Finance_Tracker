@@ -6,7 +6,7 @@ from .misc import clamp, lerp
 
 
 
-__all__ = 'lighten', 'darken', 'saturate', 'desaturate', 'blend', 'invert'
+__all__ = 'lighten', 'darken', 'saturate', 'desaturate', 'blend', 'invert_color'
 
 
 
@@ -63,7 +63,7 @@ def blend(color1: Color, color2: Color, percent: float) -> Color:
 
 
 
-def invert(color: Color) -> Color:
+def invert_color(color: Color) -> Color:
     return Color(
         255 - color.r,
         255 - color.g,

@@ -58,11 +58,12 @@ class SettingsPage(Page):
         )
 
         # Dark mode toggle
-        ui.Toggle(
+        dark_mode = ui.Pointer(False)
+        dark_mode_toggle = ui.Toggle(
             self,
             (dark_mode_text.right + 15, dark_mode_text.centery - 12),
             25,
-            ui.Pointer(True),
+            dark_mode,
             border_thickness=4,
             corner_radius=0
         )

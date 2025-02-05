@@ -52,13 +52,14 @@ class IncomeExpensesPage(Page):
                 line_spacing=4
             )
 
-        text_obj = ui.Text(
-            self,
-            (85, income_title.bottom + 20 + (i + 1) * 38),
-            '_'*40,
-            ('Nunito', 25),
-            line_spacing=4
-        )
+        if incomes:
+            text_obj = ui.Text(
+                self,
+                (85, income_title.bottom + 20 + (i + 1) * 38),
+                '_'*40,
+                ('Nunito', 25),
+                line_spacing=4
+            )
 
         add_income_button = ui.TextButton(
             self,
@@ -96,32 +97,23 @@ class IncomeExpensesPage(Page):
                 line_spacing=4
             )
 
-        text_obj = ui.Text(
-            self,
-            (expenses_title.left - 70, expenses_title.bottom + 20 + (i + 1) * 38),
-            '_'*40,
-            ('Nunito', 25),
-            line_spacing=4
-        )
+        if expenses:
+            text_obj = ui.Text(
+                self,
+                (expenses_title.left - 70, expenses_title.bottom + 20 + (i + 1) * 38),
+                '_'*40,
+                ('Nunito', 25),
+                line_spacing=4
+            )
 
         add_expense_button = ui.TextButton(
             self,
             'Add Expense',
             ('Nunito', 25),
-            (650, 640),
+            (850, 640),
             command=lambda: manager.go_to('add_expense'),
             padding=(15, 8),
             border_thickness=4,
             corner_radius=-1
-        )
-
-        back_button = ui.TextButton(
-            self,
-            'Back',
-            ('Nunito', 20),
-            (25, 660),
-            command=lambda: manager.back(),
-            padding=(15, 7),
-            border_thickness=4
         )
 

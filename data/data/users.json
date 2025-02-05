@@ -121,6 +121,26 @@
           "expenses": []
         }
       ]
+    },
+    {
+      "username": "joe",
+      "password": "joe",
+      "accounts": [
+        {
+          "name": "My Checking",
+          "type": "checking",
+          "balance": 0,
+          "incomes": [],
+          "expenses": []
+        },
+        {
+          "name": "Savings Account",
+          "type": "savings",
+          "balance": 0,
+          "incomes": [],
+          "expenses": []
+        }
+      ]
     }
   ]
 }

@@ -95,18 +95,6 @@ class LoginPage(Page):
         )
         ui.center(create_account_btn, axis='x')  # Center horizontally
 
-        # Back button
-        ui.TextButton(
-            self,
-            'Back',
-            ('Nunito', 20),
-            (25, SCREEN_H - 60),
-            command=lambda: self._manager.back(),
-            padding=(15, 7),
-            border_thickness=2,
-            corner_radius=5
-        )
-
     def _handle_login(self, username: str, password: str) -> None:
         if not username or not password:
             print("Username and password are required")
@@ -118,7 +106,7 @@ class LoginPage(Page):
             # Store the current user
             data_manager.set_current_user(user)
             print("Login successful!")
-            self._manager.go_to('snapshot')  # Navigate to snapshot page after successful login
+            self._manager.go_to('accounts')  # Navigate to snapshot page after successful login
         else:
             print("Invalid username or password")
 
