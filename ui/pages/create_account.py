@@ -142,8 +142,8 @@ class CreateAccountPage(Page):
         
         # Add a default checking account for the user
         user.add_account(
-            name=f"{username}'s Account",
-            type='checking',
+            name=f"Savings Account",
+            type='savings',
             balance=0
         )
         

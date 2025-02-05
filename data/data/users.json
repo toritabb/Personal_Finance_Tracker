@@ -39,6 +39,26 @@
           "expenses": []
         }
       ]
+    },
+    {
+      "username": "Alex11",
+      "password": "1",
+      "accounts": [
+        {
+          "name": "My Checking",
+          "type": "checking",
+          "balance": 0,
+          "incomes": [],
+          "expenses": []
+        },
+        {
+          "name": "Saving",
+          "type": "savings",
+          "balance": 0,
+          "incomes": [],
+          "expenses": []
+        }
+      ]
     }
   ]
 }
