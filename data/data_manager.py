@@ -17,7 +17,7 @@ class DataManager:
     _current_user: User | None
 
     def __init__(self) -> None:
-        self.users = []
+        self.users = {}  # Dictionary with username as key, User object as value
         self._storage_file = file.get_global_path('data/data/users.json')
         self._current_user = None
         self.load()
@@ -26,16 +26,19 @@ class DataManager:
         try:
             with open(self._storage_file, 'r') as f:
                 json_data = json.load(f)
-                self.users = [User(**user_data) for user_data in json_data.get('users', [])]
+                self.users = {
+                    user_data['username']: User(**user_data)
+                    for user_data in json_data.get('users', [])
+                }
         except (json.JSONDecodeError, FileNotFoundError):
-            self.users = []  # Start with empty users list
+            self.users = {}  # Start with empty users dict
 
     def authenticate_user(self, username: str, password: str) -> User | None:
         '''Authenticate a user with username and password.
         Returns the User if credentials are valid, None otherwise.'''
-        for user in self.users:
-            if user.username == username and user.password == password:
-                return user
+        user = self.users.get(username)
+        if user and user.password == password:
+            return user
         return None
 
     def get_current_user(self) -> User | None:
@@ -48,25 +51,25 @@ class DataManager:
 
     def user_exists(self, username: str) -> bool:
         '''Check if a username already exists.'''
-        return any(user.username == username for user in self.users)
+        return username in self.users
 
     def create_user(self, username: str, password: str) -> User:
         '''Create a new user with a default checking account.'''
         user = User(username=username, password=password)
         user.add_account("My Checking", "checking")
-        self.users.append(user)
+        self.users[username] = user
         self.save()
         return user
 
     def save(self) -> None:
         '''Save current data to storage file.'''
-        data = {'users': [user.get_save_dict() for user in self.users]}
+        data = {'users': [user.get_save_dict() for user in self.users.values()]}
         with open(self._storage_file, 'w') as f:
             json.dump(data, f, indent=2)
 
     def get_save_dict(self) -> dict:
         return {
-            'users': [user.get_save_dict() for user in self.users]
+            'users': [user.get_save_dict() for user in self.users.values()]
         }
 
 

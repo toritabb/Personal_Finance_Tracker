@@ -28,7 +28,7 @@ class AddIncomePage(Page):
         # ACCOUNT OPTIONS #
         ###################
 
-        account_tab = ui.Canvas(self, (325, 175, 200, 150))
+        account_tab = ui.Canvas(self, (0, 175, 200, 200))
 
         account_title = ui.Text(
             account_tab,
@@ -38,7 +38,7 @@ class AddIncomePage(Page):
         )
 
         ui.center(account_title, axis='x')
-
+        
         account_ptrs: dict[str, ui.Pointer[bool]] = {}
         current_user = data_manager.get_current_user()
 
@@ -60,16 +60,16 @@ class AddIncomePage(Page):
         else:
             account_y = account_title.bottom + 10
 
-            for account in current_user.accounts:
+            for account_name, account in current_user.accounts.items():
                 account_label = ui.Text(
                     account_tab,
                     (0, account_y),
-                    f'{account.name}',
+                    f'{account_name}',
                     ('Nunito', 20)
                 )
 
                 account_ptr = ui.Pointer(False)
-                account_ptrs[account.name] = account_ptr
+                account_ptrs[account_name] = account_ptr
 
                 account_toggle = ui.Toggle(
                     account_tab,
@@ -93,7 +93,7 @@ class AddIncomePage(Page):
         # NAME OPTIONS #
         ################
 
-        source_tab = ui.Canvas(self, (account_tab.right + tab_spacing, account_tab.top, 200, 100))
+        source_tab = ui.Canvas(self, (account_tab.right + tab_spacing, account_tab.top, 200, 200))
 
         source_title = ui.Text(
             source_tab,
@@ -124,7 +124,7 @@ class AddIncomePage(Page):
         # AMOUNT OPTIONS #
         ##################
 
-        amount_tab = ui.Canvas(self, (source_tab.right + tab_spacing, source_tab.top, 175, 100))
+        amount_tab = ui.Canvas(self, (source_tab.right + tab_spacing, source_tab.top, 175, 200))
 
         amount_title = ui.Text(
             amount_tab,
@@ -165,7 +165,7 @@ class AddIncomePage(Page):
         # TIME OPTIONS #
         ################
 
-        time_period_tab = ui.Canvas(self, (460, amount_tab.bottom + 50, 185, 100))
+        time_period_tab = ui.Canvas(self, (amount_tab.right + tab_spacing, amount_tab.top, 185, 130))
 
         time_period_title = ui.Text(
             time_period_tab,
@@ -309,9 +309,14 @@ class AddIncomePage(Page):
         for ptr in recurring_option_ptrs.values():
             ptr.listen(lambda pp: [p.set_no_listen(False) and print(p, p.get()) for p in recurring_option_ptrs.values() if p is not pp] if pp.get() else pp.set_no_listen(True))
 
+        for option, ptr in recurring_option_ptrs.items():
+            ptr.listen(lambda _: recurring_ptr.set(option))
+
         ##############
         # CONNECTING #
         ##############
+
+        ui.center(account_tab, source_tab, amount_tab, time_period_tab, recurring_tab, axis='x')
 
         def add_income() -> None:
             if len(account_ptrs):
@@ -323,28 +328,24 @@ class AddIncomePage(Page):
 
                 name = source_ptr.get()
                 amount = amount_ptr.get()
-                start_day = str(date(int(start_year_ptr.get()), int(start_month_ptr.get()), int(start_day_ptr.get())))
-                recurring = 'never' if not show_recurring_options_ptr.get() else 'weekly' if recurring_option_ptrs['weekly'].get() else 'biweekly' if recurring_option_ptrs['biweekly'].get() else 'monthly'
+                start_day = date(int(start_year_ptr.get()), int(start_month_ptr.get()), int(start_day_ptr.get()))
+                recurring = recurring_ptr.get()
 
-                timing = {'start_date': start_day, 'end_date': 'None', 'recurrence': recurring, 'days_of_month': []}
-
-                print(account, name, amount, timing)
+                print(account, name, amount, start_day, recurring)
 
             else:
-                print('You have no accounts')
+                print('no accounts')
 
         add_income_button = ui.TextButton(
             self,
             'Add Income',
             ('Nunito', 30),
-            (0, time_period_tab.bottom + 80),
+            (0, 300),
             add_income,
             padding=6,
             border_thickness=5,
             corner_radius=15
         )
-
-        ui.center(add_income_button, axis='x')
 
         ###############
         # back button #
