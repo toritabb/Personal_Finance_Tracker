@@ -1,0 +1,20 @@
+{
+    "username": "Alex10",
+    "password": "1",
+    "accounts": [
+        {
+            "name": "My Checking",
+            "type": "checking",
+            "balance": 0,
+            "incomes": [],
+            "expenses": []
+        },
+        {
+            "name": "Alex10's Account",
+            "type": "checking",
+            "balance": 0,
+            "incomes": [],
+            "expenses": []
+        }
+    ]
+}
