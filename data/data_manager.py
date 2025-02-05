@@ -12,10 +12,11 @@ __all__ = 'DataManager', 'data_manager'
 
 
 class DataManager:
-    __slots__ = 'accounts', '_storage_file'
+    __slots__ = 'accounts', '_storage_file', '_storage_file_json'
 
-    def __init__(self, storage_file: str = 'user_data.bin') -> None:
-        self._storage_file = file.get_global_path(f'data/data/{storage_file}')
+    def __init__(self, storage_file: str = 'user_data') -> None:
+        self._storage_file = file.get_global_path(f'data/data/{storage_file}.bin')
+        self._storage_file_json = file.get_global_path(f'data/data/{storage_file}.json')
 
         try:
             json_data = json.loads(file.load(self._storage_file))
@@ -26,11 +27,10 @@ class DataManager:
             self.accounts: list[Account] = []
 
     def save(self) -> None:
-        '''Save current data to storage file.'''
-        with open(self._storage_file, 'w') as f:
-            json_data = json.dumps(self.get_save_dict())
+        json_data = json.dumps(self.get_save_dict(), indent=4)
 
-            file.save(json_data, self._storage_file)
+        file.save(json_data, self._storage_file)
+        file.save_plaintext(json_data, self._storage_file_json)
 
     def get_save_dict(self) -> dict:
         return {
