@@ -139,5 +139,5 @@ class CreateAccountPage(Page):
 
         data_manager.create_user(username, password)
         print("Account created successfully!")
-        self._manager.go_to('login')  # Return to login page after successful account creation
+        self._manager.go_to('login')  # Return to login page
 

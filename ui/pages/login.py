@@ -112,7 +112,7 @@ class LoginPage(Page):
 
         if data_manager.authenticate_user(username, password):
             print("Login successful!")
-            self._manager.go_to('accounts')  # Navigate to accounts page
+            self._manager.go_to('snapshot')  # Navigate to snapshot page
         else:
             print("Invalid username or password")
 
