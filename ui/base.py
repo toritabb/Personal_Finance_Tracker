@@ -9,7 +9,7 @@ from pygame import Rect, Surface
 from .collision import CollisionShape
 from .event import Event, event_manager
 from .misc import SequentialDict
-from .theme import BACKGROUND
+from .theme import Color, BACKGROUND
 from .vector import vec2
 from ._typing import Coordinate, RectValue
 
@@ -95,17 +95,21 @@ class UIElement(Rect):
 
 
 class Canvas(UIElement):
-    __slots__ = 'surface', '_children', 'transform'
+    __slots__ = 'surface', 'fill_color', '_children', 'transform'
 
     def __init__(
             self,
             parent: 'Canvas',
-            rect: RectValue
+            rect: RectValue,
+            fill_color: Color = BACKGROUND
         ) -> None:
 
         super().__init__(parent, rect)
 
         self.surface = Surface(self.size)
+        self.fill_color = fill_color
+
+        self.surface.fill(fill_color)
 
         self._children: SequentialDict[UIElement] = SequentialDict()
 
@@ -122,7 +126,7 @@ class Canvas(UIElement):
         del self._children[child_index]
 
     def render(self, surface: Optional[Surface] = None) -> None:
-        self.surface.fill(BACKGROUND)
+        self.surface.fill(self.fill_color)
 
         for child in self._children:
             child.render(self.surface)

@@ -13,4 +13,5 @@ from .text import *
 from .textbox import *
 from .toggle import *
 from .window import *
+from .theme import *
 

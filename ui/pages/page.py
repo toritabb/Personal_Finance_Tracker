@@ -3,16 +3,17 @@
 from typing import Any
 
 # local
-from constants import SCREEN_SIZE
+from constants import SCREEN_W, SCREEN_H
 from ui import Canvas
+from ui.theme import Color, BACKGROUND
 
 
 
 class Page(Canvas):
     STR = 'none'
 
-    def __init__(self, parent: Canvas, manager: 'PageManagerBase', **kwargs: Any) -> None:
-        super().__init__(parent, ((0, 0), SCREEN_SIZE))
+    def __init__(self, parent: Canvas, manager: 'PageManagerBase', height: int = SCREEN_H, fill_color: Color = BACKGROUND, **kwargs: Any) -> None:
+        super().__init__(parent, ((0, 0), (SCREEN_W, height)), fill_color)
 
 
 
@@ -32,6 +33,9 @@ class PageManagerBase:
         return self._pages[page](self._parent, self)
 
     def go_to(self, page: str) -> None:
+        if page == self.current_page.STR:
+            return
+
         self.current_page.close()
 
         self.stack.append(self.current_page.STR)
@@ -45,5 +49,4 @@ class PageManagerBase:
 
     def close(self) -> None:
         self.current_page.close()
-
 

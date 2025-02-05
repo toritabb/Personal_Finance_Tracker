@@ -125,7 +125,7 @@ class TextButton(Canvas):
         self.button.set_command(new_command)
 
     def render(self, surface: Surface) -> None:
-        self.surface.fill(BACKGROUND)
+        self.surface.fill(self.parent.fill_color)
 
         self.button.render(self.surface)
         self.text_object.render(self.surface)

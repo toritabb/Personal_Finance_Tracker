@@ -2,6 +2,7 @@
 import ui
 from data import data_manager
 from .page import Page, PageManagerBase
+from .header import HeaderPage
 
 
 
@@ -11,10 +12,12 @@ class AccountsPage(Page):
     def __init__(self, parent: ui.Canvas, manager: PageManagerBase) -> None:
         super().__init__(parent, manager)
 
+        header = HeaderPage(self, manager)
+
         # you can remove these, they are just placeholders so you know what page it is and can return
         page_title = ui.Text(
             self,
-            (25, 25),
+            (25, header.bottom + 25),
             'Accounts Page',
             ('Nunito', 40, True, False)
         )

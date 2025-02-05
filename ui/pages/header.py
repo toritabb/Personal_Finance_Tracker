@@ -9,24 +9,43 @@ class HeaderPage(Page):
     STR = 'header'
 
     def __init__(self, parent: ui.Canvas, manager: PageManagerBase) -> None:
-        super().__init__(parent, manager)
+        super().__init__(parent, manager, height=125, fill_color=ui.HEADER)
 
-        # you can remove these, they are just placeholders so you know what page it is and can return
-        page_title = ui.Text(
+        snapshot = ui.TextButton(
             self,
-            (25, 25),
-            'Header',
-            ('Nunito', 40, True, False)
+            'Snapshot',
+            ('Nunito', 40, True, False),
+            (0, 25),
+            lambda: manager.go_to('snapshot'),
+            padding = (25, 10),
+            colors='button_accent'
         )
-
-        back_button = ui.TextButton(
+        accounts = ui.TextButton(
             self,
-            'Back',
-            ('Nunito', 20),
-            (25, 660),
-            command=lambda: manager.back(),
-            padding=(15, 7),
-            border_thickness=4
+            'Accounts',
+            ('Nunito', 40, True, False),
+            (snapshot.right + 50, 25),
+            lambda: manager.go_to('accounts'),
+            padding = (25, 10),
+            colors='button_accent'
         )
-        # you can remove these, they are just placeholders so you know what page it is and can return
+        income_expenses = ui.TextButton(
+            self,
+            'Income/Expenses',
+            ('Nunito', 40, True, False),
+            (accounts.right + 50, 25),
+            lambda: manager.go_to('income_expenses'),
+            padding = (25, 10),
+            colors='button_accent'
+        )
+        more = ui.TextButton(
+            self,
+            'More',
+            ('Nunito', 40, True, False),
+            (income_expenses.right + 50, 25),
+            lambda: manager.go_to('more'),
+            padding = (25, 10),
+            colors='button_accent'
+        )
+        ui.center(snapshot, accounts, income_expenses, more, axis='xy')
 

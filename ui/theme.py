@@ -6,6 +6,10 @@ from ._color_funcs import *
 
 
 
+__all__ = 'Color', 'BACKGROUND', 'HEADER', 'TEXT'
+
+
+
 # base colors
 # MOSS = Color(96, 108, 56)
 # FERN = Color(68, 81, 40)
@@ -25,6 +29,7 @@ CHARCOAL = Color(14, 18, 23)
 
 # element colors
 BACKGROUND = CREAM
+HEADER = OLD_PAPER
 
 TEXT = CHARCOAL
 
