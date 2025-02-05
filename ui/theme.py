@@ -75,15 +75,6 @@ TOGGLE_ACCENT = {
     'fill_pressed': BAMBOO,
 }
 
-# TEXTBOX = {
-#     'normal': CREAM,
-#     'hovered': CREAM,
-#     'pressed': OLD_PAPER,
-#     'border_normal': blend(OLD_PAPER, DESERT_TAN, 0.5),
-#     'border_hovered': blend(OLD_PAPER, DESERT_TAN, 0.5),
-#     'border_pressed': DESERT_TAN,
-# }
-
 COLOR_MAP = {
     'button': BUTTON,
     'button_accent': BUTTON_ACCENT,

@@ -331,8 +331,6 @@ class AddIncomePage(Page):
 
                 timing = {'start_date': start_day, 'end_date': 'None', 'recurrence': recurring, 'days_of_month': []}
 
-                print(account, name, amount, timing)
-
                 user = data_manager.get_current_user().accounts[account].incomes.append( # type: ignore
                     Income(name, timing, int(amount))
                 )

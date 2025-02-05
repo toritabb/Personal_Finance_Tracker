@@ -331,11 +331,11 @@ class AddExpensePage(Page):
 
                 timing = {'start_date': start_day, 'end_date': 'None', 'recurrence': recurring, 'days_of_month': []}
 
-                print(account, name, amount, timing)
-
-                user = data_manager.get_current_user().accounts[account].incomes.append( # type: ignore
+                user = data_manager.get_current_user().accounts[account].expenses.append( # type: ignore
                     Expense(name, timing, int(amount)) # type: ignore
                 )
+
+                print(data_manager.get_current_user().accounts[account].expenses) # type: ignore
 
             else:
                 print('no accounts')

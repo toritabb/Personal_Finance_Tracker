@@ -90,23 +90,18 @@ class Timing:
                 return future_biweekly_dates
 
             case 'monthly':
-                future_monthly_dates: list[date] = []
+                future_biweekly_dates: list[date] = []
 
-                current_date = today
+                current_date = self.start_date
+
+                while current_date < today:
+                    current_date += timedelta(days=31)
 
                 while current_date <= end_date:
-                    for day in sorted(self.days_of_month):
-                        try:
-                            next_date = current_date.replace(day=day)
-                        except ValueError:
-                            continue
+                    future_biweekly_dates.append(current_date)
+                    current_date += timedelta(days=31)
 
-                        if next_date >= today and next_date <= end_date:
-                            future_monthly_dates.append(next_date)
-
-                    current_date = (current_date.replace(day=1) + timedelta(days=32)).replace(day=1)
-
-                return future_monthly_dates
+                return future_biweekly_dates
             
         return []
 
@@ -151,23 +146,18 @@ class Timing:
                 return biweekly_dates
 
             case 'monthly':
-                past_monthly_dates: list[date] = []
+                biweekly_dates: list[date] = []
 
-                current_date = today
+                last_occurrence = self.start_date
 
-                while current_date >= self.start_date:
-                    for day in sorted(self.days_of_month, reverse=True):
-                        try:
-                            prev_date = current_date.replace(day=day)
-                        except ValueError:
-                            continue
+                while last_occurrence + timedelta(days=31) < today:
+                    last_occurrence += timedelta(days=31)
 
-                        if self.start_date <= prev_date < today:
-                            past_monthly_dates.append(prev_date)
+                while last_occurrence >= self.start_date:
+                    biweekly_dates.append(last_occurrence)
+                    last_occurrence -= timedelta(days=31)
 
-                    current_date = (current_date.replace(day=1) - timedelta(days=1)).replace(day=1)
-
-                return sorted(past_monthly_dates, reverse=True)
+                return biweekly_dates
             
         return []
 

@@ -19,6 +19,27 @@ class FAQPage(Page):
             ('Nunito', 40, True, False)
         )
 
+        faq = ui.Text(
+            self,
+            (0, 150),
+            '''Q1: What is Falcon Finance?
+A: Falcon Finance is a financial application designed to help users manage their finances efficiently and securely.
+
+Q2: Is Falcon Finance free to use?
+A: We believe in the necessity of open source software so Falcon Finance will always remain free .
+
+Q3: How secure is my financial data?
+A: We prioritize security and use encryption and other protective measures to safeguard your data. 
+However, users should follow best security practices when using the Application.
+
+Q4: How do I contact support?
+A: You can reach our support team at falconfinancehelp@gmail.com or go to more then contact for any assistance
+''',
+            ('Nunito', 23, True, False),
+            align= 'center'
+        )
+        ui.center(faq, axis='x')
+
         back_button = ui.TextButton(
             self,
             'Back',

@@ -12,22 +12,13 @@ class HeaderPage(Page):
         super().__init__(parent, manager, height=125, fill_color=ui.HEADER)
 
         padding = (30, 10)
+        spacing = 75
 
-        snapshot = ui.TextButton(
-            self,
-            'Home',
-            ('Nunito', 40, True, False),
-            (0, 25),
-            lambda: manager.go_to('snapshot'),
-            padding=padding,
-            corner_radius=15,
-            colors='button_accent'
-        )
         accounts = ui.TextButton(
             self,
             'Accounts',
             ('Nunito', 40, True, False),
-            (snapshot.right + 50, 25),
+            (0, 25),
             lambda: manager.go_to('accounts'),
             padding=padding,
             corner_radius=15,
@@ -35,9 +26,9 @@ class HeaderPage(Page):
         )
         income_expenses = ui.TextButton(
             self,
-            'Income/Expenses',
+            'Income & Expenses',
             ('Nunito', 40, True, False),
-            (accounts.right + 50, 25),
+            (accounts.right + spacing, 25),
             lambda: manager.go_to('income_expenses'),
             padding=padding,
             corner_radius=15,
@@ -47,11 +38,11 @@ class HeaderPage(Page):
             self,
             'More',
             ('Nunito', 40, True, False),
-            (income_expenses.right + 50, 25),
+            (income_expenses.right + spacing, 25),
             lambda: manager.go_to('more'),
             padding=padding,
             corner_radius=15,
             colors='button_accent'
         )
-        ui.center(snapshot, accounts, income_expenses, more, axis='xy')
+        ui.center(accounts, income_expenses, more, axis='xy')
 
