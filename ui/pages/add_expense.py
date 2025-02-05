@@ -3,7 +3,7 @@ from datetime import date
 
 # local
 import ui
-from data import data_manager
+from data import Expense, data_manager
 from .page import Page, PageManagerBase
 
 
@@ -28,7 +28,7 @@ class AddExpensePage(Page):
         # ACCOUNT OPTIONS #
         ###################
 
-        account_tab = ui.Canvas(self, (325, 175, 200, 150))
+        account_tab = ui.Canvas(self, (325, 175, 200, 130))
 
         account_title = ui.Text(
             account_tab,
@@ -38,7 +38,7 @@ class AddExpensePage(Page):
         )
 
         ui.center(account_title, axis='x')
-
+        
         account_ptrs: dict[str, ui.Pointer[bool]] = {}
         current_user = data_manager.get_current_user()
 
@@ -60,16 +60,16 @@ class AddExpensePage(Page):
         else:
             account_y = account_title.bottom + 10
 
-            for account in current_user.accounts:
+            for account_name, account in current_user.accounts.items():
                 account_label = ui.Text(
                     account_tab,
                     (0, account_y),
-                    f'{account.name}',
+                    f'{account_name}',
                     ('Nunito', 20)
                 )
 
                 account_ptr = ui.Pointer(False)
-                account_ptrs[account.name] = account_ptr
+                account_ptrs[account_name] = account_ptr
 
                 account_toggle = ui.Toggle(
                     account_tab,
@@ -165,7 +165,7 @@ class AddExpensePage(Page):
         # TIME OPTIONS #
         ################
 
-        time_period_tab = ui.Canvas(self, (460, amount_tab.bottom + 50, 185, 100))
+        time_period_tab = ui.Canvas(self, (455, account_tab.bottom + 35, 185, 130))
 
         time_period_title = ui.Text(
             time_period_tab,
@@ -309,6 +309,9 @@ class AddExpensePage(Page):
         for ptr in recurring_option_ptrs.values():
             ptr.listen(lambda pp: [p.set_no_listen(False) and print(p, p.get()) for p in recurring_option_ptrs.values() if p is not pp] if pp.get() else pp.set_no_listen(True))
 
+        for option, ptr in recurring_option_ptrs.items():
+            ptr.listen(lambda _: recurring_ptr.set(option))
+
         ##############
         # CONNECTING #
         ##############
@@ -330,21 +333,25 @@ class AddExpensePage(Page):
 
                 print(account, name, amount, timing)
 
+                user = data_manager.get_current_user().accounts[account].incomes.append( # type: ignore
+                    Expense(name, timing, int(amount)) # type: ignore
+                )
+
             else:
-                print('You have no accounts')
+                print('no accounts')
 
         add_expense_button = ui.TextButton(
             self,
             'Add Expense',
             ('Nunito', 30),
-            (0, time_period_tab.bottom + 80),
+            (0, time_period_tab.bottom + 60),
             add_income,
             padding=6,
             border_thickness=5,
             corner_radius=15
         )
 
-        ui.center(add_expense_button, axis='x')
+        ui.center(add_expense_button)
 
         ###############
         # back button #
