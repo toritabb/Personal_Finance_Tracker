@@ -28,7 +28,7 @@ class AddIncomePage(Page):
         # ACCOUNT OPTIONS #
         ###################
 
-        account_tab = ui.Canvas(self, (325, 175, 200, 100))
+        account_tab = ui.Canvas(self, (325, 175, 200, 150))
 
         account_title = ui.Text(
             account_tab,
@@ -324,21 +324,14 @@ class AddIncomePage(Page):
                 name = source_ptr.get()
                 amount = amount_ptr.get()
                 start_day = str(date(int(start_year_ptr.get()), int(start_month_ptr.get()), int(start_day_ptr.get())))
-                recurring = recurring_ptr.get()
+                recurring = 'never' if not show_recurring_options_ptr.get() else 'weekly' if recurring_option_ptrs['weekly'].get() else 'biweekly' if recurring_option_ptrs['biweekly'].get() else 'monthly'
 
                 timing = {'start_date': start_day, 'end_date': 'None', 'recurrence': recurring, 'days_of_month': []}
 
                 print(account, name, amount, timing)
 
             else:
-                name = source_ptr.get()
-                amount = amount_ptr.get()
-                start_day = str(date(int(start_year_ptr.get()), int(start_month_ptr.get()), int(start_day_ptr.get())))
-                recurring = recurring_ptr.get()
-
-                timing = {'start_date': start_day, 'end_date': 'None', 'recurrence': recurring, 'days_of_month': []}
-
-                print('no accounts', name, amount, timing)
+                print('You have no accounts')
 
         add_income_button = ui.TextButton(
             self,

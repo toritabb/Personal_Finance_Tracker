@@ -39,6 +39,46 @@
           "expenses": []
         }
       ]
+    },
+    {
+      "username": "Joe",
+      "password": "Joe_is_cool1!",
+      "accounts": [
+        {
+          "name": "My Checking",
+          "type": "checking",
+          "balance": 0,
+          "incomes": [],
+          "expenses": []
+        },
+        {
+          "name": "Joe's Account",
+          "type": "checking",
+          "balance": 0,
+          "incomes": [],
+          "expenses": []
+        }
+      ]
+    },
+    {
+      "username": "J",
+      "password": "J",
+      "accounts": [
+        {
+          "name": "My Checking",
+          "type": "checking",
+          "balance": 0,
+          "incomes": [],
+          "expenses": []
+        },
+        {
+          "name": "J's Account",
+          "type": "checking",
+          "balance": 0,
+          "incomes": [],
+          "expenses": []
+        }
+      ]
     }
   ]
 }

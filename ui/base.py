@@ -229,3 +229,6 @@ class Interactable(UIElement):
 
             self._listener_group_id = -1
 
+            if self.pressed and event_manager.mouse_attention:
+                event_manager.mouse_attention = False
+
