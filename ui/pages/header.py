@@ -15,7 +15,7 @@ class HeaderPage(Page):
 
         snapshot = ui.TextButton(
             self,
-            'Snapshot',
+            'Home',
             ('Nunito', 40, True, False),
             (0, 25),
             lambda: manager.go_to('snapshot'),

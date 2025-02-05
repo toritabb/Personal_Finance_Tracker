@@ -138,11 +138,105 @@ class AddIncomePage(Page):
 
         ui.center(amount_textbox, axis='x')
 
+        ###############
+        # DAY OPTIONS #
+        ###############
+
+        time_period_tab = ui.Canvas(self, (amount_tab.right + 10, amount_tab.top, 175, 130))
+
+        time_period_title = ui.Text(
+            time_period_tab,
+            (0, 10),
+            'Time Period',
+            ('Nunito', 30)
+        )
+
+        time_period_ptr = ui.Pointer('') # pointer for the actual recurring value
+
+        start_day_ptr = ui.Pointer('01')
+        start_month_ptr = ui.Pointer('01')
+        start_year_ptr = ui.Pointer('01')
+
+        def day_validation(text: str) -> bool:
+            try:
+                return 0 <= int(text) <= 31
+
+            except:
+                return False
+
+        def month_validation(text: str) -> bool:
+            try:
+                return 0 <= int(text) <= 12
+
+            except:
+                return False
+
+        def year_validation(text: str) -> bool:
+            try:
+                return 0 <= int(text) <= 9999
+
+            except:
+                return False
+
+        amount_textbox = ui.Textbox(
+            amount_tab,
+            amount_text_ptr,
+            ('Nunito', 20),
+            (0, amount_title.bottom + 10),
+            (150, -1),
+            validation_function=lambda x: 0 <= int(x) <= 12,
+            padding=6,
+            border_thickness=4,
+            corner_radius=10
+        )
+
+        ui.center(recurring_title, recurring_toggle, axis='x')
+
+        recurring_option_ptrs = {'weekly': ui.Pointer(True), 'biweekly': ui.Pointer(False), 'monthly': ui.Pointer(False)}
+
+        def open_recurring_options() -> ui.Canvas:
+            recurring_options_tab = ui.Canvas(recurring_tab, (0, recurring_title.bottom + 10, 175, 80))
+
+            recurring_y = 0
+
+            for option, option_ptr in recurring_option_ptrs.items():
+                recurring_label = ui.Text(
+                    recurring_options_tab,
+                    (0, recurring_y),
+                    f'{option.capitalize()}',
+                    ('Nunito', 20)
+                )
+
+                recurring_toggle = ui.Toggle(
+                    recurring_options_tab,
+                    (recurring_label.right + 10, recurring_label.centery - 10),
+                    21,
+                    option_ptr,
+                    border_thickness=4,
+                    corner_radius=-1
+                )
+
+                ui.center(recurring_label, recurring_toggle, axis='x')
+
+                recurring_y = recurring_label.bottom + 7
+
+            return recurring_options_tab
+
+        recurring_options_tab = ui.Pointer(None)
+
+        show_recurring_options_ptr.listen(lambda pointer: recurring_options_tab.set(open_recurring_options()) if pointer.get() else recurring_options_tab.get().close()) # type: ignore
+
+        for ptr in recurring_option_ptrs.values():
+            ptr.listen(lambda pp: [p.set_no_listen(False) and print(p, p.get()) for p in recurring_option_ptrs.values() if p is not pp] if pp.get() else pp.set_no_listen(True))
+
+        for option, ptr in recurring_option_ptrs.items():
+            ptr.listen(lambda _: recurring_ptr.set(option))
+
         #####################
         # RECURRING OPTIONS #
         #####################
 
-        recurring_tab = ui.Canvas(self, (amount_tab.right + 10, amount_tab.top, 175, 130))
+        recurring_tab = ui.Canvas(self, (time_period_tab.right + 10, time_period_tab.top, 175, 130))
 
         recurring_title = ui.Text(
             recurring_tab,
@@ -203,6 +297,9 @@ class AddIncomePage(Page):
 
         for ptr in recurring_option_ptrs.values():
             ptr.listen(lambda pp: [p.set_no_listen(False) and print(p, p.get()) for p in recurring_option_ptrs.values() if p is not pp] if pp.get() else pp.set_no_listen(True))
+
+        for option, ptr in recurring_option_ptrs.items():
+            ptr.listen(lambda _: recurring_ptr.set(option))
 
         ###############
         # back button #
