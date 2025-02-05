@@ -11,8 +11,6 @@ class ExamplePage(Page):
     def __init__(self, parent: ui.Canvas, manager: PageManagerBase) -> None:
         super().__init__(parent, manager)
 
-        data_manager.load('Talan', 'Talan')
-
         ########
         # TEXT #
         ########

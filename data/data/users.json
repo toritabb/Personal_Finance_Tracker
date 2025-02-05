@@ -1,0 +1,84 @@
+{
+  "users": [
+    {
+      "username": "Alex9",
+      "password": "1",
+      "accounts": [
+        {
+          "name": "My Checking",
+          "type": "checking",
+          "balance": 0,
+          "incomes": [],
+          "expenses": []
+        },
+        {
+          "name": "Alex9's Account",
+          "type": "checking",
+          "balance": 0,
+          "incomes": [],
+          "expenses": []
+        }
+      ]
+    },
+    {
+      "username": "Alex10",
+      "password": "1",
+      "accounts": [
+        {
+          "name": "My Checking",
+          "type": "checking",
+          "balance": 0,
+          "incomes": [],
+          "expenses": []
+        },
+        {
+          "name": "Alex10's Account",
+          "type": "checking",
+          "balance": 0,
+          "incomes": [],
+          "expenses": []
+        }
+      ]
+    },
+    {
+      "username": "Joe",
+      "password": "Joe_is_cool1!",
+      "accounts": [
+        {
+          "name": "My Checking",
+          "type": "checking",
+          "balance": 0,
+          "incomes": [],
+          "expenses": []
+        },
+        {
+          "name": "Joe's Account",
+          "type": "checking",
+          "balance": 0,
+          "incomes": [],
+          "expenses": []
+        }
+      ]
+    },
+    {
+      "username": "J",
+      "password": "J",
+      "accounts": [
+        {
+          "name": "My Checking",
+          "type": "checking",
+          "balance": 0,
+          "incomes": [],
+          "expenses": []
+        },
+        {
+          "name": "J's Account",
+          "type": "checking",
+          "balance": 0,
+          "incomes": [],
+          "expenses": []
+        }
+      ]
+    }
+  ]
+}

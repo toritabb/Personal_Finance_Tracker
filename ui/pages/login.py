@@ -14,12 +14,14 @@ class LoginPage(Page):
         self._manager = manager  # Store the manager as instance variable
 
         # Title
-        ui.Text(
+        login_title = ui.Text(
             self,
-            (SCREEN_W // 2 - 100, 100),
+            (0, 100),
             'Login',
             ('Nunito', 48, True, False)
         )
+
+        ui.center(login_title)
 
         # Username field
         ui.Text(
@@ -80,18 +82,18 @@ class LoginPage(Page):
         )
         ui.center(login_btn, axis='x')  # Center horizontally
 
-        # Create Account button
+        # Create Account link
         create_account_btn = ui.TextButton(
             self,
             'Create Account',
             ('Nunito', 20),
-            (0, 560),
+            (0, 560),  # Initial x position will be centered
             command=lambda: self._manager.go_to('create_account'),
             padding=(15, 7),
             border_thickness=2,
             corner_radius=5
         )
-        ui.center(create_account_btn, axis='x')
+        ui.center(create_account_btn, axis='x')  # Center horizontally
 
         # Back button
         ui.TextButton(
@@ -110,9 +112,13 @@ class LoginPage(Page):
             print("Username and password are required")
             return
 
-        if data_manager.authenticate_user(username, password):
+        # Attempt to authenticate and get the user
+        user = data_manager.authenticate_user(username, password)
+        if user:
+            # Store the current user
+            data_manager.set_current_user(user)
             print("Login successful!")
-            self._manager.go_to('snapshot')  # Navigate to snapshot page
+            self._manager.go_to('snapshot')  # Navigate to snapshot page after successful login
         else:
             print("Invalid username or password")
 

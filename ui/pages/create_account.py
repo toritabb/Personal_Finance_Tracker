@@ -137,7 +137,19 @@ class CreateAccountPage(Page):
             print("Username already exists")
             return
 
-        data_manager.create_user(username, password)
+        # Create new user
+        user = data_manager.create_user(username, password)
+        
+        # Add a default checking account for the user
+        user.add_account(
+            name=f"Savings Account",
+            type='savings',
+            balance=0
+        )
+        
+        # Save changes
+        data_manager.save()
+        
         print("Account created successfully!")
-        self._manager.go_to('login')  # Return to login page
+        self._manager.go_to('login')  # Return to login page after successful account creation
 
