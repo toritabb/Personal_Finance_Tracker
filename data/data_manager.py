@@ -29,18 +29,7 @@ class DataManager:
             self.save()
 
         try:
-<<<<<<< HEAD
-            json_data = json.loads(file.load(self._storage_file))
-            
-            for account_data in json_data.get('accounts', []):
-                if 'username' not in account_data or 'password' not in account_data:
-                    account_data['username'] = account_data.get('name', 'default_user')
-                    account_data['password'] = 'default_password'
-                
-                self.accounts.append(Account(**account_data))
-=======
             json_data = json.loads(file.load(f'data/data/{username}.bin', password))
->>>>>>> 6bd7b7102724f695dc80602601980d9e84cd3dd7
 
             self.username = json_data['username']
             self.password = json_data['password']
