@@ -1,6 +1,5 @@
 # local
 import ui
-from data import data_manager
 from .page import Page, PageManagerBase
 
 

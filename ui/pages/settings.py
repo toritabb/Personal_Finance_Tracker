@@ -29,7 +29,7 @@ class SettingsPage(Page):
             border_thickness=4
         )
 
-        text1 = ui.Text(
+        notifText = ui.Text(
             self,
             (25, page_title.bottom + 50),
             'Notifications',
@@ -40,7 +40,24 @@ class SettingsPage(Page):
         # notifications on or off
         notifToggle = ui.Toggle(
             self,
-            (text1.right + 15, page_title.bottom + 47),
+            (notifToggle.right + 15, page_title.bottom + 47),
+            25,
+            ui.Pointer(True),
+            border_thickness=4,
+            corner_radius=0
+        )
+
+        darkModeText = ui.Text(
+            self,
+            (25, page_title.bottom + 80),
+            'Notifications',
+            ('Nunito', 20),
+            align = 'left'
+        )
+
+        darkMode = ui.Toggle(
+            self,
+            (darkModeText.right + 15, page_title.bottom + 77),
             25,
             ui.Pointer(True),
             border_thickness=4,
