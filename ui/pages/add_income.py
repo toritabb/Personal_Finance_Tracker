@@ -87,7 +87,7 @@ class AddIncomePage(Page):
             list(account_ptrs.values())[0].set_no_listen(True)
 
             for ptr in account_ptrs.values():
-                ptr.listen(lambda pp: [p.set_no_listen(False) and print(p, p.get()) for p in account_ptrs.values() if p is not pp] if pp.get() else pp.set_no_listen(True))
+                ptr.listen(lambda pp: [p.set_no_listen(False) for p in account_ptrs.values() if p is not pp] if pp.get() else pp.set_no_listen(True))
 
         ################
         # NAME OPTIONS #
@@ -307,7 +307,7 @@ class AddIncomePage(Page):
         show_recurring_options_ptr.listen(lambda pointer: recurring_options_tab.set(open_recurring_options()) if pointer.get() else recurring_options_tab.get().close()) # type: ignore
 
         for ptr in recurring_option_ptrs.values():
-            ptr.listen(lambda pp: [p.set_no_listen(False) and print(p, p.get()) for p in recurring_option_ptrs.values() if p is not pp] if pp.get() else pp.set_no_listen(True))
+            ptr.listen(lambda pp: [p.set_no_listen(False) for p in recurring_option_ptrs.values() if p is not pp] if pp.get() else pp.set_no_listen(True))
 
         for option, ptr in recurring_option_ptrs.items():
             ptr.listen(lambda _: recurring_ptr.set(option))
