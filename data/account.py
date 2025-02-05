@@ -9,25 +9,33 @@ __all__ = 'Account', 'Timing', 'Income', 'Expense'
 
 
 class Account:
-    __slots__ = 'username', 'password', 'name', 'type', 'balance', 'past_incomes', 'past_expenses', 'incomes', 'expenses'
+    '''A bank account that belongs to a user. Contains balance and transaction history.'''
+    __slots__ = 'name', 'type', 'balance', 'incomes', 'expenses'
 
-    def __init__(self, username: str, password: str, name: str = '', type: Literal['checking', 'savings'] = 'checking', balance: int = 0, incomes: list[dict] | None = None, expenses: list[dict] | None = None) -> None:
-        self.username = username
-        self.password = password
+    def __init__(self, name: str = '', type: Literal['checking', 'savings'] = 'checking', balance: int = 0, incomes: list[dict] | None = None, expenses: list[dict] | None = None) -> None:
+        '''Initialize a new bank account.
+        
+        Args:
+            name: Display name for the account
+            type: Either 'checking' or 'savings'
+            balance: Current balance in cents
+            incomes: List of income transaction dictionaries
+            expenses: List of expense transaction dictionaries
+        '''
         self.name = name
         self.type = type
-        self.balance = balance
+        self.balance = balance  # stored in cents
         self.incomes = [Income(**income) for income in (incomes or [])]
         self.expenses = [Expense(**expense) for expense in (expenses or [])]
+
     def get_save_dict(self) -> dict:
+        '''Get dictionary representation for saving to storage.'''
         return {
-            'username': self.username,
-            'password': self.password,
             'name': self.name,
             'type': self.type,
             'balance': self.balance,
             'incomes': [income.get_save_dict() for income in self.incomes],
-            'expenses': [expense.get_save_dict() for expense in self.expenses],
+            'expenses': [expense.get_save_dict() for expense in self.expenses]
         }
 
 

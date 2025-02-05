@@ -40,8 +40,9 @@ class AddIncomePage(Page):
         ui.center(account_title, axis='x')
 
         account_ptrs: dict[str, ui.Pointer[bool]] = {}
+        current_user = data_manager.get_current_user()
 
-        if not data_manager.accounts:
+        if not current_user or not current_user.accounts:
             create_account_button = ui.TextButton(
                 account_tab,
                 'Create Account',
@@ -59,7 +60,7 @@ class AddIncomePage(Page):
         else:
             account_y = account_title.bottom + 10
 
-            for account in data_manager.accounts:
+            for account in current_user.accounts:
                 account_label = ui.Text(
                     account_tab,
                     (0, account_y),
