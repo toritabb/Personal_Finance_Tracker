@@ -33,7 +33,7 @@ class WelcomePage(Page):
             'Create New Account',
             ('Nunito', 50),
             (1165, image.bottom + 50),
-            lambda: manager.go_to('legal'),
+            lambda: manager.go_to('create_account'),
             padding=(15, 7),
             border_thickness=4,
         )
@@ -44,7 +44,7 @@ class WelcomePage(Page):
             'Log Into Existing Account',
             ('Nunito', 50),
             (1165, create.bottom + 50),
-            lambda: manager.go_to('legal'),
+            lambda: manager.go_to('login'),
             padding=(15, 7),
             border_thickness=4,
         )
