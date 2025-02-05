@@ -35,15 +35,11 @@ def center(*elements: 'UIElement', axis: Literal['x', 'y', 'xy'] = 'x') -> None:
         case 'x':
             dx = parent.centerx - bounding_box.centerx
 
-            print(dx)
-
             for element in elements:
                 element.move_ip(dx, 0)
 
         case 'y':
             dy = parent.centery - bounding_box.centery
-
-            print(dy)
 
             for element in elements:
                 element.move_ip(0, dy)
