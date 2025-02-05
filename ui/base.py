@@ -33,20 +33,20 @@ def center(*elements: 'UIElement', axis: Literal['x', 'y', 'xy'] = 'x') -> None:
 
     match axis:
         case 'x':
-            dx = parent.centerx - bounding_box.centerx - parent.x
+            dx = parent.centerx - parent.x - bounding_box.centerx
 
             for element in elements:
                 element.move_offset(dx, 0)
 
         case 'y':
-            dy = parent.centery - bounding_box.centery - parent.y
+            dy = parent.centery - parent.y - bounding_box.centery
 
             for element in elements:
                 element.move_offset(0, dy)
 
         case 'xy':
-            dx = parent.centerx - bounding_box.centerx - parent.x
-            dy = parent.centery - bounding_box.centery - parent.y
+            dx = parent.centerx - parent.x - bounding_box.centerx
+            dy = parent.centery - parent.y - bounding_box.centery
 
             for element in elements:
                 element.move_offset(dx, dy)
@@ -228,4 +228,7 @@ class Interactable(UIElement):
             event_manager.remove_listener_group(self._listener_group_id)
 
             self._listener_group_id = -1
+
+            if self.pressed and event_manager.mouse_attention:
+                event_manager.mouse_attention = False
 

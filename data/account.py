@@ -182,7 +182,7 @@ class Timing:
 
 
 class Income:
-    __slots__ = 'name', 'timing', 'amount', 'recieved'
+    __slots__ = 'name', 'timing', 'amount'
 
     def __init__(self, name: str, timing: dict, amount: int) -> None:
         self.name = name
@@ -199,7 +199,7 @@ class Income:
 
 
 class Expense:
-    __slots__ = 'name', 'timing', 'amount', 'paid'
+    __slots__ = 'name', 'timing', 'amount'
 
     def __init__(self, name: str, timing: dict, amount: int) -> None:
         self.name = name

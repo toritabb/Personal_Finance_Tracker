@@ -14,12 +14,14 @@ class LoginPage(Page):
         self._manager = manager  # Store the manager as instance variable
 
         # Title
-        ui.Text(
+        login_title = ui.Text(
             self,
-            (SCREEN_W // 2 - 100, 100),
+            (0, 100),
             'Login',
             ('Nunito', 48, True, False)
         )
+
+        ui.center(login_title)
 
         # Username field
         ui.Text(
