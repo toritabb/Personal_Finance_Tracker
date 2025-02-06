@@ -344,7 +344,6 @@ class AddExpensePage(Page):
                     expense
                 )
 
-<<<<<<< HEAD
                 days = (date.today() - expense.timing.start_date).days
 
                 expense_cost = len(expense.timing.get_within_previous_days(days)) * expense.amount
@@ -353,8 +352,6 @@ class AddExpensePage(Page):
 
                 manager.go_to('income_expenses')
 
-=======
->>>>>>> a567840d97aec5e73c63c03435e7b0f4d1bdb69b
             else:
                 print('no accounts')
 
