@@ -75,7 +75,7 @@ class SettingsPage(Page):
                 print("No user logged in")
                 return
                 
-            export_path = file.get_global_path(f'data/exports/{current_user.username}_data.json')
+            export_path = f'C:/Users/talan/OneDrive/Desktop/{current_user.username}.json'
             if data_manager.export_current_user_data(export_path):
                 print(f"Data exported successfully to {export_path}")
             else:

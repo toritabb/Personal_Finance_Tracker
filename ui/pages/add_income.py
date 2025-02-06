@@ -137,7 +137,7 @@ class AddIncomePage(Page):
 
         def amount_validation(text: str) -> bool:
             try:
-                amount_ptr.set(float('0' + text.strip('$')))
+                amount_ptr.set(float('0'))
 
                 return True
 
@@ -145,18 +145,25 @@ class AddIncomePage(Page):
                 return False
 
         amount_ptr = ui.Pointer(0.0)
-        amount_text_ptr = ui.Pointer('$0.0')
+        amount_text_ptr = ui.Pointer('0.0')
 
         amount_textbox = ui.Textbox(
             amount_tab,
             amount_text_ptr,
             ('Nunito', 20),
             (0, amount_title.bottom + 10),
-            (150, -1),
+            (110, -1),
             validation_function=amount_validation,
-            padding=6,
+            padding=(20, 6),
             border_thickness=4,
             corner_radius=10
+        )
+
+        dollar_sign = ui.Text(
+            amount_tab,
+            (amount_textbox.left + 42, amount_textbox.top + 12),
+            '$',
+            ('Nunito', 20),
         )
 
         ui.center(amount_textbox, axis='x')
@@ -331,9 +338,19 @@ class AddIncomePage(Page):
 
                 timing = {'start_date': start_day, 'end_date': 'None', 'recurrence': recurring, 'days_of_month': []}
 
-                user = data_manager.get_current_user().accounts[account].incomes.append( # type: ignore
-                    Income(name, timing, int(amount))
+                income = Income(name, timing, int(amount)) # type: ignore
+
+                data_manager.get_current_user().accounts[account].incomes.append( # type: ignore
+                    income
                 )
+
+                days = (date.today() - income.timing.start_date).days
+
+                income_cost = len(income.timing.get_within_previous_days(days)) * income.amount
+
+                data_manager.get_current_user().accounts[account].balance += income_cost * 100
+
+                manager.go_to('income_expenses')
 
             else:
                 print('no accounts')

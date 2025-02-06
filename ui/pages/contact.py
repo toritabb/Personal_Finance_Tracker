@@ -19,7 +19,7 @@ from email.mime.audio import MIMEAudio
 from email.mime.base import MIMEBase
 from mimetypes import guess_type as guess_mime_type
 from file import get_global_path
-
+'''
 # Request all access (permission to read/send/receive emails, manage the inbox, and more)
 SCOPES = ['https://mail.google.com/']
 our_email = 'falconfinancehelp@gmail.com'
@@ -46,12 +46,14 @@ def gmail_authenticate():
 
 # get the Gmail API service
 service = gmail_authenticate()
-
+'''
 class ContactPage(Page):
     STR = 'contact'
 
     def __init__(self, parent: ui.Canvas, manager: PageManagerBase) -> None:
         super().__init__(parent, manager)
+
+        '''
 
         def add_attachment(message, filename):
             content_type, encoding = guess_mime_type(filename)
@@ -98,6 +100,7 @@ class ContactPage(Page):
             userId="me",
             body=build_message(destination, obj, body, attachments)
             ).execute()
+            '''
 
         # you can remove these, they are just placeholders so you know what page it is and can return
         page_title = ui.Text(
@@ -120,7 +123,7 @@ class ContactPage(Page):
         contact = ui.Text(
             self,
             (0, email.top - 50),
-            'Conatct us at',
+            'Contact us at',
             ('Nunito', 50)
         )
 

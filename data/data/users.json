@@ -100,7 +100,18 @@
               "amount": 50000
             }
           ],
-          "expenses": []
+          "expenses": [
+            {
+              "name": "hustlin'",
+              "timing": {
+                "start_date": "2025-01-25",
+                "end_date": "None",
+                "recurrence": "weekly",
+                "days_of_month": []
+              },
+              "amount": 500
+            }
+          ]
         },
         {
           "name": "Savings Account",
@@ -125,6 +136,241 @@
     {
       "username": "joe",
       "password": "joe",
+      "accounts": [
+        {
+          "name": "My Checking",
+          "type": "checking",
+          "balance": 0,
+          "incomes": [],
+          "expenses": []
+        },
+        {
+          "name": "Savings Account",
+          "type": "savings",
+          "balance": 0,
+          "incomes": [],
+          "expenses": []
+        }
+      ]
+    },
+    {
+      "username": "yas",
+      "password": "hi",
+      "accounts": [
+        {
+          "name": "My Checking",
+          "type": "checking",
+          "balance": 0,
+          "incomes": [],
+          "expenses": []
+        },
+        {
+          "name": "Savings Account",
+          "type": "savings",
+          "balance": 0,
+          "incomes": [],
+          "expenses": []
+        }
+      ]
+    },
+    {
+      "username": "jack",
+      "password": "1",
+      "accounts": [
+        {
+          "name": "My Checking",
+          "type": "checking",
+          "balance": 0,
+          "incomes": [
+            {
+              "name": "bitches",
+              "timing": {
+                "start_date": "2025-01-01",
+                "end_date": "None",
+                "recurrence": "weekly",
+                "days_of_month": []
+              },
+              "amount": 10000000
+            },
+            {
+              "name": "bitches",
+              "timing": {
+                "start_date": "2025-01-01",
+                "end_date": "None",
+                "recurrence": "weekly",
+                "days_of_month": []
+              },
+              "amount": 10000000
+            },
+            {
+              "name": "bitches",
+              "timing": {
+                "start_date": "2025-01-01",
+                "end_date": "None",
+                "recurrence": "weekly",
+                "days_of_month": []
+              },
+              "amount": 10000000
+            },
+            {
+              "name": "bitches",
+              "timing": {
+                "start_date": "2025-01-01",
+                "end_date": "None",
+                "recurrence": "weekly",
+                "days_of_month": []
+              },
+              "amount": 10000000
+            },
+            {
+              "name": "bitches",
+              "timing": {
+                "start_date": "2025-01-01",
+                "end_date": "None",
+                "recurrence": "weekly",
+                "days_of_month": []
+              },
+              "amount": 10000000
+            },
+            {
+              "name": "bitches",
+              "timing": {
+                "start_date": "2025-01-01",
+                "end_date": "None",
+                "recurrence": "weekly",
+                "days_of_month": []
+              },
+              "amount": 10000000
+            },
+            {
+              "name": "bitches",
+              "timing": {
+                "start_date": "2025-01-01",
+                "end_date": "None",
+                "recurrence": "weekly",
+                "days_of_month": []
+              },
+              "amount": 10000000
+            }
+          ],
+          "expenses": [
+            {
+              "name": "hoes",
+              "timing": {
+                "start_date": "2025-01-01",
+                "end_date": "None",
+                "recurrence": "never",
+                "days_of_month": []
+              },
+              "amount": 0
+            }
+          ]
+        },
+        {
+          "name": "Savings Account",
+          "type": "savings",
+          "balance": 0,
+          "incomes": [],
+          "expenses": []
+        }
+      ]
+    },
+    {
+      "username": "j",
+      "password": "j",
+      "accounts": [
+        {
+          "name": "My Checking",
+          "type": "checking",
+          "balance": -10000,
+          "incomes": [],
+          "expenses": [
+            {
+              "name": "a",
+              "timing": {
+                "start_date": "2025-01-01",
+                "end_date": "None",
+                "recurrence": "never",
+                "days_of_month": []
+              },
+              "amount": 100
+            },
+            {
+              "name": "asdasd",
+              "timing": {
+                "start_date": "2025-02-04",
+                "end_date": "None",
+                "recurrence": "weekly",
+                "days_of_month": []
+              },
+              "amount": 100
+            }
+          ]
+        },
+        {
+          "name": "Savings Account",
+          "type": "savings",
+          "balance": 9999500,
+          "incomes": [
+            {
+              "name": "Hustlin' n' shyt",
+              "timing": {
+                "start_date": "2025-02-02",
+                "end_date": "None",
+                "recurrence": "weekly",
+                "days_of_month": []
+              },
+              "amount": 100000
+            },
+            {
+              "name": "Hustlin' n' shyt",
+              "timing": {
+                "start_date": "2025-02-02",
+                "end_date": "None",
+                "recurrence": "weekly",
+                "days_of_month": []
+              },
+              "amount": 100000
+            }
+          ],
+          "expenses": [
+            {
+              "name": "car payment",
+              "timing": {
+                "start_date": "2025-01-01",
+                "end_date": "None",
+                "recurrence": "weekly",
+                "days_of_month": []
+              },
+              "amount": 100
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "username": "b",
+      "password": "b",
+      "accounts": [
+        {
+          "name": "My Checking",
+          "type": "checking",
+          "balance": 0,
+          "incomes": [],
+          "expenses": []
+        },
+        {
+          "name": "Savings Account",
+          "type": "savings",
+          "balance": 0,
+          "incomes": [],
+          "expenses": []
+        }
+      ]
+    },
+    {
+      "username": "Alex",
+      "password": "Aes256!",
       "accounts": [
         {
           "name": "My Checking",
