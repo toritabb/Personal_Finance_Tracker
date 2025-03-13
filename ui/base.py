@@ -78,7 +78,7 @@ class UIElement(Rect):
     def move_offset(self, dx: int, dy: int) -> None:
         self.move_ip(dx, dy)
 
-    def render(self, screen: Surface) -> None: ...
+    def render(self, surface: Surface) -> None: ...
 
     def get_local_pos(self, position: Coordinate) -> vec2:
         if self.parent:

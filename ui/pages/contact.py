@@ -6,7 +6,7 @@ import file
 from .page import Page, PageManagerBase
 from constants import SCREEN_W, SCREEN_H
 from datetime import datetime
-from googleapiclient.discovery import build
+from googleapiclient.discovery import build, Resource
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
 # for encoding/decoding messages in base64
@@ -20,32 +20,57 @@ from email.mime.base import MIMEBase
 from mimetypes import guess_type as guess_mime_type
 from file import get_global_path
 
-# Request all access (permission to read/send/receive emails, manage the inbox, and more)
-SCOPES = ['https://mail.google.com/']
-our_email = 'falconfinancehelp@gmail.com'
-CLIENT_SECRET_FILE = get_global_path('credentials.json')
 
-def gmail_authenticate():
+
+SCOPES = ['https://mail.google.com/']
+CLIENT_SECRET_FILE = get_global_path('credentials.json')
+EMIAL = 'falconfinancehelp@gmail.com'
+
+
+
+def get_service() -> Resource:
+    # Request all access (permission to read/send/receive emails, manage the inbox, and more)
+
     creds = None
+
     # the file token.pickle stores the user's access and refresh tokens, and is
     # created automatically when the authorization flow completes for the first time
-    if os.path.exists("token.pickle"):
-        with open("token.pickle", "rb") as token:
+    if os.path.exists('token.pickle'):
+        with open('token.pickle', 'rb') as token:
             creds = pickle.load(token)
+
     # if there are no (valid) credentials availablle, let the user log in.
     if not creds or not creds.valid:
         if creds and creds.expired and creds.refresh_token:
             creds.refresh(Request())
+
         else:
             flow = InstalledAppFlow.from_client_secrets_file(CLIENT_SECRET_FILE, SCOPES)
             creds = flow.run_local_server(port=0)
+
         # save the credentials for the next run
-        with open("token.pickle", "wb") as token:
+        with open('token.pickle', 'wb') as token:
             pickle.dump(creds, token)
+
     return build('gmail', 'v1', credentials=creds)
 
-# get the Gmail API service
-service = gmail_authenticate()
+
+def build_message(destination: str, subject, body):
+    message = MIMEText(str(body))
+    message['to'] = destination
+    message['from'] = EMIAL
+    message['subject'] = subject
+
+    return {'raw': urlsafe_b64encode(message.as_bytes()).decode()}
+
+
+def send_message(service: Resource, destination: str, subject: str, body: str):
+    return service.users().messages().send(     # type: ignore
+        userId="me",
+        body=build_message(destination, subject, body)
+    ).execute()
+
+
 
 class ContactPage(Page):
     STR = 'contact'
@@ -53,104 +78,13 @@ class ContactPage(Page):
     def __init__(self, parent: ui.Canvas, manager: PageManagerBase) -> None:
         super().__init__(parent, manager)
 
-        def add_attachment(message, filename):
-            content_type, encoding = guess_mime_type(filename)
-            if content_type is None or encoding is not None:
-                content_type = 'application/octet-stream'
-            main_type, sub_type = content_type.split('/', 1)
-            if main_type == 'text':
-                fp = open(filename, 'rb')
-                msg = MIMEText(fp.read().decode(), _subtype=sub_type)
-                fp.close()
-            elif main_type == 'image':
-                fp = open(filename, 'rb')
-                msg = MIMEImage(fp.read(), _subtype=sub_type)
-                fp.close()
-            elif main_type == 'audio':
-                fp = open(filename, 'rb')
-                msg = MIMEAudio(fp.read(), _subtype=sub_type)
-                fp.close()
-            else:
-                fp = open(filename, 'rb')
-                msg = MIMEBase(main_type, sub_type)
-                msg.set_payload(fp.read())
-                fp.close()
-            filename = os.path.basename(filename)
-            msg.add_header('Content-Disposition', 'attachment', filename=filename)
-            message.attach(msg)
-        def build_message(destination, obj, body, attachments=[]):
-            if not attachments: # no attachments given
-                message = MIMEText(str(body))
-                message['to'] = destination
-                message['from'] = our_email
-                message['subject'] = obj
-            else:
-                message = MIMEMultipart()
-                message['to'] = destination
-                message['from'] = our_email
-                message['subject'] = obj
-                message.attach(MIMEText(str(body)))
-                for filename in attachments:
-                    add_attachment(message, filename)
-            return {'raw': urlsafe_b64encode(message.as_bytes()).decode()}
-        def send_message(service, destination, obj, body, attachments=[]):
-            return service.users().messages().send(
-            userId="me",
-            body=build_message(destination, obj, body, attachments)
-            ).execute()
-            
+        try:
+            service = get_service()
 
-        # you can remove these, they are just placeholders so you know what page it is and can return
-        page_title = ui.Text(
-            self,
-            (25, 25),
-            'Contact Page',
-            ('Nunito', 40, True, False)
-        )
+            self.init_online(service)
 
-        email = ui.Text(
-            self,
-            (300, 0),
-            'falconfinancehelp@gmail.com',
-            ('Nunito', 75)
-        )
-        ui.center(email, axis='x')
-        ui.center(email, axis='y')
-            
-
-        contact = ui.Text(
-            self,
-            (0, email.top - 50),
-            'Contact us at',
-            ('Nunito', 50)
-        )
-
-        ui.center(contact, axis='x') # center the text on the x
-
-        # Add the question entry box and submit button
-        email = ui.misc.Pointer('')
-        ui.Textbox(
-            self,
-            email,
-            ('Nunito', 20),
-            (SCREEN_W // 2 - 150, 450),
-            (300, 40),
-            border_thickness=2,
-            corner_radius=5
-        )
-
-        send = ui.TextButton(
-            self,
-            'Send',
-            ('Nunito', 20),
-            (0, 540),
-            command=lambda :send_message(service, "falconfinancehelp@gmail.com", "Suppport Ticket", 
-            email.get()),
-            padding=(15, 7),
-            border_thickness=4,
-        )
-        ui.center(send, axis="x")
-
+        except:
+            self.init_offline()
 
         back_button = ui.TextButton(
             self,
@@ -161,5 +95,98 @@ class ContactPage(Page):
             padding=(15, 7),
             border_thickness=4
         )
-            # you can remove these, they are just placeholders so you know what page it is and can return
+
+    def init_online(self, service: Resource) -> None:
+        contact = ui.Text(
+            self,
+            (0, 40),
+            'Contact Us',
+            ('Nunito', 50, True, False),
+        )
+
+        our_email = ui.Text(
+            self,
+            (0, contact.bottom + 8),
+            'at falconfinancehelp@gmail.com',
+            ('Nunito', 25),
+        )
+
+        # User email
+        email_label = ui.Text(
+            self,
+            (0, our_email.bottom + 60),
+            'Email',
+            ('Nunito', 20, True, False),
+        )
+
+        email_ptr = ui.misc.Pointer('')
+        email_box = ui.Textbox(
+            self,
+            email_ptr,
+            ('Nunito', 25),
+            (email_label.left - 0, email_label.bottom + 10),
+            (500, -1),
+            padding=5,
+            border_thickness=4,
+            corner_radius=5
+        )
+
+        # User problem/message
+        email_content_label = ui.Text(
+            self,
+            (0, email_box.bottom + 25),
+            'How can we help?',
+            ('Nunito', 20, True, False),
+        )
+
+        email_content_ptr = ui.misc.Pointer('')
+        email_content_box = ui.Textbox(
+            self,
+            email_content_ptr,
+            ('Nunito', 25),
+            (email_content_label.left - 0, email_content_label.bottom + 10),
+            (750, 250),
+            padding=5,
+            border_thickness=4,
+            corner_radius=5
+        )
+        ui.center(contact, our_email, email_label, email_box, email_content_label, email_content_box, axis='x')
+
+        # Send ts email
+        send_button = ui.TextButton(
+            self,
+            'Send',
+            ('Nunito', 20),
+            (0, email_content_box.bottom + 50),
+            command=lambda: send_message(service, 'falconfinancehelp@gmail.com', 'Suppport Ticket', f'From: {email_ptr.get()}\n\n{email_content_ptr.get()}'),
+            padding=(15, 7),
+            border_thickness=4,
+        )
+        ui.center(send_button, axis='x')
+
+    def init_offline(self) -> None:
+        wifi_symbol = ui.Image(
+            self,
+            (0, 120),
+            'wifi_symbol.png'
+        )
+        ui.center(wifi_symbol, axis='x')
+
+        no_connection = ui.Text(
+            self,
+            (0, wifi_symbol.bottom + 120),
+            'We\'re having trouble connecting to the internet!',
+            ('Nunito', 50)
+        )
+        ui.center(no_connection, axis='x')
+
+        contact = ui.Text(
+            self,
+            (0, no_connection.bottom + 80),
+            'You can contact us any time at:\nfalconfinancehelp@gmail.com',
+            ('Nunito', 35),
+            align='center',
+            line_spacing=5
+        )
+        ui.center(contact, axis='x')
 

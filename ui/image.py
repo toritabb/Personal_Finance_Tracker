@@ -46,6 +46,6 @@ class Image(UIElement):
 
         self.image = image
 
-    def render(self, screen: pygame.Surface) -> None:
-        screen.blit(self.image, self)
+    def render(self, surface: pygame.Surface) -> None:
+        surface.blit(self.image, self)
 
