@@ -7,7 +7,7 @@ import pygame
 pygame.key.set_repeat(500, 35) # makes holding a key work
 
 # local
-from .base import Canvas
+from .base import Canvas, _REVOKE_MOUSE_ATTENTION
 from .button import TextButton
 from .event import event_manager
 from .misc import Pointer
@@ -21,7 +21,7 @@ __all__ = 'Textbox',
 
 
 class Textbox(TextButton):
-    __slots__ = 'text', '_validation_function'
+    __slots__ = 'text', 'multiline', '_validation_function'
 
     def __init__(
             self,
@@ -35,12 +35,16 @@ class Textbox(TextButton):
             padding: float | Coordinate = 0,
             border_thickness: int = 0, 
             corner_radius: int = 0,
-            align: Literal['left', 'center', 'right'] = 'left',
+            align_x: Literal['left', 'center', 'right'] = 'center',
+            align_y: Literal['top', 'center', 'bottom'] = 'center',
+            multiline: bool = False,
         ) -> None:
 
-        super().__init__(parent, text.get(), font, pos, self._take_attention, size=size, padding=padding, border_thickness=border_thickness, corner_radius=corner_radius, align=align)
+        super().__init__(parent, text.get(), font, pos, self._take_attention, size=size, padding=padding, border_thickness=border_thickness, corner_radius=corner_radius, align_x=align_x, align_y=align_y)
 
         self.text = text
+
+        self.multiline = multiline
 
         self._validation_function = validation_function
 
@@ -69,9 +73,12 @@ class Textbox(TextButton):
 
             self.text_object.update_text(text)
 
+    def _add_str_to_text(self, str_to_add: str) -> None:
+        self._validate_and_update_text(self.text.get() + str_to_add)
+
     def _textinput(self, event: pygame.Event) -> None:
         if self.button.pressed and event_manager.mouse_attention:
-            self._validate_and_update_text(self.text.get() + event.text)
+            self._add_str_to_text(event.text)
 
     def _keydown(self, event: pygame.Event) -> None:
         if self.button.pressed and event_manager.mouse_attention:
@@ -84,7 +91,11 @@ class Textbox(TextButton):
                     self._revoke_attention()
                 
                 case pygame.K_RETURN:
-                    self._revoke_attention()
+                    if self.multiline:
+                        self._add_str_to_text('\n')
+
+                    else:
+                        self._revoke_attention()
 
                 case pygame.K_v:
                     if event.mod & pygame.KMOD_CTRL:

@@ -87,7 +87,8 @@ class TextButton(Canvas):
             padding: float | Coordinate = 4,
             border_thickness: int = 0, 
             corner_radius: int = -1,
-            align: Literal['left', 'center', 'right'] = 'center',
+            align_x: Literal['left', 'center', 'right'] = 'center',
+            align_y: Literal['top', 'center', 'bottom'] = 'center',
             colors: Literal['button', 'button_accent'] = 'button',
         ) -> None:
 
@@ -102,7 +103,8 @@ class TextButton(Canvas):
             text,
             font,
             size=None if size is None else (-1 if size[0] == -1 else size[0] - padding[0], -1 if size[1] == -1 else size[1] - padding[1]),
-            align=align
+            align_x=align_x,
+            align_y=align_y
         )
 
         text_size = self.text_object.size

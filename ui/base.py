@@ -181,6 +181,7 @@ class Interactable(UIElement):
         event_manager.add_listener(pygame.MOUSEBUTTONDOWN, self._get_pressed, self._listener_group_id)
         event_manager.add_listener(pygame.MOUSEBUTTONUP, self._get_unpressed, self._listener_group_id)
         event_manager.add_listener(_REVOKE_MOUSE_ATTENTION, self._get_hovered, self._listener_group_id)
+        event_manager.add_listener(_REVOKE_MOUSE_ATTENTION, self._get_pressed, self._listener_group_id)
 
     def _get_hovered(self, _) -> bool:
         if (not event_manager.mouse_attention) or self.pressed:
@@ -207,7 +208,7 @@ class Interactable(UIElement):
             event_manager.mouse_attention = False
 
             # update other objects in case they are hovered
-            event_manager.post(Event(_REVOKE_MOUSE_ATTENTION))
+            event_manager.post(Event(_REVOKE_MOUSE_ATTENTION, button = pygame.BUTTON_LEFT))
 
             return True
         

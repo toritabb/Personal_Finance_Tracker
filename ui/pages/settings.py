@@ -35,7 +35,7 @@ class SettingsPage(Page):
             (25, page_title.bottom + 50),
             'Notifications',
             ('Nunito', 20),
-            align='left'
+            align_x='left'
         )
 
         # Notifications toggle
@@ -54,7 +54,7 @@ class SettingsPage(Page):
             (25, notif_text.bottom + 30),
             'Dark Mode',
             ('Nunito', 20),
-            align='left'
+            align_x='left'
         )
 
         # Dark mode toggle
@@ -71,15 +71,18 @@ class SettingsPage(Page):
         # Export data button
         def export_user_data() -> None:
             current_user = data_manager.get_current_user()
+
             if not current_user:
-                print("No user logged in")
+                print('No user logged in')
                 return
                 
             export_path = f'C:/Users/talan/OneDrive/Desktop/{current_user.username}.json'
+
             if data_manager.export_current_user_data(export_path):
-                print(f"Data exported successfully to {export_path}")
+                print(f'Data exported successfully to {export_path}')
+
             else:
-                print("Failed to export data")
+                print('Failed to export data')
 
         export_button = ui.TextButton(
             self,

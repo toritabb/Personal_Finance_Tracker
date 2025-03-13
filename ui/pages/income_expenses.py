@@ -17,7 +17,6 @@ class IncomeExpensesPage(Page):
 
         header = HeaderPage(self, manager)
 
-        # you can remove these, they are just placeholders so you know what page it is and can return
         page_title = ui.Text(
             self,
             (25, header.bottom + 25),

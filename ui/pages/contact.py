@@ -148,7 +148,8 @@ class ContactPage(Page):
             (750, 250),
             padding=5,
             border_thickness=4,
-            corner_radius=5
+            corner_radius=5,
+            multiline=True
         )
         ui.center(contact, our_email, email_label, email_box, email_content_label, email_content_box, axis='x')
 
@@ -165,28 +166,98 @@ class ContactPage(Page):
         ui.center(send_button, axis='x')
 
     def init_offline(self) -> None:
-        wifi_symbol = ui.Image(
-            self,
-            (0, 120),
-            'wifi_symbol.png'
-        )
-        ui.center(wifi_symbol, axis='x')
-
-        no_connection = ui.Text(
-            self,
-            (0, wifi_symbol.bottom + 120),
-            'We\'re having trouble connecting to the internet!',
-            ('Nunito', 50)
-        )
-        ui.center(no_connection, axis='x')
-
+        
         contact = ui.Text(
             self,
-            (0, no_connection.bottom + 80),
-            'You can contact us any time at:\nfalconfinancehelp@gmail.com',
-            ('Nunito', 35),
-            align='center',
-            line_spacing=5
+            (0, 40),
+            'Contact Us',
+            ('Nunito', 50, True, False),
         )
-        ui.center(contact, axis='x')
+
+        our_email = ui.Text(
+            self,
+            (0, contact.bottom + 8),
+            'at falconfinancehelp@gmail.com',
+            ('Nunito', 25),
+        )
+
+        # User email
+        email_label = ui.Text(
+            self,
+            (0, our_email.bottom + 60),
+            'Email',
+            ('Nunito', 20, True, False),
+        )
+
+        email_ptr = ui.misc.Pointer('')
+        email_box = ui.Textbox(
+            self,
+            email_ptr,
+            ('Nunito', 25),
+            (email_label.left - 0, email_label.bottom + 10),
+            (500, -1),
+            padding=5,
+            border_thickness=4,
+            corner_radius=5
+        )
+
+        # User problem/message
+        email_content_label = ui.Text(
+            self,
+            (0, email_box.bottom + 25),
+            'How can we help?',
+            ('Nunito', 20, True, False),
+        )
+
+        email_content_ptr = ui.misc.Pointer('')
+        email_content_box = ui.Textbox(
+            self,
+            email_content_ptr,
+            ('Nunito', 25),
+            (email_content_label.left - 0, email_content_label.bottom + 10),
+            (750, 250),
+            padding=5,
+            border_thickness=4,
+            corner_radius=5,
+            align_x='left',
+            align_y='top',
+            multiline=True
+        )
+        ui.center(contact, our_email, email_label, email_box, email_content_label, email_content_box, axis='x')
+
+        # Send ts email
+        send_button = ui.TextButton(
+            self,
+            'Send',
+            ('Nunito', 20),
+            (0, email_content_box.bottom + 50),
+            command=lambda: print('falconfinancehelp@gmail.com', 'Suppport Ticket', f'From: {email_ptr.get()}\n\n{email_content_ptr.get()}'),
+            padding=(15, 7),
+            border_thickness=4,
+        )
+        ui.center(send_button, axis='x')
+        # wifi_symbol = ui.Image(
+        #     self,
+        #     (0, 120),
+        #     'wifi_symbol.png'
+        # )
+        # ui.center(wifi_symbol, axis='x')
+
+        # no_connection = ui.Text(
+        #     self,
+        #     (0, wifi_symbol.bottom + 120),
+        #     'We\'re having trouble connecting to the internet!',
+        #     ('Nunito', 50)
+        # )
+        # ui.center(no_connection, axis='x')
+
+        # contact = ui.Text(
+        #     self,
+        #     (0, no_connection.bottom + 80),
+        #     'You can contact us any time at:\nfalconfinancehelp@gmail.com',
+        #     ('Nunito', 35),
+        #     align='center',
+        #     line_spacing=5
+        # )
+        # ui.center(contact, axis='x')
 

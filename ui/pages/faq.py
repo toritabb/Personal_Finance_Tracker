@@ -5,24 +5,7 @@ from .page import Page, PageManagerBase
 
 
 
-class FAQPage(Page):
-    STR = 'faq'
-
-    def __init__(self, parent: ui.Canvas, manager: PageManagerBase) -> None:
-        super().__init__(parent, manager)
-
-        # you can remove these, they are just placeholders so you know what page it is and can return
-        page_title = ui.Text(
-            self,
-            (25, 25),
-            'FAQ Page',
-            ('Nunito', 40, True, False)
-        )
-
-        faq = ui.Text(
-            self,
-            (0, 150),
-            '''Q1: What is Falcon Finance?
+FAQ_TEXT = '''Q1: What is Falcon Finance?
 A: Falcon Finance is a financial application designed to help users manage their finances efficiently and securely.
 
 Q2: Is Falcon Finance free to use?
@@ -34,9 +17,29 @@ However, users should follow best security practices when using the Application.
 
 Q4: How do I contact support?
 A: You can reach our support team at falconfinancehelp@gmail.com or go to more then contact for any assistance
-''',
+'''
+
+
+
+class FAQPage(Page):
+    STR = 'faq'
+
+    def __init__(self, parent: ui.Canvas, manager: PageManagerBase) -> None:
+        super().__init__(parent, manager)
+
+        page_title = ui.Text(
+            self,
+            (25, 25),
+            'FAQ Page',
+            ('Nunito', 40, True, False)
+        )
+
+        faq = ui.Text(
+            self,
+            (0, 150),
+            FAQ_TEXT,
             ('Nunito', 23, True, False),
-            align= 'center'
+            align_x= 'center'
         )
         ui.center(faq, axis='x')
 
@@ -49,5 +52,4 @@ A: You can reach our support team at falconfinancehelp@gmail.com or go to more t
             padding=(15, 7),
             border_thickness=4
         )
-        # you can remove these, they are just placeholders so you know what page it is and can return
 

@@ -29,7 +29,7 @@ class ExamplePage(Page):
             (text1.right + 15, text1.top),
             'The five boxing\nwizards jump quickly.',
             ('Nunito', 20, True, False),
-            align='center'
+            align_x='center'
         )
 
         # italic
@@ -38,7 +38,7 @@ class ExamplePage(Page):
             (text1.left, text1.bottom + 15),
             'Jaded zombies acted\nquaintly but kept driving\ntheir oxen forward.',
             ('Nunito', 20, False, True),
-            align='right',
+            align_x='right',
             line_spacing=10
         )
 
@@ -59,7 +59,7 @@ class ExamplePage(Page):
             (0, 0),
             'Elements can be centered\nusing ui.center(element, axis=\'axis\')',
             ('Nunito', 20),
-            align='center'
+            align_x='center'
         )
         ui.center(text_center) # center the explanation on the x
 
@@ -106,7 +106,7 @@ class ExamplePage(Page):
             padding=10,
             border_thickness=0,
             corner_radius=-1, # corners automatically fully rounded
-            align='right',
+            align_x='right',
             colors='button_accent' # uses the green colors to stand out more
         )
 
@@ -191,7 +191,7 @@ class ExamplePage(Page):
             padding=(7, 5),
             border_thickness=3,
             corner_radius=-1,
-            align='center'
+            align_x='center'
         )
 
         ##########

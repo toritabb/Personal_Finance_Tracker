@@ -24,6 +24,7 @@ class HeaderPage(Page):
             corner_radius=15,
             colors='button_accent'
         )
+
         income_expenses = ui.TextButton(
             self,
             'Income & Expenses',
@@ -34,6 +35,7 @@ class HeaderPage(Page):
             corner_radius=15,
             colors='button_accent'
         )
+
         more = ui.TextButton(
             self,
             'More',

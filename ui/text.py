@@ -28,7 +28,8 @@ class Text(UIElement):
             font: FontDescriptor,
             *,
             size: Optional[Coordinate] = None,
-            align: Literal['left', 'center', 'right'] = 'left',
+            align_x: Literal['left', 'center', 'right'] = 'left',
+            align_y: Literal['top', 'center', 'bottom'] = 'center',
             line_spacing: int = 0 # only matters for multi-line text
         ) -> None:
 
@@ -45,9 +46,9 @@ class Text(UIElement):
         super().__init__(parent, (pos, size))
 
         self.font = font
-        self.multiplier = 1 if align == 'right' else 0.5 if align == 'center' else 0
+        self.multiplier = 1 if align_x == 'right' else 0.5 if align_x == 'center' else 0
         self.line_spacing = line_spacing
-        self.y_off = int((self.height - ((base_height + self.line_spacing) * len(lines) - self.line_spacing + 1)) * 0.5)
+        self.y_off = 0 if align_y == 'top' else int((self.height - ((base_height + self.line_spacing) * len(lines) - self.line_spacing + 1)) * (0.5 if align_y == 'center' else 1))
         self.surface = Surface(self.size).convert_alpha()
 
         self.update_text(text)

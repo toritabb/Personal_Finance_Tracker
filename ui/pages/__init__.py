@@ -28,5 +28,5 @@ __all__ = 'Page', 'PageManager'
 
 class PageManager(PageManagerBase):
     def __init__(self, parent: Canvas) -> None:
-        super().__init__(parent, 'welcome', AccountsPage, AddBankPage, AddExpensePage, AddIncomePage, ContactPage, CreateAccountPage, ExamplePage, FAQPage, HeaderPage, IncomeExpensesPage, LoginPage, MorePage, SettingsPage, SnapshotPage, WelcomePage, LegalPage)
+        super().__init__(parent, 'example', AccountsPage, AddBankPage, AddExpensePage, AddIncomePage, ContactPage, CreateAccountPage, ExamplePage, FAQPage, HeaderPage, IncomeExpensesPage, LoginPage, MorePage, SettingsPage, SnapshotPage, WelcomePage, LegalPage)
 

@@ -219,7 +219,7 @@ class AddExpensePage(Page):
             padding=6,
             border_thickness=4,
             corner_radius=10,
-            align='center'
+            align_x='center'
         )
 
         start_day_textbox = ui.Textbox(
@@ -232,7 +232,7 @@ class AddExpensePage(Page):
             padding=6,
             border_thickness=4,
             corner_radius=10,
-            align='center'
+            align_x='center'
         )
 
         start_year_textbox = ui.Textbox(
@@ -245,7 +245,7 @@ class AddExpensePage(Page):
             padding=6,
             border_thickness=4,
             corner_radius=10,
-            align='center'
+            align_x='center'
         )
 
         ui.center(start_month_textbox, start_day_textbox, start_year_textbox, axis='x')

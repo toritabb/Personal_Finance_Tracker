@@ -18,7 +18,7 @@ class WelcomePage(Page):
             'Welcome to Falcon Finance',
             ('Nunito', 40, True, False)
         )
-        ui.center(page_title, axis= 'x')
+        ui.center(page_title, axis='x')
 
         image = ui.Image(
             self,
@@ -26,7 +26,7 @@ class WelcomePage(Page):
             'HRHS_logo.png',
             size=(350, 350)
         )
-        ui.center(image, axis= 'x')
+        ui.center(image, axis='x')
 
         create = ui.TextButton(
             self,
@@ -37,7 +37,7 @@ class WelcomePage(Page):
             padding=(15, 7),
             border_thickness=4,
         )
-        ui.center(create, axis= 'x')
+        ui.center(create, axis='x')
 
         login = ui.TextButton(
             self,
@@ -48,4 +48,5 @@ class WelcomePage(Page):
             padding=(15, 7),
             border_thickness=4,
         )
-        ui.center(login, axis= 'x')
+        ui.center(login, axis='x')
+
