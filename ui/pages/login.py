@@ -79,7 +79,7 @@ class LoginPage(Page):
             self,
             'Login',
             ('Nunito', 30),
-            (0, 480),
+            (0, password_box.bottom + 85),
             command=lambda: self._handle_login(username_ptr.get(), password_ptr.get()),
             padding=(40, 10),
             border_thickness=0,
@@ -92,11 +92,11 @@ class LoginPage(Page):
             self,
             'Create Account',
             ('Nunito', 20),
-            (0, 560),
+            (0, login_button.bottom + 50),
             command=lambda: self._manager.go_to('create_account'),
-            padding=(15, 7),
-            border_thickness=4,
-            corner_radius=5
+            padding=(25, 10),
+            border_thickness=0,
+            colors='button_accent'
         )
         ui.center(create_account_button)
 
