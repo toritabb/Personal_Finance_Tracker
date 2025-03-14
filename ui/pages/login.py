@@ -11,102 +11,112 @@ class LoginPage(Page):
 
     def __init__(self, parent: ui.Canvas, manager: PageManagerBase) -> None:
         super().__init__(parent, manager)
-        self._manager = manager  # Store the manager as instance variable
+        self._manager = manager
 
         # Title
         login_title = ui.Text(
             self,
             (0, 100),
             'Login',
-            ('Nunito', 48, True, False)
+            ('Nunito', 65, True, False)
         )
-
         ui.center(login_title)
 
-        # Username field
-        ui.Text(
+        # Username
+        username_label = ui.Text(
             self,
-            (SCREEN_W // 2 - 150, 250),
+            (0, login_title.bottom + 75),
             'Username:',
-            ('Nunito', 24)
-        )
-        
-        username = ui.misc.Pointer('')
-        ui.Textbox(
-            self,
-            username,
-            ('Nunito', 20),
-            (SCREEN_W // 2 - 150, 290),
-            (300, 40),
-            border_thickness=2,
-            corner_radius=5
+            ('Nunito', 25)
         )
 
-        # Password field
-        ui.Text(
+        username_ptr = ui.misc.Pointer('')
+        username_box = ui.Textbox(
             self,
-            (SCREEN_W // 2 - 150, 350),
+            username_ptr,
+            ('Nunito', 20),
+            (0, username_label.bottom + 10),
+            (300, -1),
+            padding=7,
+            corner_radius=5
+        )
+        ui.center(username_label, username_box)
+
+        # Password
+        password_label = ui.Text(
+            self,
+            (0, username_box.bottom + 30),
             'Password:',
-            ('Nunito', 24)
+            ('Nunito', 25)
         )
-        
-        password = ui.misc.Pointer('')
-        password_display = ui.misc.Pointer('')
-        
-        def password_validator(text: str) -> bool:
-            password.set(text)  # Store actual password
-            password_display.set('*' * len(text))  # Display asterisks
-            return True
 
-        ui.Textbox(
+        password_ptr = ui.misc.Pointer('')
+        password_display_ptr = ui.misc.Pointer('')
+        password_box = ui.Textbox(
             self,
-            password_display,
+            password_display_ptr,
             ('Nunito', 20),
-            (SCREEN_W // 2 - 150, 390),
-            (300, 40),
-            validation_function=password_validator,
-            border_thickness=2,
+            (0, password_label.bottom + 10),
+            (300, -1),
+            padding=7,
             corner_radius=5
         )
+        ui.center(password_label, password_box)
+
+        # link the password so it puts ***** instead of the actual password
+        def password_hider(ptr: ui.misc.Pointer[str]) -> None:
+            text = ptr.get()
+
+            if text != ('*' * len(text)):
+                password_ptr.set(text)
+
+                password_display_ptr.set('*' * len(text))
+
+        password_display_ptr.listen(password_hider)
 
         # Login button
-        login_btn = ui.TextButton(
+        login_button = ui.TextButton(
             self,
             'Login',
-            ('Nunito', 24),
-            (0, 480),  # Initial x position will be centered
-            command=lambda: self._handle_login(username.get(), password.get()),
-            padding=(30, 15),
-            border_thickness=3,
-            corner_radius=8
+            ('Nunito', 30),
+            (0, 480),
+            command=lambda: self._handle_login(username_ptr.get(), password_ptr.get()),
+            padding=(40, 10),
+            border_thickness=0,
+            colors='button_accent'
         )
-        ui.center(login_btn, axis='x')  # Center horizontally
+        ui.center(login_button)
 
         # Create Account link
-        create_account_btn = ui.TextButton(
+        create_account_button = ui.TextButton(
             self,
             'Create Account',
             ('Nunito', 20),
-            (0, 560),  # Initial x position will be centered
+            (0, 560),
             command=lambda: self._manager.go_to('create_account'),
             padding=(15, 7),
-            border_thickness=2,
+            border_thickness=4,
             corner_radius=5
         )
-        ui.center(create_account_btn, axis='x')  # Center horizontally
+        ui.center(create_account_button)
 
     def _handle_login(self, username: str, password: str) -> None:
         if not username or not password:
-            print("Username and password are required")
+            print('Username and password are required')
+
             return
 
         # Attempt to authenticate and get the user
         user = data_manager.authenticate_user(username, password)
+
         if user:
             # Store the current user
             data_manager.set_current_user(user)
-            print("Login successful!")
+
+            print('Login successful!')
+
             self._manager.go_to('accounts')  # Navigate to snapshot page after successful login
+
         else:
-            print("Invalid username or password")
+            print('Invalid username or password')
 

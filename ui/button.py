@@ -8,6 +8,7 @@ from pygame import Event, Surface
 # local
 from . import collision
 from .base import Canvas, Interactable
+from .event import Event, event_manager
 from .text import Text, FontDescriptor
 from .theme import COLOR_MAP
 from .vector import vec2
@@ -31,13 +32,14 @@ class Button(Interactable):
             *,
             border_thickness: int = 0,
             corner_radius: int = 0,
-            colors: Literal['button', 'button_accent', 'toggle', 'toggle_accent'] = 'button'
+            colors: Literal['button', 'button_accent', 'toggle', 'toggle_accent'] = 'button',
+            cursor: Literal['pointer', 'hand', 'i-beam'] = 'hand'
         ) -> None:
 
         if corner_radius == -1:
             corner_radius = int(min(*size) // 2 + 1)
 
-        super().__init__(parent, collision.get_rounded_collision_shapes((pos, size), corner_radius))
+        super().__init__(parent, collision.get_rounded_collision_shapes((pos, size), corner_radius), cursor=cursor)
 
         self.command = command
 
@@ -46,7 +48,7 @@ class Button(Interactable):
         self._inner_shapes = collision.get_rounded_collision_shapes(self.inflate(vec2(border_thickness * -2 - (corner_radius > border_thickness) - (corner_radius == 0))), max(0, corner_radius - border_thickness)) if border_thickness else []
 
     def _get_unpressed(self, event: Event) -> None:
-        if super()._get_unpressed(event) and self.hovered:
+        if super()._get_unpressed(event) and self._mouse_collides():
             self.command()
 
     def move_offset(self, dx: int, dy: int) -> None:
@@ -85,11 +87,13 @@ class TextButton(Canvas):
             *,
             size: Optional[Coordinate] = None,
             padding: float | Coordinate = 4,
-            border_thickness: int = 0, 
+            border_thickness: int = 4,
             corner_radius: int = -1,
             align_x: Literal['left', 'center', 'right'] = 'center',
             align_y: Literal['top', 'center', 'bottom'] = 'center',
+            line_spacing: int = 0,
             colors: Literal['button', 'button_accent'] = 'button',
+            cursor: Literal['pointer', 'hand', 'i-beam'] = 'hand'
         ) -> None:
 
         super().__init__(parent, (pos, (100, 100)))
@@ -104,7 +108,8 @@ class TextButton(Canvas):
             font,
             size=None if size is None else (-1 if size[0] == -1 else size[0] - padding[0], -1 if size[1] == -1 else size[1] - padding[1]),
             align_x=align_x,
-            align_y=align_y
+            align_y=align_y,
+            line_spacing=line_spacing
         )
 
         text_size = self.text_object.size
@@ -117,7 +122,8 @@ class TextButton(Canvas):
             command,
             border_thickness=border_thickness,
             corner_radius=corner_radius,
-            colors=colors
+            colors=colors,
+            cursor=cursor
         )
 
         self.size = button_size + vec2(1)

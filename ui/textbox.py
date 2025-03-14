@@ -7,9 +7,9 @@ import pygame
 pygame.key.set_repeat(500, 35) # makes holding a key work
 
 # local
-from .base import Canvas, _REVOKE_MOUSE_ATTENTION
+from .base import Canvas
 from .button import TextButton
-from .event import event_manager
+from .event import Event, event_manager
 from .misc import Pointer
 from .text import FontDescriptor
 from ._typing import Coordinate
@@ -33,14 +33,15 @@ class Textbox(TextButton):
             *,
             validation_function: Callable[[str], bool] = lambda _: True,
             padding: float | Coordinate = 0,
-            border_thickness: int = 0, 
-            corner_radius: int = 0,
-            align_x: Literal['left', 'center', 'right'] = 'center',
+            border_thickness: int = 4, 
+            corner_radius: int = -1,
+            align_x: Literal['left', 'center', 'right'] = 'left',
             align_y: Literal['top', 'center', 'bottom'] = 'center',
             multiline: bool = False,
+            line_spacing: int = 5,
         ) -> None:
 
-        super().__init__(parent, text.get(), font, pos, self._take_attention, size=size, padding=padding, border_thickness=border_thickness, corner_radius=corner_radius, align_x=align_x, align_y=align_y)
+        super().__init__(parent, text.get(), font, pos, self._take_attention, size=size, padding=padding, border_thickness=border_thickness, corner_radius=corner_radius, align_x=align_x, align_y=align_y, line_spacing=line_spacing, cursor='i-beam')
 
         self.text = text
 
@@ -48,24 +49,21 @@ class Textbox(TextButton):
 
         self._validation_function = validation_function
 
-        event_manager.add_listener(pygame.TEXTINPUT, self._textinput, self.button._listener_group_id)
-        event_manager.add_listener(pygame.KEYDOWN, self._keydown, self.button._listener_group_id)
-        event_manager.add_listener(pygame.MOUSEMOTION, self._change_cursor, self.button._listener_group_id)
-
-    def _change_cursor(self, _) -> None:
-        if self.button.hovered:
-            pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_IBEAM)
-        
-        else:
-            pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
+        event_manager.add_listener(pygame.TEXTINPUT, self._text_input, self.button._listener_group_id)
+        event_manager.add_listener(pygame.KEYDOWN, self._key_down, self.button._listener_group_id)
+        event_manager.add_listener(pygame.MOUSEBUTTONDOWN, self._click_outside, self.button._listener_group_id)
 
     def _take_attention(self) -> None:
         self.button.pressed = True
-        event_manager.mouse_attention = True
+        event_manager.textbox_selected = self # type: ignore
 
     def _revoke_attention(self) -> None:
         self.button.pressed = False
-        event_manager.mouse_attention = False
+        event_manager.textbox_selected = None
+
+    def _click_outside(self, event: Event) -> None:
+        if event_manager.textbox_selected is self:
+            self._revoke_attention()
 
     def _validate_and_update_text(self, text: str) -> None:
         if self._validation_function(text):
@@ -76,12 +74,12 @@ class Textbox(TextButton):
     def _add_str_to_text(self, str_to_add: str) -> None:
         self._validate_and_update_text(self.text.get() + str_to_add)
 
-    def _textinput(self, event: pygame.Event) -> None:
-        if self.button.pressed and event_manager.mouse_attention:
+    def _text_input(self, event: pygame.Event) -> None:
+        if event_manager.textbox_selected is self:
             self._add_str_to_text(event.text)
 
-    def _keydown(self, event: pygame.Event) -> None:
-        if self.button.pressed and event_manager.mouse_attention:
+    def _key_down(self, event: pygame.Event) -> None:
+        if event_manager.textbox_selected is self:
             match event.key:
                 case pygame.K_BACKSPACE:
                     if self.text.get():

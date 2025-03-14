@@ -17,7 +17,14 @@ from ._typing import Coordinate, RectValue
 
 __all__ = 'center', 'UIElement', 'Interactable', 'Canvas'
 
-_REVOKE_MOUSE_ATTENTION = event_manager.get_custom_event_type()
+
+CURSORS = {
+    'pointer': pygame.SYSTEM_CURSOR_ARROW,
+    'hand':    pygame.SYSTEM_CURSOR_HAND,
+    'i-beam':  pygame.SYSTEM_CURSOR_IBEAM 
+}
+
+_BUTTON_RELEASED = event_manager.get_custom_event_type()
 
 
 
@@ -150,13 +157,15 @@ class Canvas(UIElement):
 
 
 class Interactable(UIElement):
-    __slots__ = 'collision_shapes', 'bounding_rect', 'hovered', 'pressed', '_listener_group_id'
+    __slots__ = 'collision_shapes', 'bounding_rect', 'hovered', 'pressed', 'cursor', '_listener_group_id'
 
     def __init__(
             self,
             parent: Canvas,
             collision_shapes: Sequence[CollisionShape],
-            bounding_rect: Optional[Rect] = None
+            bounding_rect: Optional[Rect] = None,
+            *,
+            cursor: Literal['pointer', 'hand', 'i-beam'] = 'pointer'
         ) -> None:
 
         if bounding_rect is not None:
@@ -173,6 +182,8 @@ class Interactable(UIElement):
         self.hovered = False
         self.pressed = False
 
+        self.cursor = CURSORS[cursor]
+
         self._get_hovered(None)
 
         self._listener_group_id = event_manager.get_new_group()
@@ -180,35 +191,40 @@ class Interactable(UIElement):
         event_manager.add_listener(pygame.MOUSEMOTION, self._get_hovered, self._listener_group_id)
         event_manager.add_listener(pygame.MOUSEBUTTONDOWN, self._get_pressed, self._listener_group_id)
         event_manager.add_listener(pygame.MOUSEBUTTONUP, self._get_unpressed, self._listener_group_id)
-        event_manager.add_listener(_REVOKE_MOUSE_ATTENTION, self._get_hovered, self._listener_group_id)
-        event_manager.add_listener(_REVOKE_MOUSE_ATTENTION, self._get_pressed, self._listener_group_id)
+        event_manager.add_listener(_BUTTON_RELEASED, self._get_hovered, self._listener_group_id)
 
-    def _get_hovered(self, _) -> bool:
-        if (not event_manager.mouse_attention) or self.pressed:
-            mouse_pos = self.get_local_pos(event_manager.mouse_pos)
+    def _mouse_collides(self) -> bool:
+        mouse_pos = self.get_local_pos(event_manager.mouse_pos)
 
-            self.hovered = self.bounding_rect.collidepoint(mouse_pos) and any(shape.collidepoint(mouse_pos) for shape in self.collision_shapes)
+        return self.bounding_rect.collidepoint(mouse_pos) and any(shape.collidepoint(mouse_pos) for shape in self.collision_shapes)
 
-            return True
-        
-        return False
+    def _get_hovered(self, _) -> None:
+        if (not event_manager.button_held):
+            mouse_collides = self._mouse_collides()
 
-    def _get_pressed(self, event: Event) -> bool:
-        if not event_manager.mouse_attention and self.hovered and event.button == pygame.BUTTON_LEFT:
+            if mouse_collides != self.hovered:
+                self.hovered = mouse_collides
+
+                if mouse_collides:
+                    pygame.mouse.set_cursor(self.cursor)
+                else:
+                    pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
+
+    def _get_pressed(self, event: Event) -> None:
+        if self.hovered and event.button == pygame.BUTTON_LEFT:
             self.pressed = True
-            event_manager.mouse_attention = True
+            event_manager.button_held = True
 
-            return True
-        
-        return False
+            if event_manager.textbox_selected is not None:
+                event_manager.textbox_selected._revoke_attention() # type: ignore
 
     def _get_unpressed(self, event: Event) -> bool:
         if self.pressed and event.button == pygame.BUTTON_LEFT:
             self.pressed = False
-            event_manager.mouse_attention = False
+            event_manager.button_held = False
 
             # update other objects in case they are hovered
-            event_manager.post(Event(_REVOKE_MOUSE_ATTENTION, button = pygame.BUTTON_LEFT))
+            event_manager.post(Event(_BUTTON_RELEASED))
 
             return True
         
@@ -230,6 +246,6 @@ class Interactable(UIElement):
 
             self._listener_group_id = -1
 
-            if self.pressed and event_manager.mouse_attention:
-                event_manager.mouse_attention = False
+            if self.pressed and event_manager.button_held:
+                event_manager.button_held = False
 

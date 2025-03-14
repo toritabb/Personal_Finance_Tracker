@@ -28,7 +28,18 @@
           "name": "My Checking",
           "type": "checking",
           "balance": 0,
-          "incomes": [],
+          "incomes": [
+            {
+              "name": "Ball trimming",
+              "timing": {
+                "start_date": "2025-01-01",
+                "end_date": "None",
+                "recurrence": "weekly",
+                "days_of_month": []
+              },
+              "amount": 0
+            }
+          ],
           "expenses": []
         },
         {

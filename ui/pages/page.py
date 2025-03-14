@@ -43,7 +43,8 @@ class PageManagerBase:
 
         self.current_page = self.get_page(page)
 
-        event_manager.mouse_attention = False
+        event_manager.textbox_selected = None
+        event_manager.button_held = False
 
     def back(self) -> None:
         self.current_page.close()

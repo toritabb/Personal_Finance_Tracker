@@ -28,7 +28,7 @@ class Listener:
 
 
 class EventManager:
-    __slots__ = 'listeners', 'groups', 'mouse_pos', 'mouse_rel', 'mouse_attention', '_key_pressed', '_mouse_button_pressed', 'running', '_group_id'
+    __slots__ = 'listeners', 'groups', 'mouse_pos', 'mouse_rel', 'textbox_selected', 'button_held', '_key_pressed', '_mouse_button_pressed', 'running', '_group_id'
 
     def __init__(self) -> None:
         # listeners
@@ -38,7 +38,10 @@ class EventManager:
         # mouse
         self.mouse_pos = vec2(0)
         self.mouse_rel = vec2(0)
-        self.mouse_attention = False
+
+        # stuff
+        self.textbox_selected = None
+        self.button_held = False
 
         # mouse buttons and keys
         self._key_pressed: dict[int, bool] = dict()

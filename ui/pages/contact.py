@@ -93,7 +93,6 @@ class ContactPage(Page):
             (25, 660),
             command=lambda: manager.back(),
             padding=(15, 7),
-            border_thickness=4
         )
 
     def init_online(self, service: Resource) -> None:
@@ -123,12 +122,11 @@ class ContactPage(Page):
         email_box = ui.Textbox(
             self,
             email_ptr,
-            ('Nunito', 25),
-            (email_label.left - 0, email_label.bottom + 10),
+            ('Nunito', 22),
+            (0, email_label.bottom + 10),
             (500, -1),
-            padding=5,
-            border_thickness=4,
-            corner_radius=5
+            padding=7,
+            corner_radius=5,
         )
 
         # User problem/message
@@ -143,15 +141,15 @@ class ContactPage(Page):
         email_content_box = ui.Textbox(
             self,
             email_content_ptr,
-            ('Nunito', 25),
-            (email_content_label.left - 0, email_content_label.bottom + 10),
+            ('Nunito', 22),
+            (0, email_content_label.bottom + 10),
             (750, 250),
-            padding=5,
-            border_thickness=4,
+            padding=7,
             corner_radius=5,
+            align_y='top',
             multiline=True
         )
-        ui.center(contact, our_email, email_label, email_box, email_content_label, email_content_box, axis='x')
+        ui.center(contact, our_email, email_label, email_box, email_content_label, email_content_box)
 
         # Send ts email
         send_button = ui.TextButton(
@@ -161,9 +159,8 @@ class ContactPage(Page):
             (0, email_content_box.bottom + 50),
             command=lambda: send_message(service, 'falconfinancehelp@gmail.com', 'Suppport Ticket', f'From: {email_ptr.get()}\n\n{email_content_ptr.get()}'),
             padding=(15, 7),
-            border_thickness=4,
         )
-        ui.center(send_button, axis='x')
+        ui.center(send_button)
 
     def init_offline(self) -> None:
         
@@ -193,12 +190,11 @@ class ContactPage(Page):
         email_box = ui.Textbox(
             self,
             email_ptr,
-            ('Nunito', 25),
-            (email_label.left - 0, email_label.bottom + 10),
+            ('Nunito', 22),
+            (0, email_label.bottom + 10),
             (500, -1),
-            padding=5,
-            border_thickness=4,
-            corner_radius=5
+            padding=7,
+            corner_radius=5,
         )
 
         # User problem/message
@@ -213,17 +209,15 @@ class ContactPage(Page):
         email_content_box = ui.Textbox(
             self,
             email_content_ptr,
-            ('Nunito', 25),
-            (email_content_label.left - 0, email_content_label.bottom + 10),
+            ('Nunito', 22),
+            (0, email_content_label.bottom + 10),
             (750, 250),
-            padding=5,
-            border_thickness=4,
+            padding=7,
             corner_radius=5,
-            align_x='left',
             align_y='top',
             multiline=True
         )
-        ui.center(contact, our_email, email_label, email_box, email_content_label, email_content_box, axis='x')
+        ui.center(contact, our_email, email_label, email_box, email_content_label, email_content_box)
 
         # Send ts email
         send_button = ui.TextButton(
@@ -233,15 +227,14 @@ class ContactPage(Page):
             (0, email_content_box.bottom + 50),
             command=lambda: print('falconfinancehelp@gmail.com', 'Suppport Ticket', f'From: {email_ptr.get()}\n\n{email_content_ptr.get()}'),
             padding=(15, 7),
-            border_thickness=4,
         )
-        ui.center(send_button, axis='x')
+        ui.center(send_button)
         # wifi_symbol = ui.Image(
         #     self,
         #     (0, 120),
         #     'wifi_symbol.png'
         # )
-        # ui.center(wifi_symbol, axis='x')
+        # ui.center(wifi_symbol)
 
         # no_connection = ui.Text(
         #     self,
@@ -249,15 +242,15 @@ class ContactPage(Page):
         #     'We\'re having trouble connecting to the internet!',
         #     ('Nunito', 50)
         # )
-        # ui.center(no_connection, axis='x')
+        # ui.center(no_connection)
 
         # contact = ui.Text(
         #     self,
         #     (0, no_connection.bottom + 80),
         #     'You can contact us any time at:\nfalconfinancehelp@gmail.com',
         #     ('Nunito', 35),
-        #     align='center',
+        #     align_x='center',
         #     line_spacing=5
         # )
-        # ui.center(contact, axis='x')
+        # ui.center(contact)
 
