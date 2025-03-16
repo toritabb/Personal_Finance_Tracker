@@ -10,26 +10,30 @@ __all__ = 'Account', 'Timing', 'Income', 'Expense'
 
 class Account:
     '''A bank account that belongs to a user. Contains balance and transaction history.'''
+
     __slots__ = 'name', 'type', 'balance', 'incomes', 'expenses'
 
-    def __init__(self, name: str = '', type: Literal['checking', 'savings'] = 'checking', balance: int = 0, incomes: list[dict] | None = None, expenses: list[dict] | None = None) -> None:
+    def __init__(self, name: str = '', type: Literal['checking', 'savings'] = 'checking', balance: int = 0, incomes: Optional[list[dict]] = None, expenses: Optional[list[dict]] = None) -> None:
         '''Initialize a new bank account.
         
         Args:
             name: Display name for the account
             type: Either 'checking' or 'savings'
-            balance: Current balance in cents
-            incomes: List of income transaction dictionaries
-            expenses: List of expense transaction dictionaries
+            balance: Current balance in dollars
+            incomes: List of income transactions
+            expenses: List of expense transactions
         '''
+
         self.name = name
         self.type = type
-        self.balance = balance  # stored in cents
+        self.balance = balance
+
         self.incomes = [Income(**income) for income in (incomes or [])]
         self.expenses = [Expense(**expense) for expense in (expenses or [])]
 
     def get_save_dict(self) -> dict:
         '''Get dictionary representation for saving to storage.'''
+
         return {
             'name': self.name,
             'type': self.type,
@@ -46,6 +50,7 @@ class Timing:
     def __init__(self, start_date: str, end_date: str, recurrence: Literal['never', 'weekly', 'biweekly', 'monthly'], days_of_month: list[int]) -> None:
         self.start_date = datetime.strptime(start_date, "%Y-%m-%d").date()
         self.end_date = datetime.strptime(end_date, "%Y-%m-%d").date() if end_date != 'None' else None
+
         self.recurrence = recurrence
         self.days_of_month = days_of_month
 

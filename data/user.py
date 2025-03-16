@@ -1,19 +1,23 @@
-from __future__ import annotations
-from typing import Literal
+# standard library
+from typing import Literal, Optional
 
+# local
 from .account import Account
+
+
+
+__all__ = 'User',
+
 
 
 class User:
     __slots__ = 'username', 'password', 'accounts'
 
-    def __init__(self, username: str, password: str, accounts: list[dict] | None = None) -> None:
+    def __init__(self, username: str, password: str, accounts: Optional[list[dict]] = None) -> None:
         self.username = username
         self.password = password
-        self.accounts = {
-            account_data['name']: Account(**account_data)
-            for account_data in (accounts or [])
-        }
+
+        self.accounts = {account_data['name']: Account(**account_data) for account_data in (accounts or [])}
 
     def get_save_dict(self) -> dict:
         return {
@@ -24,7 +28,9 @@ class User:
 
     def add_account(self, name: str, type: Literal['checking', 'savings'] = 'checking', balance: int = 0) -> Account:
         '''Create and add a new bank account for this user'''
+
         account = Account(name=name, type=type, balance=balance)
         self.accounts[name] = account
+
         return account
 

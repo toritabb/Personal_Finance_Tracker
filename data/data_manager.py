@@ -1,6 +1,7 @@
 # standard library
 import json
 import os
+from typing import Optional
 
 # local
 import file
@@ -14,14 +15,13 @@ __all__ = 'DataManager', 'data_manager'
 
 
 class DataManager:
-    __slots__ = ('users', '_storage_file', '_current_user')
-    _current_user: User | None
+    __slots__ = 'users', '_storage_file', '_current_user'
 
     def __init__(self) -> None:
         self.users = {}  # Dictionary with username as key, User object as value
 
         self._storage_file = file.get_global_path('data/data/users.json')
-        self._current_user = None
+        self._current_user: Optional[User] = None
 
         self.load()
 
@@ -36,10 +36,12 @@ class DataManager:
                 for user_data in data.get('users', [])
             }
 
+            # TODO: ADD SEPARATE ENCRYPTION FOR EACH USER USING THEIR PASSWORD
+
         except:
             self.users = {}  # Start with empty users dict
 
-    def authenticate_user(self, username: str, password: str) -> User | None:
+    def authenticate_user(self, username: str, password: str) -> Optional[User]:
         '''Authenticate a user with username and password.
         Returns the User if credentials are valid, None otherwise.'''
 
@@ -50,12 +52,12 @@ class DataManager:
 
         return None
 
-    def get_current_user(self) -> User | None:
+    def get_current_user(self) -> Optional[User]:
         '''Get the currently logged in user.'''
 
-        return getattr(self, '_current_user', None)
+        return self._current_user
 
-    def set_current_user(self, user: User | None) -> None:
+    def set_current_user(self, user: Optional[User]) -> None:
         '''Set the currently logged in user.'''
 
         self._current_user = user
@@ -69,7 +71,7 @@ class DataManager:
         '''Create a new user with a default checking account.'''
 
         user = User(username=username, password=password)
-        user.add_account("My Checking", "checking")
+        user.add_account('My Checking', 'checking')
 
         self.users[username] = user
 
@@ -86,8 +88,7 @@ class DataManager:
 
         file.save(data_str, self._storage_file, 'password123')
 
-        # with open(self._storage_file, 'w') as f:
-        #     json.dump(data, f, indent=2)
+        # TODO: ADD SEPARATE ENCRYPTION FOR EACH USER USING THEIR PASSWORD
 
     def get_save_dict(self) -> dict:
         return {
@@ -115,7 +116,7 @@ class DataManager:
             return True
 
         except Exception as e:
-            print(f"Error exporting data: {e}")
+            print(f'Error exporting data: {e}')
 
             return False
 
