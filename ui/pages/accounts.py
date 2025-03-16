@@ -1,13 +1,9 @@
 # local
 import ui
-from constants import SCREEN_H
 from data import data_manager
 from .page import Page, PageManagerBase
 from .header import HeaderPage
 
-
-
-__all__ = 'AccountsPage',
 
 
 class AccountsPage(Page):
