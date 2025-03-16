@@ -42,7 +42,7 @@ class FAQPage(Page):
                 self,
                 (0, y),
                 question,
-                ('Nunito', 27, True, False)
+                ('Nunito', 25, True, False)
             )
             ui.center(q)
 
@@ -52,7 +52,8 @@ class FAQPage(Page):
                 self,
                 (0, y),
                 answer,
-                ('Nunito', 22)
+                ('Nunito', 22),
+                line_spacing=5
             )
             ui.center(a)
 
@@ -64,7 +65,6 @@ class FAQPage(Page):
             ('Nunito', 20),
             (25, 660),
             command=lambda: manager.back(),
-            padding=(15, 7),
-            border_thickness=4
+            padding=(15, 7)
         )
 
