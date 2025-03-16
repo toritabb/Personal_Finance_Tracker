@@ -9,7 +9,7 @@ from . import collision
 from .base import Canvas
 from .button import Button
 from .misc import Pointer
-from .theme import TOGGLE
+from .theme import COLOR_MAP
 from ._typing import Coordinate
 
 
@@ -38,9 +38,11 @@ class Toggle(Button):
         self.state = state
 
     def render(self, screen: pygame.Surface) -> None:
-        base_color = self.colors['pressed'] if self.pressed else self.colors['hovered'] if self.hovered else self.colors['normal']
-        border_color = self.colors['border_pressed'] if self.pressed else self.colors['border_hovered'] if self.hovered else self.colors['border_normal']
-        fill_color = self.colors['fill_pressed'] if self.pressed else self.colors['fill_hovered'] if self.hovered else self.colors['fill_normal']
+        colors = COLOR_MAP[self.colors]
+
+        base_color = colors['pressed'] if self.pressed else colors['hovered'] if self.hovered else colors['normal']
+        border_color = colors['border_pressed'] if self.pressed else colors['border_hovered'] if self.hovered else colors['border_normal']
+        fill_color = colors['fill_pressed'] if self.pressed else colors['fill_hovered'] if self.hovered else colors['fill_normal']
 
         if self._inner_shapes:
             collision.draw_shapes(screen, border_color, self.collision_shapes)

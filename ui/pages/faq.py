@@ -53,6 +53,7 @@ class FAQPage(Page):
                 (0, y),
                 answer,
                 ('Nunito', 22),
+                align_x='center',
                 line_spacing=5
             )
             ui.center(a)

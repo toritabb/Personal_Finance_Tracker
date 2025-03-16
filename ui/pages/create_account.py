@@ -65,9 +65,13 @@ class CreateAccountPage(Page):
         # link the password so it puts ***** instead of the actual password
         def password_hider(ptr: ui.misc.Pointer[str]) -> None:
             text = ptr.get()
+            current = password_ptr.get()
 
-            if text != ('*' * len(text)):
-                password_ptr.set(text)
+            if len(text) < len(current):
+                current = current[:len(text)]
+
+            elif len(text) > len(current):
+                password_ptr.set(current + text[len(current):])
 
                 password_display_ptr.set('*' * len(text))
 
@@ -97,9 +101,13 @@ class CreateAccountPage(Page):
         # link the password so it puts ***** instead of the actual password
         def confirm_password_hider(ptr: ui.misc.Pointer[str]) -> None:
             text = ptr.get()
+            current = confirm_password_ptr.get()
 
-            if text != ('*' * len(text)):
-                confirm_password_ptr.set(text)
+            if len(text) < len(current):
+                current = current[:len(text)]
+
+            elif len(text) > len(current):
+                confirm_password_ptr.set(current + text[len(current):])
 
                 confirm_password_display_ptr.set('*' * len(text))
 
@@ -137,15 +145,15 @@ class CreateAccountPage(Page):
 
     def _handle_create_account(self, username: str, password: str, confirm_password: str) -> None:
         if not username or not password:
-            print("Username and password are required")
+            print('Username and password are required')
             return
             
         if password != confirm_password:
-            print("Passwords do not match")
+            print('Passwords do not match')
             return
 
         if data_manager.user_exists(username):
-            print("Username already exists")
+            print('Username already exists')
             return
 
         # Create new user
@@ -153,7 +161,7 @@ class CreateAccountPage(Page):
         
         # Add a default checking account for the user
         user.add_account(
-            name=f"Savings Account",
+            name=f'Savings Account',
             type='savings',
             balance=0
         )
@@ -161,6 +169,6 @@ class CreateAccountPage(Page):
         # Save changes
         data_manager.save()
         
-        print("Account created successfully!")
+        print('Account created successfully!')
         self._manager.go_to('login')  # Return to login page after successful account creation
 

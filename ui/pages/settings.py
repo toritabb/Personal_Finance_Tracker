@@ -2,7 +2,9 @@
 import ui
 import file
 from data import data_manager
+from ui.theme import invert
 from .page import Page, PageManagerBase
+
 
 
 class SettingsPage(Page):
@@ -11,7 +13,6 @@ class SettingsPage(Page):
     def __init__(self, parent: ui.Canvas, manager: PageManagerBase) -> None:
         super().__init__(parent, manager)
 
-        # you can remove these, they are just placeholders so you know what page it is and can return
         page_title = ui.Text(
             self,
             (25, 25),
@@ -38,7 +39,6 @@ class SettingsPage(Page):
             align_x='left'
         )
 
-        # Notifications toggle
         ui.Toggle(
             self,
             (notif_text.right + 15, notif_text.centery - 12),
@@ -57,16 +57,17 @@ class SettingsPage(Page):
             align_x='left'
         )
 
-        # Dark mode toggle
-        dark_mode = ui.Pointer(False)
+        dark_mode_ptr = ui.Pointer(False)
         dark_mode_toggle = ui.Toggle(
             self,
             (dark_mode_text.right + 15, dark_mode_text.centery - 12),
             25,
-            dark_mode,
+            dark_mode_ptr,
             border_thickness=4,
             corner_radius=0
         )
+
+        dark_mode_ptr.listen(lambda _: invert()) # TODO: FIX TS
 
         # Export data button
         def export_user_data() -> None:

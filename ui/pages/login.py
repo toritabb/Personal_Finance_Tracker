@@ -65,9 +65,13 @@ class LoginPage(Page):
         # link the password so it puts ***** instead of the actual password
         def password_hider(ptr: ui.misc.Pointer[str]) -> None:
             text = ptr.get()
+            current = password_ptr.get()
 
-            if text != ('*' * len(text)):
-                password_ptr.set(text)
+            if len(text) < len(current):
+                current = current[:len(text)]
+
+            elif len(text) > len(current):
+                password_ptr.set(current + text[len(current):])
 
                 password_display_ptr.set('*' * len(text))
 

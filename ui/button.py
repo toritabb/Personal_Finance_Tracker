@@ -43,7 +43,7 @@ class Button(Interactable):
 
         self.command = command
 
-        self.colors = COLOR_MAP[colors]
+        self.colors = colors
 
         self._inner_shapes = collision.get_rounded_collision_shapes(self.inflate(vec2(border_thickness * -2 - (corner_radius > border_thickness) - (corner_radius == 0))), max(0, corner_radius - border_thickness)) if border_thickness else []
 
@@ -62,8 +62,10 @@ class Button(Interactable):
         self.command = new_command
 
     def render(self, screen: Surface) -> None:
-        base_color = self.colors['pressed'] if self.pressed else self.colors['hovered'] if self.hovered else self.colors['normal']
-        border_color = self.colors['border_pressed'] if self.pressed else self.colors['border_hovered'] if self.hovered else self.colors['border_normal']
+        colors = COLOR_MAP[self.colors]
+
+        base_color = colors['pressed'] if self.pressed else colors['hovered'] if self.hovered else colors['normal']
+        border_color = colors['border_pressed'] if self.pressed else colors['border_hovered'] if self.hovered else colors['border_normal']
 
         if self._inner_shapes and base_color != border_color:
             collision.draw_shapes(screen, border_color, self.collision_shapes)

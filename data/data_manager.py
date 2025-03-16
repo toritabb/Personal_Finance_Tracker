@@ -27,13 +27,16 @@ class DataManager:
 
     def load(self) -> None:
         try:
-            with open(self._storage_file, 'r') as f:
-                json_data = json.load(f)
-                self.users = {
-                    user_data['username']: User(**user_data)
-                    for user_data in json_data.get('users', [])
-                }
-        except (json.JSONDecodeError, FileNotFoundError):
+            data_str = file.load(self._storage_file, 'password123')
+
+            data = json.loads(data_str)
+
+            self.users = {
+                user_data['username']: User(**user_data)
+                for user_data in data.get('users', [])
+            }
+
+        except:
             self.users = {}  # Start with empty users dict
 
     def authenticate_user(self, username: str, password: str) -> User | None:
@@ -77,10 +80,14 @@ class DataManager:
     def save(self) -> None:
         '''Save current data to storage file.'''
 
-        data = {'users': [user.get_save_dict() for user in self.users.values()]}
+        data = self.get_save_dict()
 
-        with open(self._storage_file, 'w') as f:
-            json.dump(data, f, indent=2)
+        data_str = json.dumps(data)
+
+        file.save(data_str, self._storage_file, 'password123')
+
+        # with open(self._storage_file, 'w') as f:
+        #     json.dump(data, f, indent=2)
 
     def get_save_dict(self) -> dict:
         return {
