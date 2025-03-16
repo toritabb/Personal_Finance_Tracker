@@ -51,7 +51,6 @@ class AddExpensePage(Page):
                 lambda: manager.go_to('accounts'),
                 size=(185, -1),
                 padding=6,
-                border_thickness=4,
                 corner_radius=10
             )
 
@@ -114,7 +113,6 @@ class AddExpensePage(Page):
             (190, -1),
             validation_function=lambda _: True,
             padding=6,
-            border_thickness=4,
             corner_radius=10
         )
 
@@ -155,7 +153,6 @@ class AddExpensePage(Page):
             (110, -1),
             validation_function=amount_validation,
             padding=(20, 6),
-            border_thickness=4,
             corner_radius=10
         )
 
@@ -217,7 +214,6 @@ class AddExpensePage(Page):
             (48, -1),
             validation_function=month_validation,
             padding=6,
-            border_thickness=4,
             corner_radius=10,
             align_x='center'
         )
@@ -230,7 +226,6 @@ class AddExpensePage(Page):
             (48, -1),
             validation_function=day_validation,
             padding=6,
-            border_thickness=4,
             corner_radius=10,
             align_x='center'
         )
@@ -243,7 +238,6 @@ class AddExpensePage(Page):
             (74, -1),
             validation_function=year_validation,
             padding=6,
-            border_thickness=4,
             corner_radius=10,
             align_x='center'
         )
@@ -273,7 +267,6 @@ class AddExpensePage(Page):
             (recurring_title.right + 10, recurring_title.centery - 12),
             25,
             show_recurring_options_ptr,
-            border_thickness=4,
             corner_radius=-1
         )
 
@@ -299,7 +292,6 @@ class AddExpensePage(Page):
                     (recurring_label.right + 10, recurring_label.centery - 10),
                     21,
                     option_ptr,
-                    border_thickness=4,
                     corner_radius=-1
                 )
 
@@ -362,7 +354,6 @@ class AddExpensePage(Page):
             (0, time_period_tab.bottom + 60),
             add_income,
             padding=6,
-            border_thickness=5,
             corner_radius=15
         )
 
@@ -378,7 +369,6 @@ class AddExpensePage(Page):
             ('Nunito', 20),
             (25, 660),
             command=lambda: manager.back(),
-            padding=(15, 7),
-            border_thickness=4
+            padding=(15, 7)
         )
 

@@ -11,12 +11,11 @@ class WelcomePage(Page):
     def __init__(self, parent: ui.Canvas, manager: PageManagerBase) -> None:
         super().__init__(parent, manager)
 
-        # you can remove these, they are just placeholders so you know what page it is and can return
         page_title = ui.Text(
             self,
-            (0, 25),
+            (0, 50),
             'Welcome to Falcon Finance',
-            ('Nunito', 75, True, False)
+            ('Nunito', 70, True, False)
         )
         ui.center(page_title)
 
@@ -30,23 +29,25 @@ class WelcomePage(Page):
 
         login = ui.TextButton(
             self,
-            'Log Into Existing Account',
-            ('Nunito', 35),
-            (0, image.bottom + 80),
+            'Login To Account',
+            ('Nunito', 25),
+            (0, image.bottom + 75),
             lambda: manager.go_to('login'),
-            padding=(15, 7),
-            border_thickness=4,
+            padding=(40, 10),
+            border_thickness=0,
+            colors='button_accent'
         )
         ui.center(login)
 
         create = ui.TextButton(
             self,
-            'Create New Account',
-            ('Nunito', 35),
-            (0, login.bottom + 35),
+            'Create Account',
+            ('Nunito', 25),
+            (0, login.bottom + 40),
             lambda: manager.go_to('create_account'),
-            padding=(15, 7),
-            border_thickness=4,
+            padding=(40, 10),
+            border_thickness=0,
+            colors='button_accent'
         )
         ui.center(create)
 
