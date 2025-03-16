@@ -5,19 +5,19 @@ from .page import Page, PageManagerBase
 
 
 
-FAQ_TEXT = '''Q1: What is Falcon Finance?
-A: Falcon Finance is a financial application designed to help users manage their finances efficiently and securely.
+FAQ_QUESTIONS = [
+    'What is Falcon Finance?',
+    'Is Falcon Finance free to use?',
+    'How secure is my financial data?',
+    'How do I contact support?'
+]
 
-Q2: Is Falcon Finance free to use?
-A: We believe in the necessity of open source software so Falcon Finance will always remain free .
-
-Q3: How secure is my financial data?
-A: We prioritize security and use encryption and other protective measures to safeguard your data. 
-However, users should follow best security practices when using the Application.
-
-Q4: How do I contact support?
-A: You can reach our support team at falconfinancehelp@gmail.com or go to more then contact for any assistance
-'''
+FAQ_ANSWERS = [
+    'Falcon Finance is a financial application designed to help users manage their finances efficiently and securely.',
+    'We believe in the necessity of open source software so Falcon Finance will always remain free.',
+    'We prioritize security and use encryption and other protective measures to safeguard your data.\nHowever, users should follow best security practices when using the Application.',
+    'You can reach our support team by email at falconfinancehelp@gmail.com.\nAlternatively, go to the More and then Contact page for any assistance.'
+]
 
 
 
@@ -29,19 +29,34 @@ class FAQPage(Page):
 
         page_title = ui.Text(
             self,
-            (25, 25),
-            'FAQ Page',
-            ('Nunito', 40, True, False)
+            (0, 50),
+            'Frequently Asked Questions',
+            ('Nunito', 50, True, False)
         )
+        ui.center(page_title)
 
-        faq = ui.Text(
-            self,
-            (0, 150),
-            FAQ_TEXT,
-            ('Nunito', 23, True, False),
-            align_x= 'center'
-        )
-        ui.center(faq, axis='x')
+        y = page_title.bottom + 100
+
+        for question, answer in zip(FAQ_QUESTIONS, FAQ_ANSWERS):
+            q = ui.Text(
+                self,
+                (0, y),
+                question,
+                ('Nunito', 27, True, False)
+            )
+            ui.center(q)
+
+            y = q.bottom + 7
+
+            a = ui.Text(
+                self,
+                (0, y),
+                answer,
+                ('Nunito', 22)
+            )
+            ui.center(a)
+
+            y = a.bottom + 30
 
         back_button = ui.TextButton(
             self,

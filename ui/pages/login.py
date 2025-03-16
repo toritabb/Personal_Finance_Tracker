@@ -26,7 +26,7 @@ class LoginPage(Page):
         username_label = ui.Text(
             self,
             (0, login_title.bottom + 75),
-            'Username:',
+            'Username',
             ('Nunito', 25)
         )
 
@@ -37,7 +37,7 @@ class LoginPage(Page):
             ('Nunito', 20),
             (0, username_label.bottom + 10),
             (300, -1),
-            padding=7,
+            padding=5,
             corner_radius=5
         )
         ui.center(username_label, username_box)
@@ -46,7 +46,7 @@ class LoginPage(Page):
         password_label = ui.Text(
             self,
             (0, username_box.bottom + 30),
-            'Password:',
+            'Password',
             ('Nunito', 25)
         )
 
@@ -58,7 +58,7 @@ class LoginPage(Page):
             ('Nunito', 20),
             (0, password_label.bottom + 10),
             (300, -1),
-            padding=7,
+            padding=5,
             corner_radius=5
         )
         ui.center(password_label, password_box)

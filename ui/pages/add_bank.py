@@ -25,8 +25,7 @@ class AddBankPage(Page):
             ('Nunito', 20),
             (25, 660),
             command=lambda: manager.back(),
-            padding=(15, 7),
-            border_thickness=4
+            padding=(15, 7)
         )
         # you can remove these, they are just placeholders so you know what page it is and can return
 

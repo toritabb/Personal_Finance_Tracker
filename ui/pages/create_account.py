@@ -14,115 +14,127 @@ class CreateAccountPage(Page):
         self._manager = manager  # Store the manager as instance variable
 
         # Title
-        ui.Text(
+        title = ui.Text(
             self,
-            (SCREEN_W // 2 - 150, 100),
+            (0, 75),
             'Create Account',
-            ('Nunito', 48, True, False)
+            ('Nunito', 65, True, False)
         )
+        ui.center(title)
 
         # Username field
-        ui.Text(
+        username_label = ui.Text(
             self,
-            (SCREEN_W // 2 - 150, 200),
-            'Username:',
-            ('Nunito', 24)
+            (0, title.bottom + 60),
+            'Username',
+            ('Nunito', 25)
         )
-        
-        username = ui.misc.Pointer('')
-        ui.Textbox(
+
+        username_ptr = ui.misc.Pointer('')
+        username_box = ui.Textbox(
             self,
-            username,
+            username_ptr,
             ('Nunito', 20),
-            (SCREEN_W // 2 - 150, 240),
-            (300, 40),
-            border_thickness=2,
+            (0, username_label.bottom + 10),
+            (300, -1),
+            padding=5,
             corner_radius=5
         )
+        ui.center(username_label, username_box)
 
         # Password field
-        ui.Text(
+        password_label = ui.Text(
             self,
-            (SCREEN_W // 2 - 150, 300),
-            'Password:',
-            ('Nunito', 24)
+            (0, username_box.bottom + 30),
+            'Password',
+            ('Nunito', 25)
         )
-        
-        password = ui.misc.Pointer('')
-        password_display = ui.misc.Pointer('')
-        
-        def password_validator(text: str) -> bool:
-            password.set(text)  # Store actual password
-            password_display.set('*' * len(text))  # Display asterisks
-            return True
 
-        ui.Textbox(
+        password_ptr = ui.misc.Pointer('')
+        password_display_ptr = ui.misc.Pointer('')
+        password_box = ui.Textbox(
             self,
-            password_display,
+            password_display_ptr,
             ('Nunito', 20),
-            (SCREEN_W // 2 - 150, 340),
-            (300, 40),
-            validation_function=password_validator,
-            border_thickness=2,
+            (0, password_label.bottom + 10),
+            (300, -1),
+            padding=5,
             corner_radius=5
         )
+        ui.center(password_label, password_box)
 
-        # Confirm Password field
-        ui.Text(
+        # link the password so it puts ***** instead of the actual password
+        def password_hider(ptr: ui.misc.Pointer[str]) -> None:
+            text = ptr.get()
+
+            if text != ('*' * len(text)):
+                password_ptr.set(text)
+
+                password_display_ptr.set('*' * len(text))
+
+        password_display_ptr.listen(password_hider)
+
+        # Confirm password field
+        confirm_password_label = ui.Text(
             self,
-            (SCREEN_W // 2 - 150, 400),
-            'Confirm Password:',
-            ('Nunito', 24)
+            (0, password_box.bottom + 30),
+            'Confirm Password',
+            ('Nunito', 25)
         )
-        
-        confirm_password = ui.misc.Pointer('')
-        confirm_display = ui.misc.Pointer('')
-        
-        def confirm_validator(text: str) -> bool:
-            confirm_password.set(text)  # Store actual confirmation
-            confirm_display.set('*' * len(text))  # Display asterisks
-            return True
 
-        ui.Textbox(
+        confirm_password_ptr = ui.misc.Pointer('')
+        confirm_password_display_ptr = ui.misc.Pointer('')
+        confirm_password_box = ui.Textbox(
             self,
-            confirm_display,
+            confirm_password_display_ptr,
             ('Nunito', 20),
-            (SCREEN_W // 2 - 150, 440),
-            (300, 40),
-            validation_function=confirm_validator,
-            border_thickness=2,
+            (0, confirm_password_label.bottom + 10),
+            (300, -1),
+            padding=5,
             corner_radius=5
         )
+        ui.center(confirm_password_label, confirm_password_box)
+
+        # link the password so it puts ***** instead of the actual password
+        def confirm_password_hider(ptr: ui.misc.Pointer[str]) -> None:
+            text = ptr.get()
+
+            if text != ('*' * len(text)):
+                confirm_password_ptr.set(text)
+
+                confirm_password_display_ptr.set('*' * len(text))
+
+        confirm_password_display_ptr.listen(confirm_password_hider)
 
         # Create Account button
-        create_btn = ui.TextButton(
+        create_button = ui.TextButton(
             self,
             'Create Account',
             ('Nunito', 24),
-            (0, 520),  # Initial x position will be centered
+            (0, confirm_password_box.bottom + 60),
             command=lambda: self._handle_create_account(
-                username.get(),
-                password.get(),
-                confirm_password.get()
+                username_ptr.get(),
+                password_ptr.get(),
+                confirm_password_ptr.get()
             ),
-            padding=(20, 10),
-            border_thickness=3,
-            corner_radius=8
+            padding=(40, 10),
+            border_thickness=0,
+            colors='button_accent'
         )
-        ui.center(create_btn, axis='x')  # Center horizontally
+        ui.center(create_button)
 
         # Back to Login link
-        back_btn = ui.TextButton(
+        back_button = ui.TextButton(
             self,
             'Back to Login',
             ('Nunito', 20),
-            (0, SCREEN_H - 60),
+            (0, create_button.bottom + 40),
             command=lambda: self._manager.go_to('login'),
-            padding=(15, 7),
-            border_thickness=2,
-            corner_radius=5
+            padding=(25, 10),
+            border_thickness=0,
+            colors='button_accent'
         )
-        ui.center(back_btn, axis='x')  # Center horizontally
+        ui.center(back_button)
 
     def _handle_create_account(self, username: str, password: str, confirm_password: str) -> None:
         if not username or not password:
