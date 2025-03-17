@@ -49,6 +49,6 @@ class Window(Canvas):
     def close(self) -> None:
         super().close()
 
-        data_manager.save()
+        data_manager.logout_user()
 
 

@@ -4,6 +4,7 @@ from .page import Page, PageManagerBase
 
 # pages
 from .accounts import AccountsPage
+from .add_account import AddAccountPage
 from .add_bank import AddBankPage
 from .add_expense import AddExpensePage
 from .add_income import AddIncomePage
@@ -28,5 +29,5 @@ __all__ = 'Page', 'PageManager'
 
 class PageManager(PageManagerBase):
     def __init__(self, parent: Canvas) -> None:
-        super().__init__(parent, 'example', AccountsPage, AddBankPage, AddExpensePage, AddIncomePage, ContactPage, CreateAccountPage, ExamplePage, FAQPage, HeaderPage, IncomeExpensesPage, LoginPage, MorePage, SettingsPage, SnapshotPage, WelcomePage, LegalPage)
+        super().__init__(parent, 'example', AccountsPage, AddAccountPage, AddBankPage, AddExpensePage, AddIncomePage, ContactPage, CreateAccountPage, ExamplePage, FAQPage, HeaderPage, IncomeExpensesPage, LoginPage, MorePage, SettingsPage, SnapshotPage, WelcomePage, LegalPage)
 

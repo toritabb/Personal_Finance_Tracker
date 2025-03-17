@@ -13,7 +13,7 @@ class SettingsPage(Page):
     def __init__(self, parent: ui.Canvas, manager: PageManagerBase) -> None:
         super().__init__(parent, manager)
 
-        page_title = ui.Text(
+        title = ui.Text(
             self,
             (25, 25),
             'Settings Page',
@@ -33,7 +33,7 @@ class SettingsPage(Page):
         # Notifications setting
         notif_text = ui.Text(
             self,
-            (25, page_title.bottom + 50),
+            (25, title.bottom + 50),
             'Notifications',
             ('Nunito', 20),
             align_x='left'
@@ -71,13 +71,13 @@ class SettingsPage(Page):
 
         # Export data button
         def export_user_data() -> None:
-            current_user = data_manager.get_current_user()
+            current_user = data_manager.user
 
             if not current_user:
                 print('No user logged in')
                 return
                 
-            export_path = f'C:/Users/talan/OneDrive/Desktop/{current_user.username}.json'
+            export_path = f'C:/Users/talan/OneDrive/Desktop/{current_user.name}.json'
 
             if data_manager.export_current_user_data(export_path):
                 print(f'Data exported successfully to {export_path}')

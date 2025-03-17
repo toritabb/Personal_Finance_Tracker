@@ -124,3 +124,20 @@ def decrypt(
 
     return data
 
+
+
+def get_hash(*strs: str) -> str:
+    '''
+    Hashes strings together to get a unique hex value.
+
+    `strs` is any number of strings that are combined to form a unique hex value using the SHA256 algorithm.
+    '''
+
+    combined_strs = '\u0002' + '\u0000'.join(strs)
+
+    sha256 = hashlib.shake_128(combined_strs.encode('utf-8'), usedforsecurity=True)
+
+    hash_value = sha256.hexdigest(10)
+
+    return hash_value
+

@@ -4,9 +4,9 @@ import os
 from typing import Optional
 
 # local
+import encryption
 import file
 from .user import User
-from .account import Account
 
 
 
@@ -15,100 +15,135 @@ __all__ = 'DataManager', 'data_manager'
 
 
 class DataManager:
-    __slots__ = 'users', '_storage_file', '_current_user'
+    __slots__ = 'user'
 
     def __init__(self) -> None:
-        self.users = {}  # Dictionary with username as key, User object as value
+        self.user: Optional[User] = None
 
-        self._storage_file = file.get_global_path('data/data/users.json')
-        self._current_user: Optional[User] = None
+        # self.load()
 
-        self.load()
+    def __del__(self) -> None:
+        if self.user is not None:
+            self.save_user_data(self.user)
 
-    def load(self) -> None:
+    @staticmethod
+    def _get_user_data_path(email: str) -> str:
+        filename = encryption.get_hash(email)
+
+        user_data_path = file.get_global_path(f'data/data/users/{filename}.save')
+
+        return user_data_path
+
+    def load_user_data(self, email: str, password: str) -> User | None:
+        '''
+        Load a user's data and return a `User` object.
+        '''
+
         try:
-            data_str = file.load(self._storage_file, 'password123')
+            user_data_path = self._get_user_data_path(email)
 
-            data = json.loads(data_str)
+            json_data = file.load(user_data_path, password)
 
-            self.users = {
-                user_data['username']: User(**user_data)
-                for user_data in data.get('users', [])
-            }
+            user_data = json.loads(json_data)
 
-            # TODO: ADD SEPARATE ENCRYPTION FOR EACH USER USING THEIR PASSWORD
+            return User(**user_data)
 
         except:
-            self.users = {}  # Start with empty users dict
+            print(f'Something failed when loading user "{email}"')
 
-    def authenticate_user(self, username: str, password: str) -> Optional[User]:
-        '''Authenticate a user with username and password.
-        Returns the User if credentials are valid, None otherwise.'''
+    def save_user_data(self, user: User) -> None:
+        '''
+        Save a user's data.
+        '''
 
-        user = self.users.get(username)
+        user_data = user.get_save_dict()
 
-        if user and user.password == password:
-            return user
+        json_data = json.dumps(user_data)
 
-        return None
+        user_data_path = self._get_user_data_path(user.email)
 
-    def get_current_user(self) -> Optional[User]:
-        '''Get the currently logged in user.'''
+        file.save(json_data, user_data_path, user.password)
 
-        return self._current_user
+    def login_user(self, email: str, password: str) -> bool:
+        '''
+        Authenticate a user with username and password and log them in.
 
-    def set_current_user(self, user: Optional[User]) -> None:
-        '''Set the currently logged in user.'''
+        Returns the `True` if credentials are valid, `False` otherwise.
+        '''
 
-        self._current_user = user
+        if self.user is not None:
+            print('Another user is already logged in!')
 
-    def user_exists(self, username: str) -> bool:
-        '''Check if a username already exists.'''
+            return False
 
-        return username in self.users
+        if not self.user_exists(email):
+            print(f'User "{email}" doesn\'t exist')
 
-    def create_user(self, username: str, password: str) -> User:
-        '''Create a new user with a default checking account.'''
+            return False
 
-        user = User(username=username, password=password)
-        user.add_account('My Checking', 'checking')
+        user = self.load_user_data(email, password)
 
-        self.users[username] = user
+        if user is None: return False
 
-        self.save()
+        self.user = user
 
-        return user
+        return True
 
-    def save(self) -> None:
-        '''Save current data to storage file.'''
+    def logout_user(self) -> None:
+        '''
+        Logs out the current user. Does nothing if there is no user logged in.
+        '''
 
-        data = self.get_save_dict()
+        if self.user is None:
+            return
+        
+        self.save_user_data(self.user)
 
-        data_str = json.dumps(data)
+        del self.user
 
-        file.save(data_str, self._storage_file, 'password123')
+        self.user = None
 
-        # TODO: ADD SEPARATE ENCRYPTION FOR EACH USER USING THEIR PASSWORD
+    def user_exists(self, email: str) -> bool:
+        '''
+        Check if a user with the given `email` already exists.
+        '''
 
-    def get_save_dict(self) -> dict:
-        return {
-            'users': [user.get_save_dict() for user in self.users.values()]
-        }
+        user_data_path = self._get_user_data_path(email)
+        
+        return file.path_exists(user_data_path)
+
+    def create_user(self, name: str, email: str, password: str) -> None:
+        '''
+        Create a new user with default checking and savings accounts.
+        '''
+
+        # create user
+        user = User(name, email, password)
+
+        # add default checking and savings accounts for the user
+        user.add_account(name='My Checking', type='checking')
+        user.add_account(name='My Savings', type='savings')
+
+        # create a file for the user
+        self.save_user_data(user)
 
     def export_current_user_data(self, filepath: str) -> bool:
-        '''Export current user's data to a readable JSON file.
-        Returns True if successful, False otherwise.'''
+        '''
+        Export current user's data to a readable JSON file.
 
-        if not self._current_user:
+        Returns `True` if successful, `False` otherwise.
+        '''
+
+        if self.user is None:
             return False
-            
+
         try:
             # Ensure the directory exists
             export_dir = file.get_global_path('data/exports')
             os.makedirs(export_dir, exist_ok=True)
-            
+
             # Export the data
-            user_data = self._current_user.get_save_dict()
+            user_data = self.user.get_save_dict()
 
             with open(filepath, 'w') as f:
                 json.dump(user_data, f, indent=4)

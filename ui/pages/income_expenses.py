@@ -35,7 +35,7 @@ class IncomeExpensesPage(Page):
 
         incomes: list[tuple[Income, Date]] = []
 
-        for account in data_manager.get_current_user().accounts.values(): # type: ignore
+        for account in data_manager.user.accounts.values(): # type: ignore
             for income in account.incomes:
                 for date in income.timing.get_within_next_days(30):
                     incomes.append((income, date))
@@ -80,7 +80,7 @@ class IncomeExpensesPage(Page):
 
         expenses: list[tuple[Expense, Date]] = []
 
-        for account in data_manager.get_current_user().accounts.values(): # type: ignore
+        for account in data_manager.user.accounts.values(): # type: ignore
             for expense in account.expenses:
                 for date in expense.timing.get_within_next_days(30):
                     expenses.append((expense, date))

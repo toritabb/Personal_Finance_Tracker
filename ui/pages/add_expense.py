@@ -14,13 +14,13 @@ class AddExpensePage(Page):
     def __init__(self, parent: ui.Canvas, manager: PageManagerBase) -> None:
         super().__init__(parent, manager)
 
-        page_title = ui.Text(
+        title = ui.Text(
             self,
             (0, 50),
             'Add Expense',
             ('Nunito', 50, True, False)
         )
-        ui.center(page_title, axis='x')
+        ui.center(title, axis='x')
 
         tab_spacing = 35
 
@@ -40,7 +40,7 @@ class AddExpensePage(Page):
         ui.center(account_title, axis='x')
         
         account_ptrs: dict[str, ui.Pointer[bool]] = {}
-        current_user = data_manager.get_current_user()
+        current_user = data_manager.user
 
         if not current_user or not current_user.accounts:
             create_account_button = ui.TextButton(
@@ -330,9 +330,9 @@ class AddExpensePage(Page):
 
                 timing = {'start_date': start_day, 'end_date': 'None', 'recurrence': recurring, 'days_of_month': []}
 
-                expense = Expense(name, timing, int(amount)) # type: ignore
+                expense = Expense(name, timing, int(amount))
 
-                data_manager.get_current_user().accounts[account].expenses.append( # type: ignore
+                data_manager.user.accounts[account].expenses.append( # type: ignore
                     expense
                 )
 
@@ -340,7 +340,7 @@ class AddExpensePage(Page):
 
                 expense_cost = len(expense.timing.get_within_previous_days(days)) * expense.amount
 
-                data_manager.get_current_user().accounts[account].balance -= expense_cost * 100
+                data_manager.user.accounts[account].balance -= expense_cost * 100 # type: ignore
 
                 manager.go_to('income_expenses')
 

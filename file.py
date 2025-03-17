@@ -30,6 +30,11 @@ def get_global_path(local_path: str) -> str:
 
 
 
+def path_exists(path: str) -> bool:
+    return os.path.exists(path)
+
+
+
 def _compress(
         text: str
     ) -> bytes:

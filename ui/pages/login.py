@@ -13,38 +13,38 @@ class LoginPage(Page):
         self._manager = manager
 
         # Title
-        login_title = ui.Text(
+        title = ui.Text(
             self,
             (0, 100),
             'Login',
             ('Nunito', 65, True, False)
         )
-        ui.center(login_title)
+        ui.center(title)
 
         # Username
-        username_label = ui.Text(
+        email_label = ui.Text(
             self,
-            (0, login_title.bottom + 75),
-            'Username',
+            (0, title.bottom + 75),
+            'Email',
             ('Nunito', 25)
         )
 
-        username_ptr = ui.misc.Pointer('')
-        username_box = ui.Textbox(
+        email_ptr = ui.misc.Pointer('')
+        email_box = ui.Textbox(
             self,
-            username_ptr,
+            email_ptr,
             ('Nunito', 20),
-            (0, username_label.bottom + 10),
+            (0, email_label.bottom + 10),
             (300, -1),
             padding=5,
             corner_radius=5
         )
-        ui.center(username_label, username_box)
+        ui.center(email_label, email_box)
 
         # Password
         password_label = ui.Text(
             self,
-            (0, username_box.bottom + 30),
+            (0, email_box.bottom + 30),
             'Password',
             ('Nunito', 25)
         )
@@ -64,16 +64,18 @@ class LoginPage(Page):
 
         # link the password so it puts ***** instead of the actual password
         def password_hider(ptr: ui.misc.Pointer[str]) -> None:
-            text = ptr.get()
+            new = ptr.get()
             current = password_ptr.get()
 
-            if len(text) < len(current):
-                current = current[:len(text)]
+            # if they deleted a character
+            if len(new) < len(current):
+                password_ptr.set_no_listen(current[:len(new)])
 
-            elif len(text) > len(current):
-                password_ptr.set(current + text[len(current):])
+            # if they typed or pasted
+            elif len(new) > len(current):
+                password_ptr.set_no_listen(current + new[len(current):])
 
-                password_display_ptr.set('*' * len(text))
+                password_display_ptr.set_no_listen('*' * len(new))
 
         password_display_ptr.listen(password_hider)
 
@@ -83,7 +85,7 @@ class LoginPage(Page):
             'Login',
             ('Nunito', 30),
             (0, password_box.bottom + 85),
-            command=lambda: self._handle_login(username_ptr.get(), password_ptr.get()),
+            command=lambda: self._handle_login(email_ptr.get(), password_ptr.get()),
             padding=(40, 10),
             border_thickness=0,
             colors='button_accent'
@@ -103,23 +105,17 @@ class LoginPage(Page):
         )
         ui.center(create_account_button)
 
-    def _handle_login(self, username: str, password: str) -> None:
-        if not username or not password:
-            print('Username and password are required')
+    def _handle_login(self, email: str, password: str) -> None:
+        if (not email) or (not password):
+            print('Username and password are required!')
 
             return
 
         # Attempt to authenticate and get the user
-        user = data_manager.authenticate_user(username, password)
+        login_successful = data_manager.login_user(email, password)
 
-        if user:
-            # Store the current user
-            data_manager.set_current_user(user)
-
+        if login_successful:
             print('Login successful!')
 
-            self._manager.go_to('accounts')  # Navigate to snapshot page after successful login
-
-        else:
-            print('Invalid username or password')
+            self._manager.go_to('accounts')
 

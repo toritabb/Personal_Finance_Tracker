@@ -140,7 +140,7 @@ class Canvas(UIElement):
     def render(self, surface: Optional[Surface] = None) -> None:
         self.surface.fill(self.fill_color)
 
-        for child in self._children:
+        for child in self._children.get_values():
             child.render(self.surface)
 
         if surface is not None:
@@ -149,9 +149,7 @@ class Canvas(UIElement):
     def close(self) -> None:
         super().close()
 
-        children = [child for child in self._children]
-
-        for child in children:
+        for child in self._children.get_values():
             child.close()
 
 

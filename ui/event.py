@@ -80,9 +80,7 @@ class EventManager:
                     self.mouse_pos = vec2(event.pos)
 
             if event.type in self.listeners:
-                listeners = [l for l in self.listeners[event.type].values()]
-
-                for listener in listeners:
+                for listener in self.listeners[event.type].get_values():
                     listener(event)
 
     def set_timer(

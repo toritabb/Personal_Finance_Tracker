@@ -69,7 +69,7 @@ class Textbox(TextButton):
         if self._validation_function(text):
             self.text.set(text)
 
-            self.text_object.update_text(text)
+            self.text_object.update_text(self.text.get())
 
     def _add_str_to_text(self, str_to_add: str) -> None:
         self._validate_and_update_text(self.text.get() + str_to_add)
@@ -88,12 +88,11 @@ class Textbox(TextButton):
                 case pygame.K_ESCAPE:
                     self._revoke_attention()
                 
+                case pygame.K_RETURN if self.multiline:
+                    self._add_str_to_text('\n')
+                
                 case pygame.K_RETURN:
-                    if self.multiline:
-                        self._add_str_to_text('\n')
-
-                    else:
-                        self._revoke_attention()
+                    self._revoke_attention()
 
                 case pygame.K_v:
                     if event.mod & pygame.KMOD_CTRL:

@@ -11,17 +11,17 @@ class WelcomePage(Page):
     def __init__(self, parent: ui.Canvas, manager: PageManagerBase) -> None:
         super().__init__(parent, manager)
 
-        page_title = ui.Text(
+        title = ui.Text(
             self,
             (0, 50),
             'Welcome to Falcon Finance',
             ('Nunito', 70, True, False)
         )
-        ui.center(page_title)
+        ui.center(title)
 
         image = ui.Image(
             self,
-            (0, page_title.bottom + 50),
+            (0, title.bottom + 50),
             'HRHS_logo.png',
             size=(300, 300)
         )

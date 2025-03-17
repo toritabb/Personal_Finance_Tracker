@@ -186,7 +186,7 @@ class ExamplePage(Page):
             ui.Pointer('No numbers, centered, tall'),
             ('Nunito', 20),
             (25, textbox1.bottom + 15),
-            (350, 50),
+            (350, 51),
             validation_function=lambda string: all(i not in string for i in '0123456789'), # numbers not allowed
             padding=(7, 5),
             border_thickness=3,

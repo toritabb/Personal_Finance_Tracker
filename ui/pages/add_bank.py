@@ -12,7 +12,7 @@ class AddBankPage(Page):
         super().__init__(parent, manager)
 
         # you can remove these, they are just placeholders so you know what page it is and can return
-        page_title = ui.Text(
+        title = ui.Text(
             self,
             (25, 25),
             'Add Bank Page',

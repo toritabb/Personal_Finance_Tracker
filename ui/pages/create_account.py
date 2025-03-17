@@ -15,36 +15,56 @@ class CreateAccountPage(Page):
         # Title
         title = ui.Text(
             self,
-            (0, 75),
+            (0, 65),
             'Create Account',
             ('Nunito', 65, True, False)
         )
         ui.center(title)
 
-        # Username field
-        username_label = ui.Text(
+        # Name field
+        name_label = ui.Text(
             self,
             (0, title.bottom + 60),
-            'Username',
+            'Name',
             ('Nunito', 25)
         )
 
-        username_ptr = ui.misc.Pointer('')
-        username_box = ui.Textbox(
+        name_ptr = ui.misc.Pointer('')
+        name_box = ui.Textbox(
             self,
-            username_ptr,
+            name_ptr,
             ('Nunito', 20),
-            (0, username_label.bottom + 10),
+            (0, name_label.bottom + 7),
             (300, -1),
             padding=5,
             corner_radius=5
         )
-        ui.center(username_label, username_box)
+        ui.center(name_label, name_box)
+
+        # Username field
+        email_label = ui.Text(
+            self,
+            (0, name_box.bottom + 25),
+            'Email',
+            ('Nunito', 25)
+        )
+
+        email_ptr = ui.misc.Pointer('')
+        email_box = ui.Textbox(
+            self,
+            email_ptr,
+            ('Nunito', 20),
+            (0, email_label.bottom + 7),
+            (300, -1),
+            padding=5,
+            corner_radius=5
+        )
+        ui.center(email_label, email_box)
 
         # Password field
         password_label = ui.Text(
             self,
-            (0, username_box.bottom + 30),
+            (0, email_box.bottom + 25),
             'Password',
             ('Nunito', 25)
         )
@@ -55,7 +75,7 @@ class CreateAccountPage(Page):
             self,
             password_display_ptr,
             ('Nunito', 20),
-            (0, password_label.bottom + 10),
+            (0, password_label.bottom + 7),
             (300, -1),
             padding=5,
             corner_radius=5
@@ -64,23 +84,25 @@ class CreateAccountPage(Page):
 
         # link the password so it puts ***** instead of the actual password
         def password_hider(ptr: ui.misc.Pointer[str]) -> None:
-            text = ptr.get()
+            new = ptr.get()
             current = password_ptr.get()
 
-            if len(text) < len(current):
-                current = current[:len(text)]
+            # if they deleted a character
+            if len(new) < len(current):
+                password_ptr.set_no_listen(current[:len(new)])
 
-            elif len(text) > len(current):
-                password_ptr.set(current + text[len(current):])
+            # if they typed or pasted
+            elif len(new) > len(current):
+                password_ptr.set_no_listen(current + new[len(current):])
 
-                password_display_ptr.set('*' * len(text))
+                password_display_ptr.set_no_listen('*' * len(new))
 
         password_display_ptr.listen(password_hider)
 
         # Confirm password field
         confirm_password_label = ui.Text(
             self,
-            (0, password_box.bottom + 30),
+            (0, password_box.bottom + 25),
             'Confirm Password',
             ('Nunito', 25)
         )
@@ -91,7 +113,7 @@ class CreateAccountPage(Page):
             self,
             confirm_password_display_ptr,
             ('Nunito', 20),
-            (0, confirm_password_label.bottom + 10),
+            (0, confirm_password_label.bottom + 7),
             (300, -1),
             padding=5,
             corner_radius=5
@@ -100,16 +122,18 @@ class CreateAccountPage(Page):
 
         # link the password so it puts ***** instead of the actual password
         def confirm_password_hider(ptr: ui.misc.Pointer[str]) -> None:
-            text = ptr.get()
+            new = ptr.get()
             current = confirm_password_ptr.get()
 
-            if len(text) < len(current):
-                current = current[:len(text)]
+            # if they deleted a character
+            if len(new) < len(current):
+                confirm_password_ptr.set_no_listen(current[:len(new)])
 
-            elif len(text) > len(current):
-                confirm_password_ptr.set(current + text[len(current):])
+            # if they typed or pasted
+            elif len(new) > len(current):
+                confirm_password_ptr.set_no_listen(current + new[len(current):])
 
-                confirm_password_display_ptr.set('*' * len(text))
+                confirm_password_display_ptr.set_no_listen('*' * len(new))
 
         confirm_password_display_ptr.listen(confirm_password_hider)
 
@@ -120,7 +144,8 @@ class CreateAccountPage(Page):
             ('Nunito', 24),
             (0, confirm_password_box.bottom + 60),
             command=lambda: self._handle_create_account(
-                username_ptr.get(),
+                name_ptr.get(),
+                email_ptr.get(),
                 password_ptr.get(),
                 confirm_password_ptr.get()
             ),
@@ -143,32 +168,30 @@ class CreateAccountPage(Page):
         )
         ui.center(back_button)
 
-    def _handle_create_account(self, username: str, password: str, confirm_password: str) -> None:
-        if not username or not password:
-            print('Username and password are required')
+    def _handle_create_account(self, name: str, email: str, password: str, confirm_password: str) -> None:
+        # needs name, email, password
+        if not name or not email or not password:
+            print('Name, email, and password are required!')
+
             return
-            
+        
+        # passwords must match
         if password != confirm_password:
-            print('Passwords do not match')
+            print('Passwords do not match!')
+
             return
 
-        if data_manager.user_exists(username):
-            print('Username already exists')
+        # can't already be a user with that email
+        if data_manager.user_exists(email):
+            print('Account with that email already exists!')
+
             return
 
         # Create new user
-        user = data_manager.create_user(username, password)
-        
-        # Add a default checking account for the user
-        user.add_account(
-            name=f'Savings Account',
-            type='savings',
-            balance=0
-        )
-        
-        # Save changes
-        data_manager.save()
-        
+        data_manager.create_user(name, email, password)
+
         print('Account created successfully!')
-        self._manager.go_to('login')  # Return to login page after successful account creation
+
+        # Return to login page after successful account creation
+        self._manager.go_to('login')
 

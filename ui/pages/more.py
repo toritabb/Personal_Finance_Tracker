@@ -14,10 +14,7 @@ class MorePage(Page):
 
         header = HeaderPage(self, manager)
 
-        spacing_pages = 10
         padding_pages = (30, 7)
-        border_thickness_pages = 5
-        corner_radius_pages = -1
 
         title = ui.Text(
             self,
@@ -34,8 +31,6 @@ class MorePage(Page):
             (title.left - 140, header.bottom + 150),
             lambda: manager.go_to('faq'),
             padding=padding_pages,
-            border_thickness=border_thickness_pages,
-            corner_radius=corner_radius_pages
         )
 
         settings = ui.TextButton(
@@ -45,8 +40,6 @@ class MorePage(Page):
             (title.right + 50, header.bottom + 150),
             lambda: manager.go_to('settings'),
             padding=padding_pages,
-            border_thickness=border_thickness_pages,
-            corner_radius=corner_radius_pages
         )
 
         contact = ui.TextButton(
@@ -56,21 +49,23 @@ class MorePage(Page):
             (title.right + 50, header.bottom + 350),
             lambda: manager.go_to('contact'),
             padding=padding_pages,
-            border_thickness=border_thickness_pages,
-            corner_radius=corner_radius_pages
         )
 
         # log out button
-        logOut = ui.TextButton(
+        def _logout():
+            data_manager.logout_user()
+
+            manager.go_to('login')
+
+            print('Successfully logged out')
+
+        logout = ui.TextButton(
             self,
             'Log Out',
             ('Nunito', 40),
             (title.left - 150, header.bottom + 350),
-            # needs account handling logic
-            lambda: manager.go_to('login'),
+            _logout,
             padding=padding_pages,
-            border_thickness=border_thickness_pages,
-            corner_radius=-1
         )
 
         legal_button = ui.TextButton(
@@ -80,7 +75,5 @@ class MorePage(Page):
             (1165, 660),
             lambda: manager.go_to('legal'),
             padding=(15, 7),
-            border_thickness=4,
-            corner_radius=corner_radius_pages
         )
 

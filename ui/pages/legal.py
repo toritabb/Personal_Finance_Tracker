@@ -66,15 +66,15 @@ class LegalPage(Page):
     def __init__(self, parent: ui.Canvas, manager: PageManagerBase) -> None:
         super().__init__(parent, manager)
 
-        page_title = ui.Text(
+        title = ui.Text(
             self,
             (0, 50),
             'Legal Page',
             ('Nunito', 50, True, False)
         )
-        ui.center(page_title)
+        ui.center(title)
 
-        y = page_title.bottom + 65
+        y = title.bottom + 65
 
         for header, text in zip(LEGAL_HEADERS, LEGAL_TEXT):
             head = ui.Text(
