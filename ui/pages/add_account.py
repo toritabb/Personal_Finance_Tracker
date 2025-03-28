@@ -24,41 +24,18 @@ class AddAccountPage(Page):
         title = ui.Text(
             self,
             (0, 75),
-            f"Welcome, {current_user.name}!",
+            'Add Account',
             ('Nunito', 50, True, False)
         )
         ui.center(title)
 
-        # Show user's accounts
-        account_y = title.bottom + 50
-        for account_name, bank_account in current_user.accounts.items():
-            # Account container
-            account_text = ui.Text(
-                self,
-                (50, account_y),
-                f"{account_name} ({bank_account.type})",
-                ('Nunito', 24, True, False)
-            )
-            
-            # Balance
-            ui.Text(
-                self,
-                (50, account_y + 40),
-                f"Balance: ${bank_account.balance/100:.2f}",  # Convert cents to dollars
-                ('Nunito', 20)
-            )
-            
-            account_y += 100  # Space for next account
-
-        # # Add Account button
-        # ui.TextButton(
-        #     self,
-        #     'Add Account',
-        #     ('Nunito', 24),
-        #     (25, account_y + 20),
-        #     command=lambda: manager.go_to('add_bank'),
-        #     padding=(20, 10),
-        #     border_thickness=3,
-        #     corner_radius=8
-        # )
+        # Cancel/back button
+        cancel_button = ui.TextButton(
+            self,
+            'Cancel',
+            ('Nunito', 20),
+            (25, 660),
+            command=lambda: manager.back(),
+            padding=(15, 7)
+        )
 

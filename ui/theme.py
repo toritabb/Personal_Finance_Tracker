@@ -2,7 +2,7 @@
 from pygame import Color
 
 # local
-from ._color_funcs import *
+from .color import *
 
 
 

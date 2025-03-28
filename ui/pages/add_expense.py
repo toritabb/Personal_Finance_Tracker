@@ -75,8 +75,6 @@ class AddExpensePage(Page):
                     (account_label.right + 10, account_label.centery - 10),
                     21,
                     account_ptr,
-                    border_thickness=4,
-                    corner_radius=-1
                 )
 
                 ui.center(account_label, account_toggle, axis='x')
@@ -267,7 +265,6 @@ class AddExpensePage(Page):
             (recurring_title.right + 10, recurring_title.centery - 12),
             25,
             show_recurring_options_ptr,
-            corner_radius=-1
         )
 
         ui.center(recurring_title, recurring_toggle, axis='x')
@@ -292,7 +289,6 @@ class AddExpensePage(Page):
                     (recurring_label.right + 10, recurring_label.centery - 10),
                     21,
                     option_ptr,
-                    corner_radius=-1
                 )
 
                 ui.center(recurring_label, recurring_toggle, axis='x')
@@ -359,13 +355,13 @@ class AddExpensePage(Page):
 
         ui.center(add_expense_button)
 
-        ###############
-        # back button #
-        ###############
+        #################
+        # cancel button #
+        #################
 
-        back_button = ui.TextButton(
+        cancel_button = ui.TextButton(
             self,
-            'Back',
+            'Cancel',
             ('Nunito', 20),
             (25, 660),
             command=lambda: manager.back(),

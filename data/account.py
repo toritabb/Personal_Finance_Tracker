@@ -9,12 +9,15 @@ __all__ = 'Account', 'Timing', 'Income', 'Expense'
 
 
 class Account:
-    '''A bank account that belongs to a user. Contains balance and transaction history.'''
+    '''
+    A bank account that belongs to a user. Contains balance and transaction history.
+    '''
 
     __slots__ = 'name', 'type', 'balance', 'incomes', 'expenses'
 
     def __init__(self, name: str = '', type: Literal['checking', 'savings'] = 'checking', balance: int = 0, incomes: Optional[list[dict]] = None, expenses: Optional[list[dict]] = None) -> None:
-        '''Initialize a new bank account.
+        '''
+        Initialize a new bank account.
         
         Args:
             name: Display name for the account
@@ -32,7 +35,9 @@ class Account:
         self.expenses = [Expense(**expense) for expense in (expenses or [])]
 
     def get_save_dict(self) -> dict:
-        '''Get dictionary representation for saving to storage.'''
+        '''
+        Get dictionary representation for saving to storage.
+        '''
 
         return {
             'name': self.name,

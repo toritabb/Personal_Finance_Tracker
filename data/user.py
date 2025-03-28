@@ -11,14 +11,16 @@ __all__ = 'User',
 
 
 class User:
-    __slots__ = 'name', 'email', 'password', 'accounts'
+    __slots__ = 'name', 'email', 'password', 'accounts', 'settings'
 
-    def __init__(self, name: str, email: str, password: str, accounts: Optional[list[dict]] = None) -> None:
+    def __init__(self, name: str, email: str, password: str, accounts: Optional[list[dict]] = None, settings: Optional[dict[str, bool]] = None) -> None:
         self.name = name
         self.email = email
         self.password = password
 
         self.accounts = {account_data['name']: Account(**account_data) for account_data in (accounts or [])}
+
+        self.settings = Settings(**(settings if settings else {}))
 
     def get_save_dict(self) -> dict[str, str | list[dict]]:
         return {
@@ -35,4 +37,18 @@ class User:
         self.accounts[name] = account
 
         return account
+
+
+
+class Settings:
+    def __init__(self, **settings) -> None:
+        if 'dark_mode' in settings:
+            self.dark_mode = settings['dark_mode']
+        else:
+            self.dark_mode = False
+            
+        if 'notifications' in settings:
+            self.notifications = settings['notifications']
+        else:
+            self.notifications = True
 

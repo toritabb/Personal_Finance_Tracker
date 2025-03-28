@@ -11,7 +11,7 @@ class HeaderPage(Page):
     def __init__(self, parent: ui.Canvas, manager: PageManagerBase) -> None:
         super().__init__(parent, manager, height=125, fill_color=ui.HEADER)
 
-        padding = (30, 10)
+        padding = (40, 12)
         spacing = 75
 
         accounts = ui.TextButton(
@@ -21,7 +21,7 @@ class HeaderPage(Page):
             (0, 25),
             lambda: manager.go_to('accounts'),
             padding=padding,
-            corner_radius=15,
+            corner_radius=-1,
             colors='button_accent'
         )
 
@@ -32,7 +32,7 @@ class HeaderPage(Page):
             (accounts.right + spacing, 25),
             lambda: manager.go_to('income_expenses'),
             padding=padding,
-            corner_radius=15,
+            corner_radius=-1,
             colors='button_accent'
         )
 
@@ -43,7 +43,7 @@ class HeaderPage(Page):
             (income_expenses.right + spacing, 25),
             lambda: manager.go_to('more'),
             padding=padding,
-            corner_radius=15,
+            corner_radius=-1,
             colors='button_accent'
         )
         ui.center(accounts, income_expenses, more, axis='xy')

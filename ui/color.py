@@ -1,3 +1,6 @@
+# Standard Library
+from random import randint
+
 # 3rd party
 from pygame import Color
 
@@ -68,5 +71,14 @@ def invert_color(color: Color) -> Color:
         255 - color.r,
         255 - color.g,
         255 - color.b,
+    )
+
+
+
+def random() -> Color:
+    return Color(
+        randint(0, 255),
+        randint(0, 255),
+        randint(0, 255),
     )
 

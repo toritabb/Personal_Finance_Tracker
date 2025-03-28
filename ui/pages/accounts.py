@@ -51,15 +51,13 @@ class AccountsPage(Page):
             
             account_y += 100  # Space for next account
 
-        # # Add Account button
-        # ui.TextButton(
-        #     self,
-        #     'Add Account',
-        #     ('Nunito', 24),
-        #     (25, account_y + 20),
-        #     command=lambda: manager.go_to('add_bank'),
-        #     padding=(20, 10),
-        #     border_thickness=3,
-        #     corner_radius=8
-        # )
+        # Add Account button
+        ui.TextButton(
+            self,
+            'Add Account',
+            ('Nunito', 25),
+            (25, account_y + 20),
+            command=lambda: manager.go_to('add_account'),
+            padding=(20, 7),
+        )
 

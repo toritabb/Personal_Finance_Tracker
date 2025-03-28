@@ -28,8 +28,8 @@ class Toggle(Button):
             size: int,
             state: Pointer[bool],
             *,
-            border_thickness: int = 0,
-            corner_radius: int = 0,
+            border_thickness: int = 4,
+            corner_radius: int = -1,
             colors: Literal['toggle', 'toggle_accent'] = 'toggle'
         ) -> None:
 

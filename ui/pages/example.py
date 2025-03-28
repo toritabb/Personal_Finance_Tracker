@@ -1,6 +1,9 @@
+from pygame import Color
+
 # local
 import ui
 from data import data_manager
+import ui.pie_chart
 from .page import Page, PageManagerBase
 
 
@@ -75,8 +78,6 @@ class ExamplePage(Page):
             (text_toggle_center.right + 8, text_toggle_center.centery - 12),
             25,
             ui.Pointer(True),
-            border_thickness=4,
-            corner_radius=-1
         )
         ui.center(text_toggle_center, toggle_center, axis='x') # center the toggle and text on the x
         ui.center(text_center, text_toggle_center, toggle_center, axis='y') # center all on the y
@@ -144,7 +145,6 @@ class ExamplePage(Page):
             (25, button3.bottom + 25),
             25,
             ui.Pointer(True),
-            border_thickness=4,
             corner_radius=0
         )
 
@@ -153,7 +153,6 @@ class ExamplePage(Page):
             (toggle1.right + 10, toggle1.top),
             25,
             ui.Pointer(False),
-            border_thickness=4,
             corner_radius=7
         )
 
@@ -162,7 +161,6 @@ class ExamplePage(Page):
             (toggle2.right + 10, toggle1.top),
             25,
             ui.Pointer(True),
-            border_thickness=4,
             corner_radius=-1
         )
 
@@ -203,6 +201,39 @@ class ExamplePage(Page):
             (25, textbox2.bottom + 20),
             'HRHS_logo.png',
             size=(400, 200)
+        )
+
+        ##############
+        # PIE CHARTS #
+        ##############
+
+        pie_chart = ui.PieChart(
+            self,
+            (image.right + 30, image.top),
+            150,
+            [
+                ui.PieChartOption('1', 1),
+                ui.PieChartOption('2', 2),
+                ui.PieChartOption('3', 3),
+                ui.PieChartOption('4', 4),
+                ui.PieChartOption('5', 5),
+            ],
+            thickness_percent=0.4,
+            gap=3
+        )
+
+        pie_chart2 = ui.PieChart(
+            self,
+            (pie_chart.right + 30, pie_chart.top),
+            250,
+            [
+                ui.PieChartOption('1', 1),
+                ui.PieChartOption('2', 1),
+                ui.PieChartOption('3', 1),
+                ui.PieChartOption('4', 7),
+            ],
+            thickness_percent=0.9,
+            gap=5
         )
 
         #############

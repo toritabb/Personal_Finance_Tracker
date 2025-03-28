@@ -1,6 +1,8 @@
-
 # standard library
 from typing import Any
+
+# 3rd party
+import pygame
 
 # local
 from constants import SCREEN_W, SCREEN_H
@@ -46,10 +48,14 @@ class PageManagerBase:
         event_manager.textbox_selected = None
         event_manager.button_held = False
 
+        pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
+
     def back(self) -> None:
         self.current_page.close()
 
         self.current_page = self.get_page(self.stack.pop())
+
+        pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
 
     def close(self) -> None:
         self.current_page.close()

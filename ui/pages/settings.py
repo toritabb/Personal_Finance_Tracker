@@ -1,6 +1,5 @@
 # local
 import ui
-import file
 from data import data_manager
 from ui.theme import invert
 from .page import Page, PageManagerBase
@@ -20,18 +19,8 @@ class SettingsPage(Page):
             ('Nunito', 40, True, False)
         )
 
-        back_button = ui.TextButton(
-            self,
-            'Back',
-            ('Nunito', 20),
-            (25, 660),
-            command=lambda: manager.back(),
-            padding=(15, 7),
-            border_thickness=4
-        )
-
         # Notifications setting
-        notif_text = ui.Text(
+        notif_label = ui.Text(
             self,
             (25, title.bottom + 50),
             'Notifications',
@@ -41,17 +30,15 @@ class SettingsPage(Page):
 
         ui.Toggle(
             self,
-            (notif_text.right + 15, notif_text.centery - 12),
+            (notif_label.right + 15, notif_label.centery - 12),
             25,
             ui.Pointer(True),
-            border_thickness=4,
-            corner_radius=0
         )
 
         # Dark mode setting
         dark_mode_text = ui.Text(
             self,
-            (25, notif_text.bottom + 30),
+            (25, notif_label.bottom + 30),
             'Dark Mode',
             ('Nunito', 20),
             align_x='left'
@@ -63,8 +50,6 @@ class SettingsPage(Page):
             (dark_mode_text.right + 15, dark_mode_text.centery - 12),
             25,
             dark_mode_ptr,
-            border_thickness=4,
-            corner_radius=0
         )
 
         dark_mode_ptr.listen(lambda _: invert()) # TODO: FIX TS
@@ -94,5 +79,15 @@ class SettingsPage(Page):
             padding=(15, 7),
             border_thickness=3,
             corner_radius=8
+        )
+
+        back_button = ui.TextButton(
+            self,
+            'Back',
+            ('Nunito', 20),
+            (25, 660),
+            command=lambda: manager.back(),
+            padding=(15, 7),
+            border_thickness=4
         )
 

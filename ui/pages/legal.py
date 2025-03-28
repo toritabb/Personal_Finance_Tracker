@@ -4,7 +4,7 @@ from .page import Page, PageManagerBase
 
 
 
-LEGAL = '''
+_LEGAL = '''
 1. Introduction
 Welcome to Falcon Finance (the "Application").
 By using this Application, you agree to be bound by these Terms of Service ("Terms").
@@ -38,6 +38,7 @@ constitute acceptance of the new Terms.
 For any questions or concerns regarding these Terms, contact us at falconfinancehelp@gmail.com.
 '''
 
+# the split up legal text
 LEGAL_HEADERS = [
     '1. Introduction',
     '2. Disclaimer',

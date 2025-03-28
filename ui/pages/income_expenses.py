@@ -26,12 +26,23 @@ class IncomeExpensesPage(Page):
 
         ui.center(page_title, axis='x')
 
-        income_title = ui.Text(
+        ##########
+        # Income #
+        ##########
+
+        income_canvas = ui.Canvas(
             self,
-            (170, page_title.bottom + 40),
+            (50, page_title.bottom + 40, 600, 400)
+        )
+
+        income_title = ui.Text(
+            income_canvas,
+            (0, 0),
             'Next Month\'s Income',
             ('Nunito', 35, True, False)
         )
+
+        ui.center(income_title)
 
         incomes: list[tuple[Income, Date]] = []
 
@@ -41,35 +52,46 @@ class IncomeExpensesPage(Page):
                     incomes.append((income, date))
 
         for i, (income, date) in enumerate(sorted(incomes, key=lambda x: x[1])):
-            text = '_'*40 + f'\n| {date.strftime("%m/%d/%Y"):^14} | {income.name:^22} | {f'${income.amount:,}':^10} |'
+            y = income_title.bottom + 20 + i * 38
 
-            text_obj = ui.Text(
-                self,
-                (85, income_title.bottom + 20 + i * 38),
-                text,
+            date_text = ui.Text(
+                income_canvas,
+                (0, y),
+                f'{date.strftime("%m/%d/%Y")}',
                 ('Nunito', 25),
                 line_spacing=4
             )
 
-        if incomes:
-            text_obj = ui.Text(
-                self,
-                (85, income_title.bottom + 20 + (i + 1) * 38),
-                '_'*40,
+            name_text = ui.Text(
+                income_canvas,
+                (160, y),
+                income.name,
                 ('Nunito', 25),
                 line_spacing=4
             )
+
+            amount_text = ui.Text(
+                income_canvas,
+                (400, y),
+                f'${income.amount:,}',
+                ('Nunito', 25),
+                line_spacing=4
+            )
+
+            # ui.center(date_text, name_text, amount_text)
 
         add_income_button = ui.TextButton(
-            self,
+            income_canvas,
             'Add Income',
             ('Nunito', 25),
-            (250, 640),
+            (0, income_canvas.height - 50),
             command=lambda: manager.go_to('add_income'),
             padding=(15, 8),
-            border_thickness=4,
-            corner_radius=-1
         )
+
+        ############
+        # Expenses #
+        ############
 
         expenses_title = ui.Text(
             self,
@@ -112,7 +134,5 @@ class IncomeExpensesPage(Page):
             (850, 640),
             command=lambda: manager.go_to('add_expense'),
             padding=(15, 8),
-            border_thickness=4,
-            corner_radius=-1
         )
 
