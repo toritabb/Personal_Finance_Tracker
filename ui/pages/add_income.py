@@ -135,35 +135,32 @@ class AddIncomePage(Page):
 
         def amount_validation(text: str) -> Optional[str]:
             try:
-                value = int(float('0' + text) * 100) / 100
+                num = text[1:].replace(',', '').replace('.', '').rjust(3, '0')
+
+                decimal = num[:-2] + '.' + num[-2:]
+
+                value = float(decimal)
 
                 amount_ptr.set(value)
 
-                return f'{value:,.2f}'
+                return f'${value:,.2f}'
 
             except:
                 return None
 
         amount_ptr = ui.Pointer(0.0)
-        amount_text_ptr = ui.Pointer('0.0')
+        amount_text_ptr = ui.Pointer('$0.00')
 
         amount_textbox = ui.Textbox(
             amount_tab,
             amount_text_ptr,
             ('Nunito', 20),
             (0, amount_title.bottom + 10),
-            (110, -1),
+            (150, -1),
             validation_function=amount_validation,
-            padding=(20, 6),
+            padding=6,
             border_thickness=4,
             corner_radius=10
-        )
-
-        dollar_sign = ui.Text(
-            amount_tab,
-            (amount_textbox.left + 42, amount_textbox.top + 11),
-            '$',
-            ('Nunito', 20),
         )
 
         ui.center(amount_textbox, axis='x')
@@ -324,7 +321,7 @@ class AddIncomePage(Page):
         ##############
 
         def add_income() -> None:
-            if len(account_ptrs):
+            if len(account_ptrs) and data_manager.user:
                 account = ''
 
                 for a, ptr in account_ptrs.items():
@@ -338,20 +335,16 @@ class AddIncomePage(Page):
 
                 timing = {'start_date': start_day, 'end_date': 'None', 'recurrence': recurring, 'days_of_month': []}
 
-                income = Income(source, timing, amount)
+                income = Income(source, timing, amount, account)
 
-                data_manager.user.accounts[account].incomes.append(income) # type: ignore
+                data_manager.user.accounts[account].incomes.append(income)
 
-                days = (date.today() - income.timing.start_date).days
-
-                income_cost = len(income.timing.get_within_previous_days(days)) * income.amount
-
-                data_manager.user.accounts[account].balance += income_cost # type: ignore
+                data_manager.user.accounts[account].update_balance()
 
                 manager.go_to('income_expenses')
 
             else:
-                print('no accounts')
+                print('no user or accounts')
 
         add_income_button = ui.TextButton(
             self,

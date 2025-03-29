@@ -17,10 +17,15 @@ class AccountsPage(Page):
         # Get current user
         current_user = data_manager.user
 
+        # go to log in page if no user is logges in
         if current_user is None:
             print("Error: No user logged in")
             manager.go_to('login')
             return
+
+        # update all of the balances
+        for account in current_user.accounts.values():
+            account.update_balance()
 
         # Page title with username
         title = ui.Text(

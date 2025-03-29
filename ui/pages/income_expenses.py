@@ -6,6 +6,7 @@ from pygame import Color
 # local
 import ui
 from data import Income, Expense, data_manager
+from ui.theme import OLD_PAPER, DESERT_TAN
 from .page import Page, PageManagerBase
 from .header import HeaderPage
 
@@ -28,19 +29,33 @@ class IncomeExpensesPage(Page):
 
         ui.center(page_title, axis='x')
 
+        ###############
+        # Positioning #
+        ###############
+
+        width = 580
+        height = 450
+
+        padding = 15
+        date_x = 0 + padding
+        description_x = 100 + padding
+        account_x = 300 + padding
+        amount_x = 450 + padding
+
+
         ##########
         # Income #
         ##########
 
         income_canvas = ui.Canvas(
             self,
-            (0, page_title.bottom + 40, 550, 400),
-            fill_color=Color(255, 0, 0)
+            (0, page_title.bottom + 30, width, height),
+            fill_color=DESERT_TAN
         )
 
         income_title = ui.Text(
             income_canvas,
-            (0, 0),
+            (0, padding),
             'Next Month\'s Income',
             ('Nunito', 35, True, False)
         )
@@ -64,37 +79,71 @@ class IncomeExpensesPage(Page):
 
             ui.center(no_income_text)
 
-        for i, (income, date) in enumerate(sorted(incomes, key=lambda x: x[1])):
-            y = income_title.bottom + 20 + i * 38
-
-            date_text = ui.Text(
+        else:
+            date_label = ui.Text(
                 income_canvas,
-                (0, y),
-                f'{date.strftime("%m/%d/%Y")}',
-                ('Nunito', 25)
+                (date_x, income_title.bottom + 20),
+                'Date',
+                ('Nunito', 20, True, False)
             )
 
-            name_text = ui.Text(
+            description_label = ui.Text(
                 income_canvas,
-                (160, y),
-                income.name,
-                ('Nunito', 25)
+                (description_x, date_label.top),
+                'Description',
+                ('Nunito', 20, True, False)
             )
 
-            amount_text = ui.Text(
+            account_label = ui.Text(
                 income_canvas,
-                (425, y),
-                f'${income.amount:,}',
-                ('Nunito', 25)
+                (account_x, date_label.top),
+                'Account',
+                ('Nunito', 20, True, False)
             )
 
-            # ui.center(date_text, name_text, amount_text)
+            amount_label = ui.Text(
+                income_canvas,
+                (amount_x, date_label.top),
+                'Amount',
+                ('Nunito', 20, True, False)
+            )
+
+            for i, (income, date) in enumerate(sorted(incomes, key=lambda x: x[1])):
+                y = date_label.bottom + 20 + i * 28
+
+                date_text = ui.Text(
+                    income_canvas,
+                    (date_x, y),
+                    f'{date.strftime("%m/%d")}',
+                    ('Nunito', 20)
+                )
+
+                description_text = ui.Text(
+                    income_canvas,
+                    (description_x, y),
+                    income.name,
+                    ('Nunito', 20)
+                )
+
+                account_text = ui.Text(
+                    income_canvas,
+                    (account_x, y),
+                    income.account,
+                    ('Nunito', 20)
+                )
+
+                amount_text = ui.Text(
+                    income_canvas,
+                    (amount_x, y),
+                    f'${income.amount:,.2f}',
+                    ('Nunito', 20)
+                )
 
         add_income_button = ui.TextButton(
             income_canvas,
             'Add Income',
             ('Nunito', 25),
-            (0, income_canvas.height - 50),
+            (0, income_canvas.height - padding - 42),
             command=lambda: manager.go_to('add_income'),
             padding=(25, 10),
             border_thickness=0,
@@ -109,13 +158,13 @@ class IncomeExpensesPage(Page):
 
         expenses_canvas = ui.Canvas(
             self,
-            (income_canvas.right + 50, page_title.bottom + 40, 550, 400),
-            fill_color=Color(255, 0, 0)
+            (income_canvas.right + 40, income_canvas.top, width, height),
+            fill_color=DESERT_TAN
         )
 
         expenses_title = ui.Text(
             expenses_canvas,
-            (0, 0),
+            (0, padding),
             'Next Month\'s Expenses',
             ('Nunito', 35, True, False)
         )
@@ -139,38 +188,71 @@ class IncomeExpensesPage(Page):
 
             ui.center(no_expenses_text)
 
-        for i, (expense, date) in enumerate(sorted(expenses, key=lambda x: x[1])):
-            y = expenses_title.bottom + 20 + i * 38
-
-            date_text = ui.Text(
+        else:
+            date_label = ui.Text(
                 expenses_canvas,
-                (0, y),
-                f'{date.strftime("%m/%d/%Y")}',
-                ('Nunito', 25),
-                line_spacing=4
+                (date_x, expenses_title.bottom + 20),
+                'Date',
+                ('Nunito', 20, True, False)
             )
 
-            name_text = ui.Text(
+            description_label = ui.Text(
                 expenses_canvas,
-                (160, y),
-                expense.name,
-                ('Nunito', 25),
-                line_spacing=4
+                (description_x, date_label.top),
+                'Description',
+                ('Nunito', 20, True, False)
             )
 
-            amount_text = ui.Text(
+            account_label = ui.Text(
                 expenses_canvas,
-                (425, y),
-                f'${expense.amount:,}',
-                ('Nunito', 25),
-                line_spacing=4
+                (account_x, date_label.top),
+                'Account',
+                ('Nunito', 20, True, False)
             )
+
+            amount_label = ui.Text(
+                expenses_canvas,
+                (amount_x, date_label.top),
+                'Amount',
+                ('Nunito', 20, True, False)
+            )
+
+            for i, (expense, date) in enumerate(sorted(expenses, key=lambda x: x[1])):
+                y = date_label.bottom + 20 + i * 28
+
+                date_text = ui.Text(
+                    expenses_canvas,
+                    (date_x, y),
+                    f'{date.strftime("%m/%d")}',
+                    ('Nunito', 20)
+                )
+
+                description_text = ui.Text(
+                    expenses_canvas,
+                    (description_x, y),
+                    expense.name,
+                    ('Nunito', 20)
+                )
+
+                account_text = ui.Text(
+                    expenses_canvas,
+                    (account_x, y),
+                    expense.account,
+                    ('Nunito', 20)
+                )
+
+                amount_text = ui.Text(
+                    expenses_canvas,
+                    (amount_x, y),
+                    f'${expense.amount:,.2f}',
+                    ('Nunito', 20)
+                )
 
         add_expense_button = ui.TextButton(
             expenses_canvas,
             'Add Expense',
             ('Nunito', 25),
-            (0, income_canvas.height - 50),
+            (0, expenses_canvas.height - padding - 42),
             command=lambda: manager.go_to('add_expense'),
             padding=(25, 10),
             border_thickness=0,

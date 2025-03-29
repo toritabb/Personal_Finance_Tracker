@@ -57,6 +57,26 @@ class Account:
             'incomes': [income.get_save_dict() for income in self.incomes],
             'expenses': [expense.get_save_dict() for expense in self.expenses]
         }
+    
+    def update_balance(self) -> None:
+        self.balance = 0
+
+        # add all of the incomes
+        for income in self.incomes:
+            days = (date.today() - income.timing.start_date).days
+
+            income_cost = len(income.timing.get_within_previous_days(days)) * income.amount
+
+            self.balance += income_cost
+
+        # add all of the expenses
+        for expense in self.expenses:
+            days = (date.today() - expense.timing.start_date).days
+
+            expense_cost = len(expense.timing.get_within_previous_days(days)) * expense.amount
+
+            self.balance -= expense_cost
+
 
 
 
@@ -143,9 +163,9 @@ class Timing:
 
         match self.recurrence:
             case 'never':
-                if today <= self.start_date <= end_date:
+                if today >= self.start_date:
                     return [self.start_date]
-                
+
                 else:
                     return []
 
@@ -204,47 +224,53 @@ class Timing:
 
 
 class Income:
-    __slots__ = 'name', 'timing', 'amount'
+    __slots__ = 'name', 'timing', 'amount', 'account'
 
     def __init__(
             self,
             name: str,
             timing: dict,
-            amount: float
+            amount: float,
+            account: str,
         ) -> None:
 
         self.name = name
         self.timing = Timing(**timing)
         self.amount = amount
+        self.account = account
 
     def get_save_dict(self) -> dict:
         return {
             'name': self.name,
             'timing': self.timing.get_save_dict(),
             'amount': self.amount,
+            'account': self.account,
         }
 
 
 
 class Expense:
-    __slots__ = 'name', 'timing', 'amount'
+    __slots__ = 'name', 'timing', 'amount', 'account'
 
     def __init__(
             self,
             name: str,
             timing: dict,
-            amount: float
+            amount: float,
+            account: str,
         ) -> None:
 
         self.name = name
         self.timing = Timing(**timing)
         self.amount = amount
+        self.account = account
 
     def get_save_dict(self) -> dict:
         return {
             'name': self.name,
             'timing': self.timing.get_save_dict(),
             'amount': self.amount,
+            'account': self.account,
         }
 
 
