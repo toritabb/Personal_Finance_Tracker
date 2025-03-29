@@ -28,12 +28,15 @@ class SettingsPage(Page):
             align_x='left'
         )
 
-        ui.Toggle(
+        notif_ptr = ui.Pointer(data_manager.user.settings.notifications) # type: ignore
+        notif_toggle = ui.Toggle(
             self,
             (notif_label.right + 15, notif_label.centery - 12),
             25,
-            ui.Pointer(True),
+            notif_ptr,
         )
+
+        notif_ptr.listen(lambda ptr: data_manager.user.settings.set('notifications', ptr.get())) # type: ignore
 
         # Dark mode setting
         dark_mode_text = ui.Text(
@@ -44,7 +47,7 @@ class SettingsPage(Page):
             align_x='left'
         )
 
-        dark_mode_ptr = ui.Pointer(False)
+        dark_mode_ptr = ui.Pointer(data_manager.user.settings.dark_mode) # type: ignore
         dark_mode_toggle = ui.Toggle(
             self,
             (dark_mode_text.right + 15, dark_mode_text.centery - 12),
@@ -52,7 +55,7 @@ class SettingsPage(Page):
             dark_mode_ptr,
         )
 
-        dark_mode_ptr.listen(lambda _: invert()) # TODO: FIX TS
+        dark_mode_ptr.listen(lambda ptr: [data_manager.user.settings.set('dark_mode', ptr.get()), invert()]) # type: ignore
 
         # Export data button
         def export_user_data() -> None:

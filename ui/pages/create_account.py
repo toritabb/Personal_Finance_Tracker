@@ -95,7 +95,7 @@ class CreateAccountPage(Page):
             elif len(new) > len(current):
                 password_ptr.set_no_listen(current + new[len(current):])
 
-                password_display_ptr.set_no_listen('*' * len(new))
+                password_display_ptr.set_no_listen('•' * len(new))
 
         password_display_ptr.listen(password_hider)
 
@@ -133,7 +133,7 @@ class CreateAccountPage(Page):
             elif len(new) > len(current):
                 confirm_password_ptr.set_no_listen(current + new[len(current):])
 
-                confirm_password_display_ptr.set_no_listen('*' * len(new))
+                confirm_password_display_ptr.set_no_listen('•' * len(new))
 
         confirm_password_display_ptr.listen(confirm_password_hider)
 

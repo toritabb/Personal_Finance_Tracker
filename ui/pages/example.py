@@ -185,7 +185,7 @@ class ExamplePage(Page):
             ('Nunito', 20),
             (25, textbox1.bottom + 15),
             (350, 51),
-            validation_function=lambda string: all(i not in string for i in '0123456789'), # numbers not allowed
+            validation_function=lambda string: None if any(i in string for i in '0123456789') else string, # numbers not allowed
             padding=(7, 5),
             border_thickness=3,
             corner_radius=-1,
@@ -219,7 +219,7 @@ class ExamplePage(Page):
                 ui.PieChartSlice('5', 5),
             ],
             thickness_percent=0.4,
-            gap=3
+            gap=5
         )
 
         pie_chart2 = ui.PieChart(

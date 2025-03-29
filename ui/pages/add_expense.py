@@ -1,5 +1,6 @@
 # standard library
 from datetime import date
+from typing import Optional
 
 # local
 import ui
@@ -109,7 +110,6 @@ class AddExpensePage(Page):
             ('Nunito', 20),
             (0, source_title.bottom + 10),
             (190, -1),
-            validation_function=lambda _: True,
             padding=6,
             corner_radius=10
         )
@@ -131,14 +131,16 @@ class AddExpensePage(Page):
 
         ui.center(amount_title, axis='x')
 
-        def amount_validation(text: str) -> bool:
+        def amount_validation(text: str) -> Optional[str]:
             try:
-                amount_ptr.set(float('0' + text))
+                value = int(float('0' + text) * 100) / 100
 
-                return True
+                amount_ptr.set(value)
+
+                return f'{value:,.2f}'
 
             except:
-                return False
+                return None
 
         amount_ptr = ui.Pointer(0.0)
         amount_text_ptr = ui.Pointer('0.0')
@@ -156,7 +158,7 @@ class AddExpensePage(Page):
 
         dollar_sign = ui.Text(
             amount_tab,
-            (amount_textbox.left + 42, amount_textbox.top + 12),
+            (amount_textbox.left + 42, amount_textbox.top + 11),
             '$',
             ('Nunito', 20),
         )
@@ -177,32 +179,36 @@ class AddExpensePage(Page):
         )
         ui.center(time_period_title, axis='x')
 
-        time_period_ptr = ui.Pointer('') # pointer for the actual recurring value
-
         start_day_ptr = ui.Pointer('01')
         start_month_ptr = ui.Pointer('01')
         start_year_ptr = ui.Pointer('2025')
 
-        def day_validation(text: str) -> bool:
+        def day_validation(text: str) -> Optional[str]:
             try:
-                return 0 <= int('0' + text) <= 31
+                value = min(int('0' + text), 31)
+
+                return str(value).rjust(2, '0')
 
             except:
-                return False
+                return None
 
-        def month_validation(text: str) -> bool:
+        def month_validation(text: str) -> Optional[str]:
             try:
-                return 0 <= int('0' + text) <= 12
+                value = min(int('0' + text), 12)
+
+                return str(value).rjust(2, '0')
 
             except:
-                return False
+                return None
 
-        def year_validation(text: str) -> bool:
+        def year_validation(text: str) -> Optional[str]:
             try:
-                return 0 <= int('0' + text) <= 9999
+                value = min(int('0' + text), 9999)
+
+                return str(value).rjust(4, '0')
 
             except:
-                return False
+                return None
 
         start_month_textbox = ui.Textbox(
             time_period_tab,

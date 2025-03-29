@@ -10,21 +10,32 @@ __all__ = 'Account', 'Timing', 'Income', 'Expense'
 
 class Account:
     '''
-    A bank account that belongs to a user. Contains balance and transaction history.
+    A bank account with a balance and transaction history.
     '''
 
     __slots__ = 'name', 'type', 'balance', 'incomes', 'expenses'
 
-    def __init__(self, name: str = '', type: Literal['checking', 'savings'] = 'checking', balance: float = 0.0, incomes: Optional[list[dict]] = None, expenses: Optional[list[dict]] = None) -> None:
+    def __init__(
+            self,
+            name: str = '',
+            type: Literal['checking', 'savings'] = 'checking',
+            balance: float = 0.0,
+            incomes: Optional[list[dict]] = None,
+            expenses: Optional[list[dict]] = None
+        ) -> None:
+
         '''
         Initialize a new bank account.
-        
-        Args:
-            name: Display name for the account
-            type: Either 'checking' or 'savings'
-            balance: Current balance in dollars
-            incomes: List of income transactions
-            expenses: List of expense transactions
+
+        `name`: Display name for the account
+
+        `type`: Either 'checking' or 'savings'
+
+        `balance`: Current balance in dollars
+
+        `incomes`: List of income transactions
+
+        `expenses`: List of expense transactions
         '''
 
         self.name = name
@@ -50,9 +61,20 @@ class Account:
 
 
 class Timing:
+    '''
+    The start, end, and recurrence os a transaction.
+    '''
+
     __slots__ = 'start_date', 'end_date', 'recurrence', 'days_of_month'
 
-    def __init__(self, start_date: str, end_date: str, recurrence: Literal['never', 'weekly', 'biweekly', 'monthly'], days_of_month: list[int]) -> None:
+    def __init__(
+            self,
+            start_date: str,
+            end_date: str,
+            recurrence: Literal['never', 'weekly', 'biweekly', 'monthly'],
+            days_of_month: list[int]
+        ) -> None:
+
         self.start_date = datetime.strptime(start_date, "%Y-%m-%d").date()
         self.end_date = datetime.strptime(end_date, "%Y-%m-%d").date() if end_date != 'None' else None
 
@@ -184,7 +206,13 @@ class Timing:
 class Income:
     __slots__ = 'name', 'timing', 'amount'
 
-    def __init__(self, name: str, timing: dict, amount: float) -> None:
+    def __init__(
+            self,
+            name: str,
+            timing: dict,
+            amount: float
+        ) -> None:
+
         self.name = name
         self.timing = Timing(**timing)
         self.amount = amount
@@ -201,7 +229,13 @@ class Income:
 class Expense:
     __slots__ = 'name', 'timing', 'amount'
 
-    def __init__(self, name: str, timing: dict, amount: float) -> None:
+    def __init__(
+            self,
+            name: str,
+            timing: dict,
+            amount: float
+        ) -> None:
+
         self.name = name
         self.timing = Timing(**timing)
         self.amount = amount

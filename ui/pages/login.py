@@ -75,7 +75,7 @@ class LoginPage(Page):
             elif len(new) > len(current):
                 password_ptr.set_no_listen(current + new[len(current):])
 
-                password_display_ptr.set_no_listen('*' * len(new))
+                password_display_ptr.set_no_listen('•' * len(new))
 
         password_display_ptr.listen(password_hider)
 

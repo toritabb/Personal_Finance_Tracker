@@ -1,5 +1,5 @@
 # standard library
-from typing import Callable, Literal
+from typing import Callable, Literal, Optional
 
 # 3rd party
 import pygame
@@ -31,7 +31,7 @@ class Textbox(TextButton):
             pos: Coordinate,
             size: Coordinate,
             *,
-            validation_function: Callable[[str], bool] = lambda _: True,
+            validation_function: Callable[[str], Optional[str]] = lambda x: x,
             padding: float | Coordinate = 0,
             border_thickness: int = 4, 
             corner_radius: int = -1,
@@ -66,8 +66,19 @@ class Textbox(TextButton):
             self._revoke_attention()
 
     def _validate_and_update_text(self, text: str) -> None:
-        if self._validation_function(text):
+        validation = self._validation_function(text)
+
+        if validation is None:
+            return
+
+        elif validation is True:
             self.text.set(text)
+        if isinstance(validation, str):
+            self.text.set(validation)
+
+            self.text_object.update_text(self.text.get())
+
+        elif validation:
 
             self.text_object.update_text(self.text.get())
 

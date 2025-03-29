@@ -22,15 +22,22 @@ class User:
 
         self.settings = Settings(**(settings if settings else {}))
 
-    def get_save_dict(self) -> dict[str, str | list[dict]]:
+    def get_save_dict(self) -> dict[str, str | dict | list[dict]]:
         return {
             'name': self.name,
             'email': self.email,
             'password': self.password,
-            'accounts': [account.get_save_dict() for account in self.accounts.values()]
+            'accounts': [account.get_save_dict() for account in self.accounts.values()],
+            'settings': self.settings.get_save_dict()
         }
 
-    def add_account(self, name: str, type: Literal['checking', 'savings'], balance: float = 0.0) -> Account:
+    def add_account(
+            self,
+            name: str,
+            type: Literal['checking', 'savings'],
+            balance: float = 0.0
+        ) -> Account:
+
         '''Create and add a new bank account for this user'''
 
         account = Account(name=name, type=type, balance=balance)
@@ -44,11 +51,27 @@ class Settings:
     def __init__(self, **settings) -> None:
         if 'dark_mode' in settings:
             self.dark_mode = settings['dark_mode']
+
         else:
             self.dark_mode = False
             
         if 'notifications' in settings:
             self.notifications = settings['notifications']
+
         else:
             self.notifications = True
+
+    def set(self, setting: str, value: bool) -> None:
+        match setting:
+            case 'dark_mode':
+                self.dark_mode = value
+                
+            case 'notifications':
+                self.notifications = value
+
+    def get_save_dict(self) -> dict[str, bool]:
+        return {
+            'dark_mode': self.dark_mode,
+            'notifications': self.notifications,
+        }
 

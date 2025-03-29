@@ -54,6 +54,16 @@ class IncomeExpensesPage(Page):
                 for date in income.timing.get_within_next_days(30):
                     incomes.append((income, date))
 
+        if not incomes:
+            no_income_text = ui.Text(
+                income_canvas,
+                (0, income_title.bottom + 20),
+                f'No income in the next month',
+                ('Nunito', 25)
+            )
+
+            ui.center(no_income_text)
+
         for i, (income, date) in enumerate(sorted(incomes, key=lambda x: x[1])):
             y = income_title.bottom + 20 + i * 38
 
@@ -61,24 +71,21 @@ class IncomeExpensesPage(Page):
                 income_canvas,
                 (0, y),
                 f'{date.strftime("%m/%d/%Y")}',
-                ('Nunito', 25),
-                line_spacing=4
+                ('Nunito', 25)
             )
 
             name_text = ui.Text(
                 income_canvas,
                 (160, y),
                 income.name,
-                ('Nunito', 25),
-                line_spacing=4
+                ('Nunito', 25)
             )
 
             amount_text = ui.Text(
                 income_canvas,
                 (425, y),
                 f'${income.amount:,}',
-                ('Nunito', 25),
-                line_spacing=4
+                ('Nunito', 25)
             )
 
             # ui.center(date_text, name_text, amount_text)
@@ -121,6 +128,16 @@ class IncomeExpensesPage(Page):
             for expense in account.expenses:
                 for date in expense.timing.get_within_next_days(30):
                     expenses.append((expense, date))
+
+        if not expenses:
+            no_expenses_text = ui.Text(
+                expenses_canvas,
+                (0, expenses_title.bottom + 20),
+                f'No expenses in the next month',
+                ('Nunito', 25)
+            )
+
+            ui.center(no_expenses_text)
 
         for i, (expense, date) in enumerate(sorted(expenses, key=lambda x: x[1])):
             y = expenses_title.bottom + 20 + i * 38
