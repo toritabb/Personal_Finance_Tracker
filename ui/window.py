@@ -7,6 +7,8 @@ from data import data_manager
 from .base import Canvas
 from .event import event_manager
 from .pages import PageManager
+from .vector import vec2
+from ._typing import Coordinate
 
 
 
@@ -28,6 +30,12 @@ class Window(Canvas):
 
         monitor_resolution = pygame.display.get_desktop_sizes()[0]
         pygame.display.set_window_position(((monitor_resolution[0] - SCREEN_W) // 2, (monitor_resolution[1] - SCREEN_H) // 2))
+
+    def get_local_pos(self, position: Coordinate) -> vec2:
+        return vec2(0, 0)
+
+    def get_transform(self) -> vec2:
+        return vec2(0, 0)
 
     def render(self) -> None:
         super().render(None)

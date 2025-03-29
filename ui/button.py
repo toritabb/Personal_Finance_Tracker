@@ -45,7 +45,7 @@ class Button(Interactable):
 
         self.colors = colors
 
-        self._inner_shapes = collision.get_rounded_collision_shapes(self.inflate(vec2(border_thickness * -2 - (corner_radius > border_thickness) - (corner_radius == 0))), max(0, corner_radius - border_thickness)) if border_thickness else []
+        self._inner_shapes: tuple[collision.CollisionShape, ...] = collision.get_rounded_collision_shapes(self.inflate(vec2(border_thickness * -2 - (corner_radius > border_thickness) - (corner_radius == 0))), max(0, corner_radius - border_thickness)) if border_thickness else tuple()
 
     def _get_unpressed(self, event: Event) -> None:
         if super()._get_unpressed(event) and self._mouse_collides():
@@ -54,9 +54,8 @@ class Button(Interactable):
     def move_offset(self, dx: int, dy: int) -> None:
         super().move_offset(dx, dy)
 
-        if self._inner_shapes:
-            for shape in self._inner_shapes:
-                shape.move_ip(dx, dy)
+        for shape in self._inner_shapes:
+            shape.move_ip(dx, dy)
 
     def set_command(self, new_command: Callable[..., Any]) -> None:
         self.command = new_command

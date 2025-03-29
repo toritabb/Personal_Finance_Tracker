@@ -88,11 +88,7 @@ class UIElement(Rect):
     def render(self, surface: Surface) -> None: ...
 
     def get_local_pos(self, position: Coordinate) -> vec2:
-        if self.parent:
-            return position + self.parent.transform
-
-        else:
-            return vec2(position)
+        return vec2(position) - self.parent.get_transform()
 
     def close(self) -> None:
         if self.parent is not self and self._index >= 0:
@@ -102,7 +98,7 @@ class UIElement(Rect):
 
 
 class Canvas(UIElement):
-    __slots__ = 'surface', 'fill_color', '_children', 'transform'
+    __slots__ = 'surface', 'fill_color', '_children'
 
     def __init__(
             self,
@@ -120,22 +116,14 @@ class Canvas(UIElement):
 
         self._children: SequentialDict[UIElement] = SequentialDict()
 
-        if parent is not self:
-            self.transform = parent.transform - self.topleft
-
-        else:
-            self.transform = vec2(0, 0)
-
-    def move_offset(self, dx: int, dy: int) -> None:
-        super().move_offset(dx, dy)
-
-        self.transform -= vec2(dx, dy)
-
     def add_child(self, child: 'UIElement') -> int:
         return self._children.append(child)
 
     def remove_child(self, child_index: int) -> None:
         del self._children[child_index]
+
+    def get_transform(self) -> vec2:
+        return self.topleft + self.parent.get_transform()
 
     def render(self, surface: Optional[Surface] = None) -> None:
         self.surface.fill(self.fill_color)
@@ -155,7 +143,7 @@ class Canvas(UIElement):
 
 
 class Interactable(UIElement):
-    __slots__ = 'collision_shapes', 'bounding_rect', 'hovered', 'pressed', 'cursor', '_listener_group_id'
+    __slots__ = 'collision_shapes', 'hovered', 'pressed', 'cursor', '_listener_group_id'
 
     def __init__(
             self,
@@ -166,14 +154,12 @@ class Interactable(UIElement):
             cursor: Literal['pointer', 'hand', 'i-beam'] = 'pointer'
         ) -> None:
 
-        if bounding_rect is not None:
-            self.bounding_rect = bounding_rect
-        else:
-            self.bounding_rect = collision_shapes[0] if isinstance(collision_shapes[0], Rect) else collision_shapes[0].get_bounding_box()
+        if bounding_rect is None:
+            bounding_rect = collision_shapes[0] if isinstance(collision_shapes[0], Rect) else collision_shapes[0].get_bounding_box()
 
-            self.bounding_rect = self.bounding_rect.unionall([shape if isinstance(shape, Rect) else shape.get_bounding_box() for shape in collision_shapes])
+            bounding_rect = bounding_rect.unionall([shape if isinstance(shape, Rect) else shape.get_bounding_box() for shape in collision_shapes])
 
-        super().__init__(parent, self.bounding_rect)
+        super().__init__(parent, bounding_rect)
 
         self.collision_shapes = tuple(collision_shapes)
 
@@ -194,7 +180,7 @@ class Interactable(UIElement):
     def _mouse_collides(self) -> bool:
         mouse_pos = self.get_local_pos(event_manager.mouse_pos)
 
-        return self.bounding_rect.collidepoint(mouse_pos) and any(shape.collidepoint(mouse_pos) for shape in self.collision_shapes)
+        return self.collidepoint(mouse_pos) and any(shape.collidepoint(mouse_pos) for shape in self.collision_shapes)
 
     def _get_hovered(self, _) -> None:
         if (not event_manager.button_held):
@@ -214,7 +200,7 @@ class Interactable(UIElement):
             event_manager.button_held = True
 
             if event_manager.textbox_selected is not None:
-                event_manager.textbox_selected._revoke_attention() # type: ignore
+                event_manager.textbox_selected._revoke_attention()
 
     def _get_unpressed(self, event: Event) -> bool:
         if self.pressed and event.button == pygame.BUTTON_LEFT:
@@ -233,8 +219,6 @@ class Interactable(UIElement):
 
         for collision_shape in self.collision_shapes:
             collision_shape.move_ip(dx, dy)
-
-        self.bounding_rect.move_ip(dx, dy)
 
     def close(self) -> None:
         super().close()

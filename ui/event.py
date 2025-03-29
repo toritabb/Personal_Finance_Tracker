@@ -40,7 +40,7 @@ class EventManager:
         self.mouse_rel = vec2(0)
 
         # stuff
-        self.textbox_selected = None
+        self.textbox_selected: Any = None
         self.button_held = False
 
         # mouse buttons and keys

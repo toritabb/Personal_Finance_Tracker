@@ -18,7 +18,7 @@ __all__ = 'Text',
 
 
 class Text(UIElement):
-    __slots__ = 'font', 'multiplier', 'line_spacing', 'y_off', 'surface'
+    __slots__ = 'font', 'multiplier', 'line_spacing', 'y_off', 'surface', 'text'
 
     def __init__(
             self,
@@ -50,6 +50,8 @@ class Text(UIElement):
         self.line_spacing = line_spacing
         self.y_off = 0 if align_y == 'top' else int((self.height - ((base_height + self.line_spacing) * len(lines) - self.line_spacing + 1)) * (0.5 if align_y == 'center' else 1))
         self.surface = Surface(self.size).convert_alpha()
+
+        self.text = text
 
         self.update_text(text)
 
