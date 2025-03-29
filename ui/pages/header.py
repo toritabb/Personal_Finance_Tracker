@@ -18,10 +18,9 @@ class HeaderPage(Page):
             self,
             'Accounts',
             ('Nunito', 40, True, False),
-            (0, 25),
+            (0, 0),
             lambda: manager.go_to('accounts'),
             padding=padding,
-            corner_radius=-1,
             colors='button_accent'
         )
 
@@ -29,10 +28,9 @@ class HeaderPage(Page):
             self,
             'Income & Expenses',
             ('Nunito', 40, True, False),
-            (accounts.right + spacing, 25),
+            (accounts.right + spacing, 0),
             lambda: manager.go_to('income_expenses'),
             padding=padding,
-            corner_radius=-1,
             colors='button_accent'
         )
 
@@ -40,10 +38,9 @@ class HeaderPage(Page):
             self,
             'More',
             ('Nunito', 40, True, False),
-            (income_expenses.right + spacing, 25),
+            (income_expenses.right + spacing, 0),
             lambda: manager.go_to('more'),
             padding=padding,
-            corner_radius=-1,
             colors='button_accent'
         )
         ui.center(accounts, income_expenses, more, axis='xy')

@@ -1,15 +1,14 @@
 # standard library
 from math import cos, sin, tau
-from typing import Callable, Literal, Optional, Any
+from typing import Optional
 
 # 3rd party
 import pygame
-from pygame import Event, Surface
+from pygame import Surface
 import pygame.gfxdraw
 
 # local
-from . import collision
-from .base import Canvas, Interactable
+from .base import Canvas
 from .color import random as random_color
 from .event import Event, event_manager
 from .theme import Color, COLOR_MAP
@@ -17,11 +16,11 @@ from ._typing import Coordinate
 
 
 
-__all__ = 'PieChart', 'PieChartOption'
+__all__ = 'PieChart', 'PieChartSlice'
 
 
 
-class PieChartOption:
+class PieChartSlice:
     __slots__ = 'name', 'value', 'color'
 
     def __init__(
@@ -45,7 +44,7 @@ class PieChart(Canvas):
             parent: Canvas,
             pos: Coordinate,
             size: int,
-            options: list[PieChartOption],
+            options: list[PieChartSlice],
             *,
             thickness_percent: float = 0.4,
             gap: int = 0
@@ -58,7 +57,7 @@ class PieChart(Canvas):
 
         self.options = options
 
-        # render a bigger version of the pie chart to scale down (for antialiasing)
+        # render a bigger version of the pie chart to scale down for antialiasing
         big_surface = pygame.Surface((size * 2, size * 2), pygame.SRCALPHA)
         big_surface.fill(self.fill_color)
 
@@ -81,7 +80,7 @@ class PieChart(Canvas):
     def render(self, surface: Surface) -> None:
         surface.blit(self.surface, self)
 
-    def _old_render(self, surface: Surface) -> None: ...
+    # def _old_render(self, surface: Surface) -> None:
     #     self.surface.fill(self.fill_color)
 
     #     total_scalar = tau / sum(option.value for option in self.options)

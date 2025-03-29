@@ -1,6 +1,8 @@
 # standard library
 from datetime import date as Date
 
+from pygame import Color
+
 # local
 import ui
 from data import Income, Expense, data_manager
@@ -32,7 +34,8 @@ class IncomeExpensesPage(Page):
 
         income_canvas = ui.Canvas(
             self,
-            (50, page_title.bottom + 40, 600, 400)
+            (0, page_title.bottom + 40, 525, 400),
+            fill_color=Color(255, 0, 0)
         )
 
         income_title = ui.Text(
@@ -72,7 +75,7 @@ class IncomeExpensesPage(Page):
 
             amount_text = ui.Text(
                 income_canvas,
-                (400, y),
+                (425, y),
                 f'${income.amount:,}',
                 ('Nunito', 25),
                 line_spacing=4
@@ -87,18 +90,30 @@ class IncomeExpensesPage(Page):
             (0, income_canvas.height - 50),
             command=lambda: manager.go_to('add_income'),
             padding=(15, 8),
+            border_thickness=0,
+            colors='button_accent'
         )
+
+        ui.center(add_income_button)
 
         ############
         # Expenses #
         ############
 
-        expenses_title = ui.Text(
+        expenses_canvas = ui.Canvas(
             self,
-            (income_title.right + 250, income_title.top),
+            (income_canvas.right + 50, page_title.bottom + 40, 525, 400),
+            fill_color=Color(255, 0, 0)
+        )
+
+        expenses_title = ui.Text(
+            expenses_canvas,
+            (0, 0),
             'Next Month\'s Expenses',
             ('Nunito', 35, True, False)
         )
+
+        ui.center(expenses_title)
 
         expenses: list[tuple[Expense, Date]] = []
 
@@ -108,31 +123,40 @@ class IncomeExpensesPage(Page):
                     expenses.append((expense, date))
 
         for i, (expense, date) in enumerate(sorted(expenses, key=lambda x: x[1])):
-            text = '_'*40 + f'\n| {date.strftime("%m/%d/%Y"):^14} | {expense.name:^22} | {f'${expense.amount:,}':^10} |'
+            y = expenses_title.bottom + 20 + i * 38
 
-            text_obj = ui.Text(
-                self,
-                (expenses_title.left - 70, expenses_title.bottom + 20 + i * 38),
-                text,
+            date_text = ui.Text(
+                expenses_canvas,
+                (0, y),
+                f'{date.strftime("%m/%d/%Y")}',
                 ('Nunito', 25),
                 line_spacing=4
             )
 
-        if expenses:
-            text_obj = ui.Text(
-                self,
-                (expenses_title.left - 70, expenses_title.bottom + 20 + (i + 1) * 38),
-                '_'*40,
+            name_text = ui.Text(
+                expenses_canvas,
+                (160, y),
+                expense.name,
+                ('Nunito', 25),
+                line_spacing=4
+            )
+
+            amount_text = ui.Text(
+                expenses_canvas,
+                (425, y),
+                f'${expense.amount:,}',
                 ('Nunito', 25),
                 line_spacing=4
             )
 
         add_expense_button = ui.TextButton(
-            self,
+            expenses_canvas,
             'Add Expense',
             ('Nunito', 25),
-            (850, 640),
+            (0, income_canvas.height - 50),
             command=lambda: manager.go_to('add_expense'),
             padding=(15, 8),
         )
+
+        ui.center(income_canvas, expenses_canvas)
 

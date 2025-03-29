@@ -212,11 +212,11 @@ class ExamplePage(Page):
             (image.right + 30, image.top),
             150,
             [
-                ui.PieChartOption('1', 1),
-                ui.PieChartOption('2', 2),
-                ui.PieChartOption('3', 3),
-                ui.PieChartOption('4', 4),
-                ui.PieChartOption('5', 5),
+                ui.PieChartSlice('1', 1),
+                ui.PieChartSlice('2', 2),
+                ui.PieChartSlice('3', 3),
+                ui.PieChartSlice('4', 4),
+                ui.PieChartSlice('5', 5),
             ],
             thickness_percent=0.4,
             gap=3
@@ -227,13 +227,12 @@ class ExamplePage(Page):
             (pie_chart.right + 30, pie_chart.top),
             250,
             [
-                ui.PieChartOption('1', 1),
-                ui.PieChartOption('2', 1),
-                ui.PieChartOption('3', 1),
-                ui.PieChartOption('4', 7),
+                ui.PieChartSlice('1', 1),
+                ui.PieChartSlice('2', 1),
+                ui.PieChartSlice('3', 1),
+                ui.PieChartSlice('4', 7),
             ],
-            thickness_percent=0.9,
-            gap=5
+            thickness_percent=1.0
         )
 
         #############
