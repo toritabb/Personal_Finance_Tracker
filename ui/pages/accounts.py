@@ -40,15 +40,15 @@ class AccountsPage(Page):
                 f"{account_name} ({bank_account.type})",
                 ('Nunito', 24, True, False)
             )
-            
+
             # Balance
             ui.Text(
                 self,
                 (50, account_y + 40),
-                f"Balance: ${bank_account.balance/100:.2f}",  # Convert cents to dollars
+                f"Balance: ${bank_account.balance:,.2f}",
                 ('Nunito', 20)
             )
-            
+
             account_y += 100  # Space for next account
 
         # Add Account button

@@ -135,7 +135,7 @@ class AddIncomePage(Page):
 
         def amount_validation(text: str) -> bool:
             try:
-                amount_ptr.set(float('0'))
+                amount_ptr.set(float('0' + text))
 
                 return True
 
@@ -325,24 +325,22 @@ class AddIncomePage(Page):
                     if ptr.get():
                         account = a
 
-                name = source_ptr.get()
+                source = source_ptr.get()
                 amount = amount_ptr.get()
                 start_day = str(date(int(start_year_ptr.get()), int(start_month_ptr.get()), int(start_day_ptr.get())))
                 recurring = 'never' if not show_recurring_options_ptr.get() else 'weekly' if recurring_option_ptrs['weekly'].get() else 'biweekly' if recurring_option_ptrs['biweekly'].get() else 'monthly'
 
                 timing = {'start_date': start_day, 'end_date': 'None', 'recurrence': recurring, 'days_of_month': []}
 
-                income = Income(name, timing, int(amount))
+                income = Income(source, timing, amount)
 
-                data_manager.user.accounts[account].incomes.append( # type: ignore
-                    income
-                )
+                data_manager.user.accounts[account].incomes.append(income) # type: ignore
 
                 days = (date.today() - income.timing.start_date).days
 
                 income_cost = len(income.timing.get_within_previous_days(days)) * income.amount
 
-                data_manager.user.accounts[account].balance += income_cost * 100 # type: ignore
+                data_manager.user.accounts[account].balance += income_cost # type: ignore
 
                 manager.go_to('income_expenses')
 

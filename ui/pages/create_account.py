@@ -142,7 +142,7 @@ class CreateAccountPage(Page):
             self,
             'Create Account',
             ('Nunito', 24),
-            (0, confirm_password_box.bottom + 60),
+            (0, confirm_password_box.bottom + 45),
             command=lambda: self._handle_create_account(
                 name_ptr.get(),
                 email_ptr.get(),
@@ -159,10 +159,10 @@ class CreateAccountPage(Page):
         back_button = ui.TextButton(
             self,
             'Back to Login',
-            ('Nunito', 20),
-            (0, create_button.bottom + 40),
+            ('Nunito', 15),
+            (0, create_button.bottom + 25),
             command=lambda: self._manager.go_to('login'),
-            padding=(25, 10),
+            padding=(20, 7),
             border_thickness=0,
             colors='button_accent'
         )

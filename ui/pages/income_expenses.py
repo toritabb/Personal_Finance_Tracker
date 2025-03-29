@@ -34,7 +34,7 @@ class IncomeExpensesPage(Page):
 
         income_canvas = ui.Canvas(
             self,
-            (0, page_title.bottom + 40, 525, 400),
+            (0, page_title.bottom + 40, 550, 400),
             fill_color=Color(255, 0, 0)
         )
 
@@ -89,7 +89,7 @@ class IncomeExpensesPage(Page):
             ('Nunito', 25),
             (0, income_canvas.height - 50),
             command=lambda: manager.go_to('add_income'),
-            padding=(15, 8),
+            padding=(25, 10),
             border_thickness=0,
             colors='button_accent'
         )
@@ -102,7 +102,7 @@ class IncomeExpensesPage(Page):
 
         expenses_canvas = ui.Canvas(
             self,
-            (income_canvas.right + 50, page_title.bottom + 40, 525, 400),
+            (income_canvas.right + 50, page_title.bottom + 40, 550, 400),
             fill_color=Color(255, 0, 0)
         )
 
@@ -155,8 +155,12 @@ class IncomeExpensesPage(Page):
             ('Nunito', 25),
             (0, income_canvas.height - 50),
             command=lambda: manager.go_to('add_expense'),
-            padding=(15, 8),
+            padding=(25, 10),
+            border_thickness=0,
+            colors='button_accent'
         )
+
+        ui.center(add_expense_button)
 
         ui.center(income_canvas, expenses_canvas)
 

@@ -30,7 +30,7 @@ class User:
             'accounts': [account.get_save_dict() for account in self.accounts.values()]
         }
 
-    def add_account(self, name: str, type: Literal['checking', 'savings'], balance: int = 0) -> Account:
+    def add_account(self, name: str, type: Literal['checking', 'savings'], balance: float = 0.0) -> Account:
         '''Create and add a new bank account for this user'''
 
         account = Account(name=name, type=type, balance=balance)

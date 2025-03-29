@@ -133,7 +133,7 @@ class AddExpensePage(Page):
 
         def amount_validation(text: str) -> bool:
             try:
-                amount_ptr.set(float('0'))
+                amount_ptr.set(float('0' + text))
 
                 return True
 
@@ -326,17 +326,15 @@ class AddExpensePage(Page):
 
                 timing = {'start_date': start_day, 'end_date': 'None', 'recurrence': recurring, 'days_of_month': []}
 
-                expense = Expense(name, timing, int(amount))
+                expense = Expense(name, timing, amount)
 
-                data_manager.user.accounts[account].expenses.append( # type: ignore
-                    expense
-                )
+                data_manager.user.accounts[account].expenses.append(expense) # type: ignore
 
                 days = (date.today() - expense.timing.start_date).days
 
                 expense_cost = len(expense.timing.get_within_previous_days(days)) * expense.amount
 
-                data_manager.user.accounts[account].balance -= expense_cost * 100 # type: ignore
+                data_manager.user.accounts[account].balance -= expense_cost # type: ignore
 
                 manager.go_to('income_expenses')
 

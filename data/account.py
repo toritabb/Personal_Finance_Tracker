@@ -15,7 +15,7 @@ class Account:
 
     __slots__ = 'name', 'type', 'balance', 'incomes', 'expenses'
 
-    def __init__(self, name: str = '', type: Literal['checking', 'savings'] = 'checking', balance: int = 0, incomes: Optional[list[dict]] = None, expenses: Optional[list[dict]] = None) -> None:
+    def __init__(self, name: str = '', type: Literal['checking', 'savings'] = 'checking', balance: float = 0.0, incomes: Optional[list[dict]] = None, expenses: Optional[list[dict]] = None) -> None:
         '''
         Initialize a new bank account.
         
@@ -184,7 +184,7 @@ class Timing:
 class Income:
     __slots__ = 'name', 'timing', 'amount'
 
-    def __init__(self, name: str, timing: dict, amount: int) -> None:
+    def __init__(self, name: str, timing: dict, amount: float) -> None:
         self.name = name
         self.timing = Timing(**timing)
         self.amount = amount
@@ -201,7 +201,7 @@ class Income:
 class Expense:
     __slots__ = 'name', 'timing', 'amount'
 
-    def __init__(self, name: str, timing: dict, amount: int) -> None:
+    def __init__(self, name: str, timing: dict, amount: float) -> None:
         self.name = name
         self.timing = Timing(**timing)
         self.amount = amount
