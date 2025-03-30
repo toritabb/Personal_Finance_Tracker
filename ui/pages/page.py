@@ -32,10 +32,10 @@ class PageManagerBase:
 
         self.current_page = self.get_page(start_page)
 
-    def get_page(self, page: str) -> Page:
-        return self._pages[page](self._parent, self)
+    def get_page(self, page: str, **kwargs: Any) -> Page:
+        return self._pages[page](self._parent, self, **kwargs)
 
-    def go_to(self, page: str) -> None:
+    def go_to(self, page: str, **kwargs: Any) -> None:
         if page == self.current_page.STR:
             return
 
@@ -43,7 +43,7 @@ class PageManagerBase:
 
         self.stack.append(self.current_page.STR)
 
-        self.current_page = self.get_page(page)
+        self.current_page = self.get_page(page, **kwargs)
 
         event_manager.textbox_selected = None
         event_manager.button_held = False

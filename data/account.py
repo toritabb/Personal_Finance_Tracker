@@ -13,13 +13,14 @@ class Account:
     A bank account with a balance and transaction history.
     '''
 
-    __slots__ = 'name', 'type', 'balance', 'incomes', 'expenses'
+    __slots__ = 'name', 'type', 'balance', 'index', 'incomes', 'expenses'
 
     def __init__(
             self,
             name: str = '',
             type: Literal['checking', 'savings'] = 'checking',
             balance: float = 0.0,
+            index: int = 0,
             incomes: Optional[list[dict]] = None,
             expenses: Optional[list[dict]] = None
         ) -> None:
@@ -33,6 +34,8 @@ class Account:
 
         `balance`: Current balance in dollars
 
+        `_number`: Used to order accounts
+
         `incomes`: List of income transactions
 
         `expenses`: List of expense transactions
@@ -41,6 +44,7 @@ class Account:
         self.name = name
         self.type = type
         self.balance = balance
+        self.index = index
 
         self.incomes = [Income(**income) for income in (incomes or [])]
         self.expenses = [Expense(**expense) for expense in (expenses or [])]
@@ -54,10 +58,11 @@ class Account:
             'name': self.name,
             'type': self.type,
             'balance': self.balance,
+            'index': self.index,
             'incomes': [income.get_save_dict() for income in self.incomes],
             'expenses': [expense.get_save_dict() for expense in self.expenses]
         }
-    
+
     def update_balance(self) -> None:
         self.balance = 0
 
@@ -76,7 +81,6 @@ class Account:
             expense_cost = len(expense.timing.get_within_previous_days(days)) * expense.amount
 
             self.balance -= expense_cost
-
 
 
 
@@ -109,52 +113,26 @@ class Timing:
             case 'never':
                 if today <= self.start_date <= end_date:
                     return [self.start_date]
-                
+
                 else:
                     return []
 
-            case 'weekly':
-                future_weekly_dates: list[date] = []
+            case other:
+                delta_time = timedelta(weeks=1) if other == 'weekly' else timedelta(weeks=2) if other == 'biweekly' else timedelta(days=31)
+
+                dates: list[date] = []
 
                 current_date = self.start_date
 
                 while current_date < today:
-                    current_date += timedelta(weeks=1)
+                    current_date += delta_time
 
                 while current_date <= end_date:
-                    future_weekly_dates.append(current_date)
-                    current_date += timedelta(weeks=1)
+                    dates.append(current_date)
+                    current_date += delta_time
 
-                return future_weekly_dates
+                return dates
 
-            case 'biweekly':
-                future_biweekly_dates: list[date] = []
-
-                current_date = self.start_date
-
-                while current_date < today:
-                    current_date += timedelta(weeks=2)
-
-                while current_date <= end_date:
-                    future_biweekly_dates.append(current_date)
-                    current_date += timedelta(weeks=2)
-
-                return future_biweekly_dates
-
-            case 'monthly':
-                future_biweekly_dates: list[date] = []
-
-                current_date = self.start_date
-
-                while current_date < today:
-                    current_date += timedelta(days=31)
-
-                while current_date <= end_date:
-                    future_biweekly_dates.append(current_date)
-                    current_date += timedelta(days=31)
-
-                return future_biweekly_dates
-            
         return []
 
     def get_within_previous_days(self, days: int) -> list[date]:
@@ -169,48 +147,22 @@ class Timing:
                 else:
                     return []
 
-            case 'weekly':
-                weekly_dates: list[date] = []
+            case other:
+                delta_time = timedelta(weeks=1) if other == 'weekly' else timedelta(weeks=2) if other == 'biweekly' else timedelta(days=31)
+
+                dates: list[date] = []
 
                 last_occurrence = self.start_date
 
-                while last_occurrence + timedelta(weeks=1) < today:
-                    last_occurrence += timedelta(weeks=1)
+                while last_occurrence + delta_time < today:
+                    last_occurrence += delta_time
 
                 while last_occurrence >= self.start_date:
-                    weekly_dates.append(last_occurrence)
-                    last_occurrence -= timedelta(weeks=1)
+                    dates.append(last_occurrence)
+                    last_occurrence -= delta_time
 
-                return weekly_dates
+                return dates
 
-            case 'biweekly':
-                biweekly_dates: list[date] = []
-
-                last_occurrence = self.start_date
-
-                while last_occurrence + timedelta(weeks=2) < today:
-                    last_occurrence += timedelta(weeks=2)
-
-                while last_occurrence >= self.start_date:
-                    biweekly_dates.append(last_occurrence)
-                    last_occurrence -= timedelta(weeks=2)
-
-                return biweekly_dates
-
-            case 'monthly':
-                biweekly_dates: list[date] = []
-
-                last_occurrence = self.start_date
-
-                while last_occurrence + timedelta(days=31) < today:
-                    last_occurrence += timedelta(days=31)
-
-                while last_occurrence >= self.start_date:
-                    biweekly_dates.append(last_occurrence)
-                    last_occurrence -= timedelta(days=31)
-
-                return biweekly_dates
-            
         return []
 
     def get_save_dict(self) -> dict:

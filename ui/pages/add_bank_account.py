@@ -6,7 +6,7 @@ from .header import HeaderPage
 
 
 
-class AddAccountPage(Page):
+class AddBankAccountPage(Page):
     STR = 'add_account'
 
     def __init__(self, parent: ui.Canvas, manager: PageManagerBase) -> None:

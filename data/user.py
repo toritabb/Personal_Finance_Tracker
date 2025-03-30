@@ -18,7 +18,7 @@ class User:
         self.email = email
         self.password = password
 
-        self.accounts = {account_data['name']: Account(**account_data) for account_data in (accounts or [])}
+        self.accounts: dict[str, Account] = {account_data['name']: Account(**account_data) for account_data in (accounts or [])}
 
         self.settings = Settings(**(settings if settings else {}))
 
@@ -40,10 +40,13 @@ class User:
 
         '''Create and add a new bank account for this user'''
 
-        account = Account(name=name, type=type, balance=balance)
+        account = Account(name=name, type=type, balance=balance, index=len(self.accounts))
         self.accounts[name] = account
 
         return account
+    
+    def get_accounts(self) -> list[Account]:
+        return sorted([account for account in self.accounts.values()], key=lambda a: a.index)
 
 
 

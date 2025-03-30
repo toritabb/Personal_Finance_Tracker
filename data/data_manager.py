@@ -48,8 +48,8 @@ class DataManager:
 
             return User(**user_data)
 
-        except:
-            print(f'Something failed when loading user "{email}"')
+        except Exception as e:
+            print(f'Something failed when loading user "{email}"\n{e}')
 
     def save_user_data(self, user: User) -> None:
         '''
