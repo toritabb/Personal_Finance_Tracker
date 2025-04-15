@@ -1,8 +1,9 @@
 # local
 import ui
 from data import data_manager
-from .page import Page, PageManagerBase
+from ui.theme import MOSS, DESERT_TAN
 from .header import HeaderPage
+from .page import Page, PageManagerBase
 
 
 
@@ -67,6 +68,60 @@ class AccountsPage(Page):
                 (edit_account_button.left + 4, edit_account_button.top + 4),
                 'edit.png',
             )
+
+        income_text = ui.Text(
+            self,
+            (header.left + 550, header.bottom + 50),
+            'Next Month\'s Income',
+            ('Nunito', 25, True, False),
+        )
+
+        incomes = [(income.name, income.amount * len(income.timing.get_within_next_days(30))) for account in current_user.get_accounts() for income in account.incomes]
+        income_slices = []
+
+        for name, amount in incomes:
+            if amount > 0:
+                income_slices.append(ui.PieChartSlice(
+                    name,
+                    amount,
+                    ui.theme.darken(MOSS, len(income_slices) * 0.15)
+                ))
+
+        income_chart = ui.PieChart(
+            self,
+            (income_text.left, income_text.bottom + 35),
+            200,
+            income_slices,
+            gap=5,
+            border_color=DESERT_TAN
+        )
+
+        expense_text = ui.Text(
+            self,
+            (income_text.right + 75, income_text.top),
+            'Next Month\'s Expenses',
+            ('Nunito', 25, True, False),
+        )
+
+        expenses = [(expense.name, expense.amount * len(expense.timing.get_within_next_days(30))) for account in current_user.get_accounts() for expense in account.expenses]
+        expense_slices = []
+
+        for name, amount in expenses:
+            if amount > 0:
+                expense_slices.append(ui.PieChartSlice(
+                    name,
+                    amount,
+                    ui.theme.darken(MOSS, len(expense_slices) * 0.1)
+                ))
+
+        expenses_chart = ui.PieChart(
+            self,
+            (expense_text.left, expense_text.bottom + 35),
+            200,
+            expense_slices,
+            gap=5,
+            border_color=DESERT_TAN
+        )
 
         # Add Account button
         add_account_button = ui.TextButton(
