@@ -50,7 +50,7 @@ class Window(Canvas):
 
             self.render()
 
-            pygame.display.set_caption(f'FPS: {self.clock.get_fps():.0f}')
+            # pygame.display.set_caption(f'FPS: {self.clock.get_fps():.0f}')
 
         self.close()
 
@@ -58,5 +58,4 @@ class Window(Canvas):
         super().close()
 
         data_manager.logout_user()
-
 

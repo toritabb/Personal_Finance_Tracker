@@ -69,39 +69,74 @@ class AccountsPage(Page):
                 'edit.png',
             )
 
-        income_text = ui.Text(
+        ################
+        # Income Chart #
+        ################
+
+        income_chart_canvas = ui.Canvas(
             self,
-            (header.left + 550, header.bottom + 50),
-            'Next Month\'s Income',
-            ('Nunito', 25, True, False),
+            (header.left + 500, header.bottom + 50, 325, 450),
         )
 
+        income_text = ui.Text(
+            income_chart_canvas,
+            (0, 0),
+            'Next Month\'s Income',
+            ('Nunito', 30, True, False),
+        )
+
+        ui.center(income_text)
+
         incomes = [(income.name, income.amount * len(income.timing.get_within_next_days(30))) for account in current_user.get_accounts() for income in account.incomes]
-        income_slices = []
+        income_slices: list[ui.PieChartSlice] = []
 
         for name, amount in incomes:
             if amount > 0:
                 income_slices.append(ui.PieChartSlice(
                     name,
                     amount,
-                    ui.theme.darken(MOSS, len(income_slices) * 0.15)
+                    ui.theme.shift_hue(MOSS, len(income_slices) * 0.07)
                 ))
 
-        income_chart = ui.PieChart(
+        if income_slices:
+            income_chart = ui.PieChart(
+                income_chart_canvas,
+                (0, income_text.bottom + 35),
+                200,
+                income_slices,
+                gap=5,
+                border_color=DESERT_TAN
+            )
+
+            ui.center(income_chart)
+
+        else:
+            no_income_text = ui.Text(
+                income_chart_canvas,
+                (0, income_text.bottom + 35),
+                'No income in the next month',
+                ('Nunito', 20),
+            )
+
+            ui.center(no_income_text)
+
+        ##################
+        # Expenses Chart #
+        ##################
+
+        expenses_chart_canvas = ui.Canvas(
             self,
-            (income_text.left, income_text.bottom + 35),
-            200,
-            income_slices,
-            gap=5,
-            border_color=DESERT_TAN
+            ((income_chart_canvas.right + 75, income_chart_canvas.top), income_chart_canvas.size),
         )
 
         expense_text = ui.Text(
-            self,
-            (income_text.right + 75, income_text.top),
+            expenses_chart_canvas,
+            (0, 0),
             'Next Month\'s Expenses',
-            ('Nunito', 25, True, False),
+            ('Nunito', 30, True, False),
         )
+
+        ui.center(expense_text)
 
         expenses = [(expense.name, expense.amount * len(expense.timing.get_within_next_days(30))) for account in current_user.get_accounts() for expense in account.expenses]
         expense_slices = []
@@ -114,16 +149,32 @@ class AccountsPage(Page):
                     ui.theme.darken(MOSS, len(expense_slices) * 0.1)
                 ))
 
-        expenses_chart = ui.PieChart(
-            self,
-            (expense_text.left, expense_text.bottom + 35),
-            200,
-            expense_slices,
-            gap=5,
-            border_color=DESERT_TAN
-        )
+        if expense_slices:
+            expenses_chart = ui.PieChart(
+                expenses_chart_canvas,
+                (expense_text.left, expense_text.bottom + 35),
+                200,
+                expense_slices,
+                gap=5,
+                border_color=DESERT_TAN
+            )
 
-        # Add Account button
+            ui.center(expenses_chart)
+
+        else:
+            no_expenses_text = ui.Text(
+                expenses_chart_canvas,
+                (expense_text.left, expense_text.bottom + 35),
+                'No expenses in the next month',
+                ('Nunito', 20),
+            )
+
+            ui.center(no_expenses_text)
+
+        ###############
+        # Add Account #
+        ###############
+
         add_account_button = ui.TextButton(
             self,
             'Add Account',

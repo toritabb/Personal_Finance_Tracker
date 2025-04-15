@@ -22,12 +22,12 @@ class IncomeExpensesPage(Page):
 
         page_title = ui.Text(
             self,
-            (25, header.bottom + 25),
+            (0, header.bottom + 25),
             'Income & Expenses',
             ('Nunito', 50, True, False)
         )
 
-        ui.center(page_title, axis='x')
+        ui.center(page_title)
 
         ###############
         # Positioning #

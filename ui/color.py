@@ -9,7 +9,7 @@ from .misc import clamp, lerp
 
 
 
-__all__ = 'lighten', 'darken', 'saturate', 'desaturate', 'blend', 'invert_color'
+__all__ = 'lighten', 'darken', 'saturate', 'desaturate', 'shift_hue', 'blend', 'invert_color'
 
 
 
@@ -52,6 +52,17 @@ def desaturate(color: Color, percent: float) -> Color:
     new_s = clamp(hsva[1] * (1 - percent), 0, 255)
 
     new_color = Color.from_hsva(hsva[0], new_s, hsva[2], hsva[3])
+
+    return new_color
+
+
+
+def shift_hue(color: Color, percent: float) -> Color:
+    hsva = color.hsva
+
+    new_h = (hsva[0] + 255 * percent) % 255
+
+    new_color = Color.from_hsva(new_h, hsva[1], hsva[2], hsva[3])
 
     return new_color
 

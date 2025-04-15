@@ -18,7 +18,7 @@ class MorePage(Page):
 
         title = ui.Text(
             self,
-            (0, header.bottom + 20),
+            (0, header.bottom + 25),
             'More Options',
             ('Nunito', 50, True, False)
         )

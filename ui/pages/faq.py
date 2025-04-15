@@ -14,9 +14,9 @@ FAQ_QUESTIONS = [
 
 FAQ_ANSWERS = [
     'Falcon Finance is a financial application designed to help users manage their finances efficiently and securely.',
-    'We believe in the necessity of open source software so Falcon Finance will always remain free.',
-    'We prioritize security and use encryption and other protective measures to safeguard your data.\nHowever, users should follow best security practices when using the Application.',
-    'You can reach our support team by email at falconfinancehelp@gmail.com.\nAlternatively, go to the More and then Contact page for any assistance.'
+    'We believe in the necessity of open source software and personal finance management\nso Falcon Finance will always remain free.',
+    'We prioritize security and use encryption and other protective measures to safeguard your data.\nHowever, users should follow best security practices when using the Falcon Finance application.',
+    'You can reach our support team by email at falconfinancehelp@gmail.com.\nAlternatively, go to the "More" and then "Contact" page for any assistance.'
 ]
 
 

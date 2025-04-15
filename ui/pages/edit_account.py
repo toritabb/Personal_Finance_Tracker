@@ -58,8 +58,6 @@ class EditAccountPage(Page):
             corner_radius=5
         )
 
-
-
         ###############
         # Save button #
         ###############
@@ -71,7 +69,7 @@ class EditAccountPage(Page):
             if new_name != account_name:
                 account = current_user.accounts.pop(account_name)
 
-                account.name = new_name
+                account.rename(new_name)
 
                 current_user.accounts[new_name] = account
 

@@ -34,7 +34,7 @@ class Account:
 
         `balance`: Current balance in dollars
 
-        `_number`: Used to order accounts
+        `index`: Used to order accounts
 
         `incomes`: List of income transactions
 
@@ -81,6 +81,15 @@ class Account:
             expense_cost = len(expense.timing.get_within_previous_days(days)) * expense.amount
 
             self.balance -= expense_cost
+
+    def rename(self, new_name: str) -> None:
+        self.name = new_name
+        
+        for income in self.incomes:
+            income.account = new_name
+        
+        for expense in self.expenses:
+            expense.account = new_name
 
 
 
