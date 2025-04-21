@@ -81,8 +81,8 @@ class AccountsPage(Page):
         income_text = ui.Text(
             income_chart_canvas,
             (0, 0),
-            'Your Income',
-            ('Nunito', 30, True, False),
+            'Your monthly income',
+            ('Nunito', 29, True, False),
         )
 
         ui.center(income_text)
@@ -102,13 +102,22 @@ class AccountsPage(Page):
             income_chart = ui.PieChart(
                 income_chart_canvas,
                 (0, income_text.bottom + 35),
-                200,
+                275,
                 income_slices,
                 gap=5,
                 border_color=DESERT_TAN
             )
 
             ui.center(income_chart)
+
+            total_text = ui.Text(
+                income_chart_canvas,
+                (0, income_chart.top + 125),
+                f'${sum(slice.value for slice in income_slices):,.2f}',
+                ('Nunito', 20)
+            )
+
+            ui.center(total_text)
 
         else:
             no_income_text = ui.Text(
@@ -132,34 +141,43 @@ class AccountsPage(Page):
         expense_text = ui.Text(
             expenses_chart_canvas,
             (0, 0),
-            'Your Expenses',
-            ('Nunito', 30, True, False),
+            'Your monthly expenses',
+            ('Nunito', 29, True, False),
         )
 
         ui.center(expense_text)
 
         expenses = [(expense.name, expense.amount * len(expense.timing.get_within_next_days(30))) for account in current_user.get_accounts() for expense in account.expenses]
-        expense_slices = []
+        expense_slices: list[ui.PieChartSlice] = []
 
         for name, amount in expenses:
             if amount > 0:
                 expense_slices.append(ui.PieChartSlice(
                     name,
                     amount,
-                    ui.theme.darken(MOSS, len(expense_slices) * 0.1)
+                    ui.theme.shift_hue(MOSS, len(expense_slices) * -0.05)
                 ))
 
         if expense_slices:
             expenses_chart = ui.PieChart(
                 expenses_chart_canvas,
                 (expense_text.left, expense_text.bottom + 35),
-                200,
+                275,
                 expense_slices,
                 gap=5,
                 border_color=DESERT_TAN
             )
 
             ui.center(expenses_chart)
+
+            total_text = ui.Text(
+                expenses_chart_canvas,
+                (0, expenses_chart.top + 125),
+                f'${sum(slice.value for slice in expense_slices):,.2f}',
+                ('Nunito', 20)
+            )
+
+            ui.center(total_text)
 
         else:
             no_expenses_text = ui.Text(
