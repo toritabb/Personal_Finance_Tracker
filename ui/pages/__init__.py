@@ -32,7 +32,7 @@ class PageManager(PageManagerBase):
     def __init__(self, parent: Canvas) -> None:
         super().__init__(
             parent,
-            'example',
+            'welcome',
             AccountsPage,
             AddBankAccountPage,
             AddBankPage,

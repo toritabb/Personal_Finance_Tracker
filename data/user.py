@@ -35,15 +35,24 @@ class User:
             self,
             name: str,
             type: Literal['checking', 'savings'],
-            balance: float = 0.0
+            starting_balance: float = 0.0
         ) -> Account:
 
         '''Create and add a new bank account for this user'''
 
-        account = Account(name=name, type=type, balance=balance, index=len(self.accounts))
+        account = Account(name=name, type=type, balance=starting_balance, starting_balance=starting_balance, index=len(self.accounts))
         self.accounts[name] = account
 
         return account
+
+    def remove_account(
+            self,
+            name: str
+        ) -> None:
+
+        '''Remove a bank account from this user'''
+
+        self.accounts.pop(name, None)
     
     def get_accounts(self) -> list[Account]:
         return sorted([account for account in self.accounts.values()], key=lambda a: a.index)

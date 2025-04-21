@@ -29,7 +29,7 @@ class AddIncomePage(Page):
         # ACCOUNT OPTIONS #
         ###################
 
-        account_tab = ui.Canvas(self, (325, 175, 200, 130))
+        account_tab = ui.Canvas(self, (325, 175, 250, 130))
 
         account_title = ui.Text(
             account_tab,

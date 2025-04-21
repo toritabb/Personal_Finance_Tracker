@@ -81,7 +81,7 @@ class AccountsPage(Page):
         income_text = ui.Text(
             income_chart_canvas,
             (0, 0),
-            'Next Month\'s Income',
+            'Your Income',
             ('Nunito', 30, True, False),
         )
 
@@ -114,7 +114,7 @@ class AccountsPage(Page):
             no_income_text = ui.Text(
                 income_chart_canvas,
                 (0, income_text.bottom + 35),
-                'No income in the next month',
+                'No income has been added',
                 ('Nunito', 20),
             )
 
@@ -132,7 +132,7 @@ class AccountsPage(Page):
         expense_text = ui.Text(
             expenses_chart_canvas,
             (0, 0),
-            'Next Month\'s Expenses',
+            'Your Expenses',
             ('Nunito', 30, True, False),
         )
 
@@ -165,7 +165,7 @@ class AccountsPage(Page):
             no_expenses_text = ui.Text(
                 expenses_chart_canvas,
                 (expense_text.left, expense_text.bottom + 35),
-                'No expenses in the next month',
+                'No expenses have been added',
                 ('Nunito', 20),
             )
 

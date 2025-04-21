@@ -13,13 +13,14 @@ class Account:
     A bank account with a balance and transaction history.
     '''
 
-    __slots__ = 'name', 'type', 'balance', 'index', 'incomes', 'expenses'
+    __slots__ = 'name', 'type', 'balance', 'starting_balance', 'index', 'incomes', 'expenses'
 
     def __init__(
             self,
             name: str = '',
             type: Literal['checking', 'savings'] = 'checking',
             balance: float = 0.0,
+            starting_balance: float = 0.0,
             index: int = 0,
             incomes: Optional[list[dict]] = None,
             expenses: Optional[list[dict]] = None
@@ -34,6 +35,8 @@ class Account:
 
         `balance`: Current balance in dollars
 
+        `starting_balance`: Starting balance in dollars
+
         `index`: Used to order accounts
 
         `incomes`: List of income transactions
@@ -44,6 +47,7 @@ class Account:
         self.name = name
         self.type = type
         self.balance = balance
+        self.starting_balance = starting_balance
         self.index = index
 
         self.incomes = [Income(**income) for income in (incomes or [])]
@@ -58,13 +62,14 @@ class Account:
             'name': self.name,
             'type': self.type,
             'balance': self.balance,
+            'starting_balance': self.starting_balance,
             'index': self.index,
             'incomes': [income.get_save_dict() for income in self.incomes],
             'expenses': [expense.get_save_dict() for expense in self.expenses]
         }
 
     def update_balance(self) -> None:
-        self.balance = 0
+        self.balance = self.starting_balance
 
         # add all of the incomes
         for income in self.incomes:
